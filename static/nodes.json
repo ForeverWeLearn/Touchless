@@ -1,0 +1,65 @@
+[
+  {
+    "name": "ROOT",
+    "id": 0,
+    "data": {
+      "children": [1, 3],
+      "todo": []
+    }
+  },
+  {
+    "name": "POINT",
+    "id": 1,
+    "data": {
+      "todo": [2],
+      "children": [],
+      "gesture": "THUMB_INDEX",
+      "reject_gesture": "FIST_BACK",
+      "hold_time": 0,
+      "timeout": 1000,
+      "point": 8
+    }
+  },
+  {
+    "name": "TODO",
+    "id": 2,
+    "data": {
+      "once": false,
+      "function": "move_mouse"
+    }
+  },
+  {
+    "name": "GESTURE",
+    "id": 3,
+    "data": {
+      "todo": [],
+      "children": [4],
+      "gesture": "PALM",
+      "reject_gesture": "FIST_BACK",
+      "hold_time": 100,
+      "timeout": 3000,
+      "point": 0
+    }
+  },
+  {
+    "name": "GESTURE",
+    "id": 4,
+    "data": {
+      "todo": [5],
+      "children": [],
+      "gesture": "FIST_FRONT",
+      "reject_gesture": "FIST_BACK",
+      "hold_time": 0,
+      "timeout": 3000,
+      "point": 0
+    }
+  },
+  {
+    "name": "TODO",
+    "id": 5,
+    "data": {
+      "once": true,
+      "function": "show_desktop"
+    }
+  }
+]
