@@ -1,7 +1,28 @@
-# Tauri + SvelteKit + TypeScript
+# For Dev
 
-This template should help get you started developing with Tauri, SvelteKit and TypeScript in Vite.
+## Clone repo
 
-## Recommended IDE Setup
+```bash
+git clone https://github.com/ForeverWeLearn/touchless.git
+```
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+## Install packages
+
+```bash
+npm install
+```
+
+## Test
+
+```bash
+npm run tauri dev
+```
+
+## Build
+
+```bash
+npm run tauri build
+```
+
+**Portable:** `./src-tauri/target/release/touchless.exe`  
+**Installers:** `./src-tauri/target/release/bundle/`
