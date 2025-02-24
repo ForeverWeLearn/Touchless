@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { engine_state, engine_ready } from "../stores/engine_state";
   import { getCurrentWindow } from "@tauri-apps/api/window";
-  import { engine_state } from "../stores/engine_state";
   import { board_state } from "../stores/board_state";
 
   const appWindow = getCurrentWindow();
@@ -47,11 +47,11 @@
 
     <div class="ms-auto d-flex align-items-center">
       <button
-        class="btn {$engine_state ? 'btn-danger' : 'btn-success'} btn-engine me-4"
+        class="btn {!$engine_ready ? 'btn-warning' : $engine_state ? 'btn-danger' : 'btn-success'} btn-engine me-4"
         style="width: 120px !important;"
         onclick={() => engine_state.set(!$engine_state)}
       >
-        {$engine_state ? "Stop" : "Run"}
+        {!$engine_ready ? "Initializing..." : $engine_state ? "Stop" : "Run"}
       </button>
       <button id="titlebar-minimize" class="titlebar-button" onclick={() => appWindow.minimize()}>
         <img src="imgs/titlebar/circle/minimize.svg" alt="Minimize" />
@@ -70,12 +70,12 @@
   .navbar {
     margin: 5px;
     border-radius: 9px;
-    background-color: rgba(26, 26, 30, 0.8) !important;
+    background-color: #191919cc !important;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.5s ease-in-out;
     backdrop-filter: blur(10px);
   }

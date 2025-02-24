@@ -6,6 +6,7 @@ import { GestureClassifier } from "./gesture_classifier";
 import { GestureParser } from "./gesture_parser";
 import { labels } from "../utils/labels";
 import { Node } from "../utils/node";
+import { engine_ready } from "../stores/engine_state";
 
 const hand_results = [hand_result_left, hand_result_right];
 
@@ -71,6 +72,7 @@ async function inference(engine: Engine) {
 }
 
 export class Engine {
+  public ready = false;
   public state = false;
   public next_trigger_time = 0;
   public nodes: Node[] = [];
@@ -189,5 +191,7 @@ export class Engine {
   private async model_warmup() {
     this.landmarker.detect(document.getElementById("warmup") as HTMLImageElement);
     await this.landmarker.setOptions({ runningMode: "VIDEO" });
+    this.ready = true;
+    engine_ready.set(true);
   }
 }
