@@ -1,4 +1,5 @@
 <script>
+  import { invoke } from "@tauri-apps/api/core"
   import Board from "../components/Board.svelte";
   import NavBar from "../components/NavBar.svelte";
   import { Engine } from "../scripts/engine";
@@ -11,7 +12,7 @@
   engine_state.subscribe((state) => {
     engine.set_state(state);
   });
-
+  invoke("perform_hotkey(state, hotkey: Copy)");
   document.addEventListener("contextmenu", (event) => event.preventDefault());
 </script>
 

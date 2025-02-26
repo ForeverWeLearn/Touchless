@@ -46,3 +46,34 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+#[tauri::command]
+//perform_hotkey(state, Hotkey:: ... );
+//hotkey default
+//custom, create new hotkey(comming soon)
+fn perform_hotkey(state: State<AppState>, hotkey: Hotkey) {
+    let mut enigo = state.enigo.lock().unwrap();
+
+    match hotkey {
+        Hotkey::Copy => {
+            // ctrl+C
+            enigo.key(Key::Control, Press).expect("ctrl");
+            enigo.key(Key::Unicode('c'), Press).expect("C press");
+            enigo.key(Key::Unicode('c'), Release).expect("C release");
+            enigo.key(Key::Control, Release).expect("ctrl");
+        },
+        Hotkey::Paste => {
+            // ctrl+V
+            enigo.key(Key::Control, Press).expect("ctrl");
+            enigo.key(Key::Unicode('v'), Press).expect("V press");
+            enigo.key(Key::Unicode('v'), Release).expect("V release");
+            enigo.key(Key::Control, Release).expect("ctrl");
+        },
+        Hotkey::CloseTab => {
+            // ctrl+W
+            enigo.key(Key::Control, Press).expect("ctrl");
+            enigo.key(Key::Unicode('w'), Press).expect("W press");
+            enigo.key(Key::Unicode('w'), Release).expect("W release");
+            enigo.key(Key::Control, Release).expect("ctrl");
+        },
+    }
+}
