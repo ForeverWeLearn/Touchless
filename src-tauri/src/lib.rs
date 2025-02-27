@@ -71,7 +71,7 @@ enum HotkeyAction {
 }
 
 #[tauri::command]
-//perform_hotkey(state, Hotkey:: ... );
+// invoke("perform_hotkey", { hotkey: "Copy"});
 //hotkey default
 //custom, create new hotkey(comming soon)
 fn perform_hotkey(state: State<AppState>, hotkey: HotkeyAction) {
