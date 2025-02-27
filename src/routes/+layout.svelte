@@ -12,7 +12,7 @@
   engine_state.subscribe((state) => {
     engine.set_state(state);
   });
-  invoke("perform_hotkey(state, hotkey: Copy)");
+  invoke("perform_hotkey", { hotkey: "Copy"});
   document.addEventListener("contextmenu", (event) => event.preventDefault());
 </script>
 
