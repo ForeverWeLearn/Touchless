@@ -5,7 +5,13 @@ use enigo::{
 };
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
-use tauri::State;
+use tauri::{
+    Manager,
+    WindowEvent,
+    State,
+    tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
+    menu::{Menu, MenuItem}
+};
 
 struct AppState {
     enigo: Mutex<Enigo>,
@@ -39,6 +45,60 @@ pub fn run() {
             move_mouse,
             perform_hotkey
         ])
+        .setup(|app| {
+            //Close but the app will hide in the system tray
+            let window = app.get_webview_window("main").unwrap();
+            let window_clone = window.clone(); 
+            window.on_window_event(move |event| match event {
+                WindowEvent::CloseRequested { api, .. } => {
+                    api.prevent_close();
+                    let _ = window_clone.hide(); 
+                }
+                _ => {}
+            });
+
+            //Create "Open", "Quit" options when you right-click the icon in the system tray
+            let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+            let open_i = MenuItem::with_id(app, "open", "Open", true, None::<&str>)?;
+            let menu = Menu::with_items(app, &[&open_i, &quit_i])?;
+            let tray = TrayIconBuilder::new()
+                .icon(app.default_window_icon().unwrap().clone())
+                .menu(&menu)
+                .menu_on_left_click(false)
+                .on_menu_event(|app, event| match event.id.as_ref() {
+                    "quit" => {
+                        app.exit(0);
+                    }
+                    "open" => {
+                        let window = app.get_webview_window("main").unwrap();
+                        window.unminimize();
+                        window.show().unwrap();
+                        window.set_focus().unwrap();
+                    }
+                    _ => {}
+                })
+                // Double-click to toggle the app status
+                .on_tray_icon_event(|tray, event| match event {
+                    TrayIconEvent::DoubleClick {
+                    button: MouseButton::Left,
+                    ..
+                    } => {
+                    let app = tray.app_handle();
+                    if let Some(window) = app.get_webview_window("main") {
+                        if window.is_visible().unwrap() {
+                            window.hide().unwrap();
+                        } else {
+                            window.unminimize();
+                            window.show().unwrap();
+                            window.set_focus().unwrap();
+                        }
+                    }
+                    }
+                    _ => {}
+                })
+                .build(app)?;
+                Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
