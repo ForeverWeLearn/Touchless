@@ -61,17 +61,17 @@ pub fn run() {
             let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
             let open_i = MenuItem::with_id(app, "open", "Open", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&open_i, &quit_i])?;
-            let tray = TrayIconBuilder::new()
+            let _tray = TrayIconBuilder::new()
                 .icon(app.default_window_icon().unwrap().clone())
                 .menu(&menu)
-                .menu_on_left_click(false)
+                .show_menu_on_left_click(false)
                 .on_menu_event(|app, event| match event.id.as_ref() {
                     "quit" => {
                         app.exit(0);
                     }
                     "open" => {
                         let window = app.get_webview_window("main").unwrap();
-                        window.unminimize();
+                        let _ = window.unminimize();
                         window.show().unwrap();
                         window.set_focus().unwrap();
                     }
@@ -88,7 +88,7 @@ pub fn run() {
                         if window.is_visible().unwrap() {
                             window.hide().unwrap();
                         } else {
-                            window.unminimize();
+                            let _ = window.unminimize();
                             window.show().unwrap();
                             window.set_focus().unwrap();
                         }
