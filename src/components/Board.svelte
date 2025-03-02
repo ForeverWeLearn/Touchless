@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { board_state } from "../stores/board_state";
-  import HandStatistic from "./HandStatistic.svelte";
+  import { board_state } from "../stores/board_state.svelte";
+  import Hand from "./Hand.svelte";
 </script>
 
-<div data-tauri-drag-region class="debug-container {$board_state ? 'show' : 'hide'}">
-  <HandStatistic handedness="left" index="0"></HandStatistic>
+<div data-tauri-drag-region class="debug-container {board_state.show ? 'show' : 'hide'}">
+  <Hand handedness="Left"></Hand>
   <div class="video-container">
     <!-- svelte-ignore a11y_media_has_caption -->
     <video width="640" height="480" id="webcam" autoplay playsinline></video>
     <canvas width="640" height="480" id="webcam-overlay"></canvas>
   </div>
-  <HandStatistic handedness="right" index="1"></HandStatistic>
+  <Hand handedness="Right"></Hand>
 </div>
 
 <style>
@@ -23,6 +23,7 @@
   }
 
   .debug-container {
+    z-index: 998;
     position: absolute;
     display: flex;
     justify-content: center;
