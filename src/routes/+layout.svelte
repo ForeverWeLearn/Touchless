@@ -1,10 +1,10 @@
 <script>
-  import Board from "../components/Board.svelte";
-  import NavBar from "../components/NavBar.svelte";
-  import { Engine } from "../scripts/engine";
+  import "bootstrap/dist/css/bootstrap.min.css";
+  import "bootstrap/dist/js/bootstrap.min.js";
 
-  import "bootstrap/dist/css/bootstrap.min.css"
-  import "bootstrap/dist/js/bootstrap.min.js"
+  import { Engine } from "../scripts/engine.svelte";
+  import NavBar from "../components/NavBar.svelte";
+  import Board from "../components/Board.svelte";
 
   const engine = new Engine();
 
