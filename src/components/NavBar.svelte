@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { engine_state, engine_ready } from "../stores/engine_state";
   import { getCurrentWindow } from "@tauri-apps/api/window";
-  import { board_state } from "../stores/board_state";
+  import { engine_state } from "../stores/engine_state.svelte";
+  import { board_state } from "../stores/board_state.svelte";
 
   const appWindow = getCurrentWindow();
 </script>
 
 <nav class="navbar navbar-expand navbar-dark bg-transparent">
-  <button class="btn btn-tranparent btn-navbar-link" onclick={() => board_state.set(false)}>
+  <button class="btn btn-tranparent btn-navbar-link" onclick={() => (board_state.show = false)}>
     <a class="navbar-brand" href="/">
       <img src="favicon.svg" width="30" height="30" class="d-inline-block align-top ms-4 me-3" alt="" />
       <span><strong>TOUCHLESS</strong></span>
@@ -17,27 +17,27 @@
   <div class="collapse navbar-collapse mx-2" data-tauri-drag-region>
     <ul class="navbar-nav">
       <li class="nav-item me-0">
-        <button class="btn btn-tranparent btn-navbar-link" onclick={() => board_state.set(false)}>
+        <button class="btn btn-tranparent btn-navbar-link" onclick={() => (board_state.show = false)}>
           <a class="nav-link" href="/"><span>HOME</span></a>
         </button>
       </li>
       <li class="nav-item me-0">
-        <button class="btn btn-transparent btn-navbar-link" onclick={() => board_state.set(false)}>
-          <a class="nav-link" href="/customize">
-            <span>CUSTOMIZE</span>
+        <button class="btn btn-transparent btn-navbar-link" onclick={() => (board_state.show = false)}>
+          <a class="nav-link" href="/flow">
+            <span>FLOW</span>
           </a>
         </button>
       </li>
       <li class="nav-item me-0">
-        <button class="btn btn-transparent btn-navbar-link" onclick={() => board_state.set(true)}>
+        <button class="btn btn-transparent btn-navbar-link" onclick={() => (board_state.show = true)}>
           <!-- svelte-ignore a11y_missing_attribute -->
           <a class="nav-link">
-            <span>VISUALIZE</span>
+            <span>BOARD</span>
           </a>
         </button>
       </li>
       <li class="nav-item me-0">
-        <button class="btn btn-transparent btn-navbar-link" onclick={() => board_state.set(false)}>
+        <button class="btn btn-transparent btn-navbar-link" onclick={() => (board_state.show = false)}>
           <a class="nav-link" href="/settings">
             <span>SETTINGS</span>
           </a>
@@ -47,11 +47,12 @@
 
     <div class="ms-auto d-flex align-items-center">
       <button
-        class="btn {!$engine_ready ? 'btn-warning' : $engine_state ? 'btn-danger' : 'btn-success'} btn-engine me-4"
+        class="btn {engine_state.running ? 'btn-danger' : 'btn-success'} me-4"
+        id="btn-engine"
         style="width: 120px !important;"
-        onclick={() => engine_state.set(!$engine_state)}
+        onclick={() => (engine_state.running = !engine_state.running)}
       >
-        {!$engine_ready ? "Initializing..." : $engine_state ? "Stop" : "Run"}
+        {engine_state.running ? "Stop" : "Run"}
       </button>
       <button id="titlebar-minimize" class="titlebar-button" onclick={() => appWindow.minimize()}>
         <img src="imgs/titlebar/circle/minimize.svg" alt="Minimize" />
@@ -68,16 +69,17 @@
 
 <style>
   .navbar {
+    z-index: 999;
     margin: 5px;
     border-radius: 9px;
-    background-color: #191919cc !important;
+    background-color: #191919ad !important;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(7px);
   }
 
   .navbar:hover {
@@ -108,7 +110,7 @@
     text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.4);
   }
 
-  .btn-engine {
+  #btn-engine {
     font-weight: 500;
   }
 
@@ -117,7 +119,8 @@
     background-color: transparent;
     justify-content: center;
     align-items: center;
-    border: 0;
+    border: none;
+    border-color: transparent;
     opacity: 0.6;
   }
 
