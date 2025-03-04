@@ -1,13 +1,7 @@
-import { BASE, EDGES_DATA_FILE, join, NODES_DATA_FILE, VIEW_DATA_FILE } from "./path";
-import { exists, readTextFile } from "@tauri-apps/plugin-fs";
-import { edges_writable, nodes, nodes_writable } from "../../stores/flow_state.svelte";
 import type { NodeData } from "./node";
-
-export async function check_file_exist(destination: string, file_name: string): Promise<boolean> {
-  const path = join(destination, file_name);
-  const exist = await exists(path, { baseDir: BASE });
-  return exist;
-}
+import { BASE_DIRECTORY, EDGES_DATA_FILE, NODES_DATA_FILE, VIEW_DATA_FILE, check_file_exist, join } from "./path";
+import { edges_writable, nodes } from "../../stores/flow_state.svelte";
+import { readTextFile } from "@tauri-apps/plugin-fs";
 
 export async function read_text_file(destination: string, file_name: string): Promise<string | undefined> {
   const exist = await check_file_exist(destination, file_name);
@@ -19,7 +13,7 @@ export async function read_text_file(destination: string, file_name: string): Pr
   const path = join(destination, file_name);
 
   console.log(`Reading data from "${path}"`);
-  const data = await readTextFile(path, { baseDir: BASE });
+  const data = await readTextFile(path, { baseDir: BASE_DIRECTORY });
 
   return data;
 }
@@ -45,9 +39,9 @@ export async function read_view_data_from_file() {
   return await read_json_file(VIEW_DATA_FILE.DEST, VIEW_DATA_FILE.NAME);
 }
 
-export function get_current_nodes_data() {
-  const d = Object.values(nodes);
-  return d;
+export function get_current_node_data() {
+  const node_data = Object.values(nodes);
+  return node_data;
 }
 
 export function get_current_edges_data() {
