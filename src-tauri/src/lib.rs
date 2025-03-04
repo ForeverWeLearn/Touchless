@@ -54,6 +54,7 @@ struct Hotkey {
 
 #[derive(Debug)]
 enum HotkeyAction {
+    Cut,
     Copy,
     Paste,
     CloseTab,
@@ -78,6 +79,13 @@ fn perform_hotkey(state: State<AppState>, hotkey: HotkeyAction) {
     let mut enigo = state.enigo.lock().unwrap();
 
     match hotkey {
+        HotkeyAction::Cut => {
+            // ctrl+X
+            enigo.key(Key::Control, Press).expect("ctrl");
+            enigo.key(Key::Unicode('x'), Press).expect("X press");
+            enigo.key(Key::Unicode('x'), Release).expect("X release");
+            enigo.key(Key::Control, Release).expect("ctrl");
+        },
         HotkeyAction::Copy => {
             // ctrl+C
             enigo.key(Key::Control, Press).expect("ctrl");
@@ -128,13 +136,13 @@ fn perform_hotkey(state: State<AppState>, hotkey: HotkeyAction) {
             enigo.key(Key::Control, Release).expect("ctrl");
         },
         HotkeyAction::Select_Line => {
-            // ctrl+S
+            // Shift+Home
             enigo.key(Key::Shift, Press).expect("shift");
             enigo.key(Key::Home, Press).expect("Home press");
             enigo.key(Key::Home, Release).expect("Home release");
             enigo.key(Key::Shift, Release).expect("shift");
         },HotkeyAction::Deselect_Line => {
-            // ctrl+S
+            // Shift+End
             enigo.key(Key::Shift, Press).expect("Shift");
             enigo.key(Key::End, Press).expect("End press");
             enigo.key(Key::End, Release).expect("End release");
