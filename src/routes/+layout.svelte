@@ -1,22 +1,19 @@
 <script>
-  import { invoke } from "@tauri-apps/api/core"
-  import Board from "../components/Board.svelte";
+  import "bootstrap/dist/css/bootstrap.min.css";
+  import "bootstrap/dist/js/bootstrap.min.js";
+
+  import { Engine } from "../scripts/engine.svelte";
   import NavBar from "../components/NavBar.svelte";
-  import { Engine } from "../scripts/engine";
-  import { engine_state } from "../stores/engine_state";
+  import Board from "../components/Board.svelte";
 
   const engine = new Engine();
 
   let { children } = $props();
 
-  engine_state.subscribe((state) => {
-    engine.set_state(state);
-  });
-  invoke("perform_hotkey", { hotkey: "Copy"});
   document.addEventListener("contextmenu", (event) => event.preventDefault());
 </script>
 
-<img id="warmup" src="warmup.jpg" width="224" height="224" srcset="" alt="" />
+<img id="warmup" src="imgs/warmup.jpg" width="224" height="224" srcset="" alt="" />
 <Board />
 <NavBar />
 

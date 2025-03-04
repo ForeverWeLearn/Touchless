@@ -1,16 +1,9 @@
+import type { TaskName } from "./utils/const";
 import { invoke } from "@tauri-apps/api/core";
 
 export class Executor {
-  public async parse(fn: string, point: number[]) {
-    if (fn == "show_desktop") {
-      this.show_desktop();
-    } else if (fn == "move_mouse") {
-      this.move_mouse(point);
-    }
-  }
-
-  public async show_desktop() {
-    await invoke("show_desktop", {});
+  public async parse(task_name: TaskName) {
+    await invoke("perform_hotkey", { hotkey: task_name });
   }
 
   public async move_mouse(point: number[]) {

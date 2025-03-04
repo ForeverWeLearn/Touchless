@@ -3,8 +3,15 @@ use enigo::{
     Direction::{Click, Press, Release},
     Enigo, Key, Keyboard, Mouse, Settings,
 };
+use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
-use tauri::State;
+use tauri::{
+    Manager,
+    WindowEvent,
+    State,
+    tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
+    menu::{Menu, MenuItem}
+};
 
 struct AppState {
     enigo: Mutex<Enigo>,
@@ -26,48 +33,98 @@ fn move_mouse(pos: &str, state: State<AppState>) {
     );
 }
 
-#[tauri::command]
-fn show_desktop(state: State<AppState>) {
-    let mut enigo = state.enigo.lock().unwrap();
-    
-    enigo.key(Key::Meta, Press).expect("msg");
-    enigo.key(Key::Unicode('d'), Click).expect("msg");
-    enigo.key(Key::Meta, Release).expect("msg");
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
         .manage(AppState {
             enigo: Mutex::new(Enigo::new(&Settings::default()).unwrap()),
         })
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![move_mouse, show_desktop])
+        .invoke_handler(tauri::generate_handler![
+            move_mouse,
+            perform_hotkey
+        ])
+        .setup(|app| {
+            //Close but the app will hide in the system tray
+            let window = app.get_webview_window("main").unwrap();
+            let window_clone = window.clone(); 
+            window.on_window_event(move |event| match event {
+                WindowEvent::CloseRequested { api, .. } => {
+                    api.prevent_close();
+                    let _ = window_clone.hide(); 
+                }
+                _ => {}
+            });
+
+            //Create "Open", "Quit" options when you right-click the icon in the system tray
+            let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+            let open_i = MenuItem::with_id(app, "open", "Open", true, None::<&str>)?;
+            let menu = Menu::with_items(app, &[&open_i, &quit_i])?;
+            let _tray = TrayIconBuilder::new()
+                .icon(app.default_window_icon().unwrap().clone())
+                .menu(&menu)
+                .show_menu_on_left_click(false)
+                .on_menu_event(|app, event| match event.id.as_ref() {
+                    "quit" => {
+                        app.exit(0);
+                    }
+                    "open" => {
+                        let window = app.get_webview_window("main").unwrap();
+                        let _ = window.unminimize();
+                        window.show().unwrap();
+                        window.set_focus().unwrap();
+                    }
+                    _ => {}
+                })
+                // Double-click to toggle the app status
+                .on_tray_icon_event(|tray, event| match event {
+                    TrayIconEvent::DoubleClick {
+                    button: MouseButton::Left,
+                    ..
+                    } => {
+                    let app = tray.app_handle();
+                    if let Some(window) = app.get_webview_window("main") {
+                        if window.is_visible().unwrap() {
+                            window.hide().unwrap();
+                        } else {
+                            let _ = window.unminimize();
+                            window.show().unwrap();
+                            window.set_focus().unwrap();
+                        }
+                    }
+                    }
+                    _ => {}
+                })
+                .build(app)?;
+                Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 struct Hotkey {
     action: HotkeyAction,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 enum HotkeyAction {
     Cut,
     Copy,
     Paste,
     CloseTab,
-    Select_All,
+    SelectAll,
     Undo,
     Redo,
-    Save, 
-    Select_Line,
-    Deselect_Line,
-    ChangeTab_Right,
-    ChangeTab_Left,
-    ChangeApp_Right,
-    ChangeApp_Left,
+    Save,
+    SelectLine,
+    DeselectLine,
+    ShowDesktop,
+    ChangeTabRight,
+    ChangeTabLeft,
+    ChangeAppRight,
+    ChangeAppLeft,
     CloseApp,
 }
 
@@ -87,110 +144,100 @@ fn perform_hotkey(state: State<AppState>, hotkey: HotkeyAction) {
             enigo.key(Key::Control, Release).expect("ctrl");
         },
         HotkeyAction::Copy => {
-            // ctrl+C
-            enigo.key(Key::Control, Press).expect("ctrl");
-            enigo.key(Key::Unicode('c'), Press).expect("C press");
-            enigo.key(Key::Unicode('c'), Release).expect("C release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
+            // Ctrl + C
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Unicode('c'), Click).expect("C click");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
         HotkeyAction::Paste => {
-            // ctrl+V
-            enigo.key(Key::Control, Press).expect("ctrl");
-            enigo.key(Key::Unicode('v'), Press).expect("V press");
-            enigo.key(Key::Unicode('v'), Release).expect("V release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
+            // Ctrl + V
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Unicode('v'), Click).expect("V click");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
         HotkeyAction::CloseTab => {
-            // ctrl+W
-            enigo.key(Key::Control, Press).expect("ctrl");
-            enigo.key(Key::Unicode('w'), Press).expect("W press");
-            enigo.key(Key::Unicode('w'), Release).expect("W release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
-        HotkeyAction::Select_All => {
-            // ctrl+A
-            enigo.key(Key::Control, Press).expect("ctrl");
-            enigo.key(Key::Unicode('a'), Press).expect("A press");
-            enigo.key(Key::Unicode('a'), Release).expect("A release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
+            // Ctrl + W
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Unicode('w'), Click).expect("W click");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
+        HotkeyAction::SelectAll => {
+            // Ctrl + A
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Unicode('a'), Click).expect("A click");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
         HotkeyAction::Undo => {
-            // ctrl+Z
-            enigo.key(Key::Control, Press).expect("ctrl");
-            enigo.key(Key::Unicode('z'), Press).expect("Z press");
-            enigo.key(Key::Unicode('z'), Release).expect("Z release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
+            // Ctrl + Z
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Unicode('z'), Click).expect("Z click");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
         HotkeyAction::Redo => {
-            // ctrl+Y
-            enigo.key(Key::Control, Press).expect("ctrl");
-            enigo.key(Key::Unicode('y'), Press).expect("Y press");
-            enigo.key(Key::Unicode('y'), Release).expect("Y release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
+            // Ctrl + Y
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Unicode('y'), Click).expect("Y click");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
         HotkeyAction::Save => {
-            // ctrl+S
-            enigo.key(Key::Control, Press).expect("ctrl");
-            enigo.key(Key::Unicode('s'), Press).expect("S press");
-            enigo.key(Key::Unicode('s'), Release).expect("S release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
-        HotkeyAction::Select_Line => {
-            // Shift+Home
-            enigo.key(Key::Shift, Press).expect("shift");
-            enigo.key(Key::Home, Press).expect("Home press");
-            enigo.key(Key::Home, Release).expect("Home release");
-            enigo.key(Key::Shift, Release).expect("shift");
-        },HotkeyAction::Deselect_Line => {
-            // Shift+End
-            enigo.key(Key::Shift, Press).expect("Shift");
-            enigo.key(Key::End, Press).expect("End press");
-            enigo.key(Key::End, Release).expect("End release");
-            enigo.key(Key::Shift, Release).expect("Shift");
-        },
-        HotkeyAction::ChangeTab_Right => {
-            // ctrl+tab
-            enigo.key(Key::Control, Press).expect("ctrl");
-            enigo.key(Key::Tab, Press).expect("tab press");
-            enigo.key(Key::Tab, Release).expect("tab release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
-        HotkeyAction::ChangeTab_Left => {
-            // ctrl+Shift+tab
-            enigo.key(Key::Control, Press).expect("ctrl");
+            // Ctrl + S
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Unicode('s'), Click).expect("S click");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
+        HotkeyAction::SelectLine => {
+            // Ctrl + S
             enigo.key(Key::Shift, Press).expect("Shift press");
-            enigo.key(Key::Tab, Press).expect("tab press");
-            enigo.key(Key::Tab, Release).expect("tab release");
+            enigo.key(Key::Home, Click).expect("Home click");
             enigo.key(Key::Shift, Release).expect("Shift release");
-            enigo.key(Key::Control, Release).expect("ctrl");
-        },
-        HotkeyAction::ChangeApp_Right => {
-            // alt+tab
-            enigo.key(Key::Alt, Press).expect("alt");
-            enigo.key(Key::Tab, Press).expect("tab press");
-            enigo.key(Key::Tab, Release).expect("tab release");
-            enigo.key(Key::Alt, Release).expect("alt");
-        },
-        HotkeyAction::ChangeApp_Left => {
-            // alt+Shift+tab
-            enigo.key(Key::Alt, Press).expect("Alt");
+        }
+        HotkeyAction::DeselectLine => {
+            // Ctrl + S
             enigo.key(Key::Shift, Press).expect("Shift press");
-            enigo.key(Key::Tab, Press).expect("tab press");
-            enigo.key(Key::Tab, Release).expect("tab release");
+            enigo.key(Key::End, Click).expect("End click");
             enigo.key(Key::Shift, Release).expect("Shift release");
-            enigo.key(Key::Alt, Release).expect("Alt");
-        },
+        }
+        HotkeyAction::ShowDesktop => {
+            // Meta + D
+            enigo.key(Key::Meta, Press).expect("Meta press");
+            enigo.key(Key::Unicode('d'), Click).expect("D click");
+            enigo.key(Key::Meta, Release).expect("Meta release");
+        }
+        HotkeyAction::ChangeTabRight => {
+            // Ctrl + Tab
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Tab, Click).expect("Tab click");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
+        HotkeyAction::ChangeTabLeft => {
+            // Ctrl + Shift + Tab
+            enigo.key(Key::Control, Press).expect("Ctrl press");
+            enigo.key(Key::Shift, Press).expect("Shift press");
+            enigo.key(Key::Tab, Click).expect("Tab click");
+            enigo.key(Key::Shift, Release).expect("Shift release");
+            enigo.key(Key::Control, Release).expect("Ctrl release");
+        }
+        HotkeyAction::ChangeAppRight => {
+            // Alt + Tab
+            enigo.key(Key::Alt, Press).expect("Alt press");
+            enigo.key(Key::Tab, Click).expect("Tab click");
+            enigo.key(Key::Alt, Release).expect("Alt release");
+        }
+        HotkeyAction::ChangeAppLeft => {
+            // Alt + Shift + Tab
+            enigo.key(Key::Alt, Press).expect("Alt press");
+            enigo.key(Key::Shift, Press).expect("Shift press");
+            enigo.key(Key::Tab, Click).expect("Tab click");
+            enigo.key(Key::Shift, Release).expect("Shift release");
+            enigo.key(Key::Alt, Release).expect("Alt release");
+        }
         HotkeyAction::CloseApp => {
-            // ctrl+alt+F4
-            enigo.key(Key::Control, Press).expect("control");
-            enigo.key(Key::Alt, Press).expect("alt");
-            enigo.key(Key::F4, Press).expect("f4");
-            enigo.key(Key::F4, Release).expect("f4");
-            enigo.key(Key::Alt, Release).expect("alt");
-            enigo.key(Key::Control, Release).expect("control");
+            // Alt + F4
+            enigo.key(Key::Alt, Press).expect("Alt press");
+            enigo.key(Key::F4, Click).expect("F4 click");
+            enigo.key(Key::Alt, Release).expect("Alt release");
             // Enter
-            enigo.key(Key::Unicode('\n'), Press).expect("Enter");
-            enigo.key(Key::Unicode('\n'), Release).expect("Enter");
-        },
+            enigo.key(Key::Unicode('\n'), Click).expect("Enter click");
+        }
     }
 }

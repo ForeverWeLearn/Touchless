@@ -1,26 +1,31 @@
 // @ts-nocheck
-import { argmax } from "../utils/algo";
+import { get_label_id_and_confidence, normalize_keypoints } from "./utils/algo";
+import type { HandednessID } from "./utils/const";
 
 export class GestureClassifier {
-  public model;
+  public normalized_keypoints: number[];
+
+  private model;
 
   constructor(file: string) {
-    this.loadModel(file);
+    this.load_model(file);
   }
 
-  public async loadModel(file: string) {
+  private async load_model(file: string) {
     this.model = await tflite.loadTFLiteModel(file);
   }
 
-  public inference(normalized_keypoints) {
-    const input_tensor = new tf.tensor(normalized_keypoints, [1, 42], "float32");
+  public input(keypoints: number[][], bbox: number[], handedness: HandednessID) {
+    this.normalized_keypoints = normalize_keypoints(keypoints, bbox, handedness);
+  }
+
+  public inference() {
+    const input_tensor = new tf.tensor(this.normalized_keypoints, [1, 42], "float32");
 
     let feeds = { [this.model.inputs[0].name]: input_tensor };
 
     let output_tensor = this.model.predict(feeds);
 
-    let labelID = argmax(output_tensor.dataSync());
-
-    return labelID;
+    return get_label_id_and_confidence(output_tensor.dataSync());
   }
 }
