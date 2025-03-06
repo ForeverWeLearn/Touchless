@@ -51,6 +51,7 @@
       background-color: #191919;
       user-select: none;
       font-family: Lexend !important;
+      overflow: hidden;
     }
 
     img {
