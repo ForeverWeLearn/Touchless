@@ -25,7 +25,7 @@
   </select>
   <select class="form-control text-center" bind:value={reactive_data.landmark} style="min-width: 14em;max-width: 14em;">
     {#each LANDMARK_NAMES as landmark, i}
-      <option value={i}>{landmark} - {landmark}</option>
+      <option value={i}>{i} - {landmark}</option>
     {/each}
   </select>
   <select class="form-control text-center" bind:value={reactive_data.type} style="min-width: 5em;">
