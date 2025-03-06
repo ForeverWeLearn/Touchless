@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Sellect All",
+    "sequence": [
+      {
+        "key": "Control",
+        "direction": "Press"
+      },
+      {
+        "key": "Unicode(a)",
+        "direction": "Click"
+      },
+      {
+        "key": "Control",
+        "direction": "Release"
+      }
+    ]
+  },
+  {
+    "name": "Show Desktop",
+    "sequence": [
+      {
+        "key": "Meta",
+        "direction": "Press"
+      },
+      {
+        "key": "Unicode(d)",
+        "direction": "Click"
+      },
+      {
+        "key": "Meta",
+        "direction": "Release"
+      }
+    ]
+  },
+  {
+    "name": "Alt Tab",
+    "sequence": [
+      {
+        "key": "Alt",
+        "direction": "Press"
+      },
+      {
+        "key": "Tab",
+        "direction": "Click"
+      },
+      {
+        "key": "Alt",
+        "direction": "Release"
+      }
+    ]
+  }
+]

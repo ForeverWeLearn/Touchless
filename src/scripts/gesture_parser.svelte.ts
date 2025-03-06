@@ -6,7 +6,7 @@ export class GestureParser {
 
   private hand_result!: HandResult;
   private time_label_id = new Queue<[number, number]>();
-  
+
   private distance = new Queue<number>();
   private prev_point = [0, 0];
   private diff = 0;

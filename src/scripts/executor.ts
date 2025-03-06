@@ -1,10 +1,14 @@
-import type { TaskName } from "./utils/const";
+import type { Engine } from "./engine.svelte";
 import { invoke } from "@tauri-apps/api/core";
 
 export class Executor {
-  public async parse(task_name: TaskName) {
-    await invoke("perform_hotkey", { hotkey: task_name });
+  private engine!: Engine;
+
+  constructor(engine: Engine) {
+    this.engine = engine;
   }
+
+  public async parse() {}
 
   public async move_mouse(point: number[]) {
     const coord = this.calc_coordnite(point);

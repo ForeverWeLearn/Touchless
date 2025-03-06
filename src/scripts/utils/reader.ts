@@ -1,7 +1,8 @@
-import type { NodeData } from "./node";
+import type { BaseNodeData, NodeRawData } from "../flowchart/nodes/node";
 import { BASE_DIRECTORY, EDGES_DATA_FILE, NODES_DATA_FILE, VIEW_DATA_FILE, check_file_exist, join } from "./path";
 import { edges_writable, nodes } from "../../stores/flow_state.svelte";
 import { readTextFile } from "@tauri-apps/plugin-fs";
+import type { KeySequenceType } from "../flowchart/nodes/tasks/key_sequence";
 
 export async function read_text_file(destination: string, file_name: string): Promise<string | undefined> {
   const exist = await check_file_exist(destination, file_name);
@@ -27,8 +28,26 @@ export async function read_json_file(destination: string, file_name: string): Pr
   return JSON.parse(data);
 }
 
-export async function read_nodes_data_from_file(): Promise<NodeData[] | undefined> {
-  return (await read_json_file(NODES_DATA_FILE.DEST, NODES_DATA_FILE.NAME)) as NodeData[];
+export async function read_local_json_file(path: string): Promise<any> {
+  let raw_data = undefined;
+  await fetch(path)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Could not read file: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      raw_data = data;
+    })
+    .catch((error) => {
+      console.error("Error fetching file:", error);
+    });
+  return raw_data;
+}
+
+export async function read_nodes_data_from_file(): Promise<NodeRawData<any>[] | undefined> {
+  return (await read_json_file(NODES_DATA_FILE.DEST, NODES_DATA_FILE.NAME)) as NodeRawData<any>[];
 }
 
 export async function read_edges_data_from_file() {
@@ -37,6 +56,12 @@ export async function read_edges_data_from_file() {
 
 export async function read_view_data_from_file() {
   return await read_json_file(VIEW_DATA_FILE.DEST, VIEW_DATA_FILE.NAME);
+}
+
+export async function read_default_key_sequences(): Promise<KeySequenceType[]> {
+  const data: KeySequenceType[] = await read_local_json_file("default/key_sequences.json");
+  console.log(data);
+  return data;
 }
 
 export function get_current_node_data() {

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { type GestureNodeData } from "../../../scripts/utils/node";
+  import type { GestureNodeData } from "../../../scripts/flowchart/nodes/conditions/gesture";
   import { hand_results } from "../../../stores/hand_result.svelte";
-  import HandednessGesture from "./HandednessGesture.svelte";
-  import Timeout from "./Timeout.svelte";
+  import HandednessGesture from "../components/HandednessGesture.svelte";
+  import Timeout from "../components/Timeout.svelte";
 
   let { raw_data, reactive_data, id }: { raw_data: GestureNodeData; reactive_data: GestureNodeData; id: string } =
     $props();
@@ -14,7 +14,11 @@
   });
 </script>
 
-<div class="container node-container gesture-node-container" class:node-container-disabled={!reactive_data.enable} class:node-container-active={reactive_data.active && hand_detected}>
+<div
+  class="container node-container gesture-node-container"
+  class:node-container-disabled={!reactive_data.enable}
+  class:node-container-active={reactive_data.active && hand_detected}
+>
   <div class="row">
     <div class="col col-12">
       <div class="form-check text-center mt-3 px-0">
@@ -26,7 +30,7 @@
           style="visibility: hidden; position:absolute"
         />
         <label class="form-check-label h3" for="node-{id}-label" style="cursor: pointer; text-transform: uppercase">
-          Gesture
+          {raw_data.type}
         </label>
       </div>
     </div>

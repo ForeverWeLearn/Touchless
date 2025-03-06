@@ -2,7 +2,6 @@
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
 import { GestureClassifier } from "./gesture_classifier";
 import { GestureParser } from "./gesture_parser.svelte";
-import { Analyzer } from "./analyzer.svelte";
 import { Executor } from "./executor";
 
 // Utils
@@ -71,8 +70,6 @@ async function inference(engine: Engine) {
   hand_results[0].has = checked[0];
   hand_results[1].has = checked[1];
 
-  engine.analyzer.analyze();
-
   window.requestAnimationFrame(() => inference(engine));
 }
 
@@ -82,7 +79,6 @@ export class Engine {
   public landmarker!: HandLandmarker;
   public gesture_classifier!: GestureClassifier;
   public gesture_parsers: GestureParser[] = [];
-  public analyzer!: Analyzer;
   public executor!: Executor;
   public drawer!: Drawer;
 
@@ -171,8 +167,6 @@ export class Engine {
 
     this.gesture_parsers[0] = new GestureParser(hand_results[0]);
     this.gesture_parsers[1] = new GestureParser(hand_results[1]);
-
-    this.analyzer = new Analyzer(this);
 
     this.executor = new Executor(this);
 

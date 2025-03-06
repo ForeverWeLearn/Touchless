@@ -1,5 +1,6 @@
 import type { NormalizedLandmark } from "@mediapipe/tasks-vision";
-import { RANDOM_STRING_LENGTH } from "./const";
+
+export const RANDOM_STRING_LENGTH = 6;
 
 export function get_random_string(length = RANDOM_STRING_LENGTH): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

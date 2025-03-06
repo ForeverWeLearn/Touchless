@@ -14,27 +14,20 @@
     node_types,
     initial_viewport,
     edges_writable,
-    edges,
-    nodes,
   } from "../../stores/flow_state.svelte";
   import { get_random_string } from "../../scripts/utils/algo";
-  import { NodeType, type NodeData } from "../../scripts/utils/node";
 
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
   import PaneContextMenu from "./menus/PaneContextMenu.svelte";
   import ConnectEndMenu from "./menus/ConnectEndMenu.svelte";
   import Sidebar from "../Sidebar.svelte";
+  import { NodeType } from "../../scripts/flowchart/nodes/node";
 
   const { fitView, getNode } = useSvelteFlow();
 
   async function init() {
     setTimeout(() => fitView({ duration: 1000 }), 250);
   }
-
-  // $effect(() => {
-  //   nodes_writable.set(nodes);
-  //   edges_writable.set(edges);
-  // });
 
   let pane_context_menu = $state({ show: false, id: "0", top: 0, left: 0 });
   let node_context_menu = $state({ show: false, id: "0", top: 0, left: 0 });
@@ -78,8 +71,8 @@
   function handle_node_context_menu({ detail: { event, node } }) {
     event.preventDefault();
 
-    const nd = getNode(node.id) as NodeData;
-    if (nd.type == NodeType.Root) {
+    const nd = getNode(node.id);
+    if (nd != undefined && nd.type == NodeType.ROOT) {
       return;
     }
 

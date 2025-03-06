@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { RootNodeData } from "../../../scripts/utils/node";
+  import type { RootNodeData } from "../../../scripts/flowchart/nodes/root";
   import { Handle, Position, type NodeProps, type Node } from "@xyflow/svelte";
-  import Root from "../components/Root.svelte";
   import { nodes } from "../../../stores/flow_state.svelte";
+  import Root from "./Root.svelte";
 
   type $$Props = NodeProps<Node<RootNodeData>>;
 

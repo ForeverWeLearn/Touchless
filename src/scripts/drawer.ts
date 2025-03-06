@@ -1,5 +1,5 @@
-import { HandLandmarker } from "@mediapipe/tasks-vision";
 import type { Engine } from "./engine.svelte";
+import { HandLandmarker } from "@mediapipe/tasks-vision";
 
 export class Drawer {
   public point_color = "#ff0022";

@@ -6,31 +6,44 @@ use enigo::{
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use tauri::{
-    Manager,
-    WindowEvent,
-    State,
+    menu::{Menu, MenuItem},
     tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
-    menu::{Menu, MenuItem}
+    Manager, State, WindowEvent,
 };
 
 struct AppState {
     enigo: Mutex<Enigo>,
 }
 
-#[tauri::command]
-fn move_mouse(pos: &str, state: State<AppState>) {
-    let mut enigo = state.enigo.lock().unwrap();
+#[derive(Debug, Serialize, Deserialize)]
+enum HotkeyAction {
+    Copy,
+    Paste,
+    CloseTab,
+    SelectAll,
+    Undo,
+    Redo,
+    Save,
+    SelectLine,
+    DeselectLine,
+    ShowDesktop,
+    ChangeTabRight,
+    ChangeTabLeft,
+    ChangeAppRight,
+    ChangeAppLeft,
+    CloseApp,
+}
 
-    let coord: Vec<usize> = pos
-        .split_whitespace()
-        .map(|s| s.parse().expect("Failed to parse number"))
-        .collect();
+#[derive(Debug, Serialize, Deserialize)]
+enum MouseTask {
+    Move,
+    Click,
+}
 
-    let _ = enigo.move_mouse(
-        coord[0].try_into().unwrap(),
-        coord[1].try_into().unwrap(),
-        Coordinate::Abs,
-    );
+#[derive(Deserialize)]
+pub struct KeySequenceEntry {
+    key: String,
+    direction: String,
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -42,17 +55,18 @@ pub fn run() {
         })
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
-            move_mouse,
-            perform_hotkey
+            perform_hotkey,
+            mouse,
+            execute_key_sequence
         ])
         .setup(|app| {
             //Close but the app will hide in the system tray
             let window = app.get_webview_window("main").unwrap();
-            let window_clone = window.clone(); 
+            let window_clone = window.clone();
             window.on_window_event(move |event| match event {
                 WindowEvent::CloseRequested { api, .. } => {
                     api.prevent_close();
-                    let _ = window_clone.hide(); 
+                    let _ = window_clone.hide();
                 }
                 _ => {}
             });
@@ -80,61 +94,124 @@ pub fn run() {
                 // Double-click to toggle the app status
                 .on_tray_icon_event(|tray, event| match event {
                     TrayIconEvent::DoubleClick {
-                    button: MouseButton::Left,
-                    ..
+                        button: MouseButton::Left,
+                        ..
                     } => {
-                    let app = tray.app_handle();
-                    if let Some(window) = app.get_webview_window("main") {
-                        if window.is_visible().unwrap() {
-                            window.hide().unwrap();
-                        } else {
-                            let _ = window.unminimize();
-                            window.show().unwrap();
-                            window.set_focus().unwrap();
+                        let app = tray.app_handle();
+                        if let Some(window) = app.get_webview_window("main") {
+                            if window.is_visible().unwrap() {
+                                window.hide().unwrap();
+                            } else {
+                                let _ = window.unminimize();
+                                window.show().unwrap();
+                                window.set_focus().unwrap();
+                            }
                         }
-                    }
                     }
                     _ => {}
                 })
                 .build(app)?;
-                Ok(())
+            Ok(())
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Hotkey {
-    action: HotkeyAction,
+#[tauri::command]
+fn execute_key_sequence(
+    state: State<AppState>,
+    sequence: Vec<KeySequenceEntry>,
+) -> Result<(), String> {
+    let mut enigo = state.enigo.lock().unwrap();
+
+    for entry in sequence {
+        let key = match entry.key.as_str() {
+            "Control" => Key::Control,
+            "Alt" => Key::Alt,
+            "Shift" => Key::Shift,
+            "Meta" => Key::Meta,
+            "Tab" => Key::Tab,
+            "Home" => Key::Home,
+            "End" => Key::End,
+            "F1" => Key::F1,
+            "F2" => Key::F2,
+            "F3" => Key::F3,
+            "F4" => Key::F4,
+            "F5" => Key::F5,
+            "F6" => Key::F6,
+            "F7" => Key::F7,
+            "F8" => Key::F8,
+            "F9" => Key::F9,
+            "F10" => Key::F10,
+            "F11" => Key::F11,
+            "F12" => Key::F12,
+            "Escape" => Key::Escape,
+            "Enter" => Key::Unicode('\n'),
+            s if s.starts_with("Unicode(") => {
+                let c = s
+                    .trim_start_matches("Unicode(")
+                    .trim_end_matches(")")
+                    .trim_matches('\'')
+                    .chars()
+                    .next()
+                    .ok_or_else(|| format!("Invalid Unicode character in: {}", s))?;
+                Key::Unicode(c)
+            }
+            s => return Err(format!("Unknown key: {}", s)),
+        };
+
+        let direction = match entry.direction.as_str() {
+            "Press" => Press,
+            "Release" => Release,
+            "Click" => Click,
+            s => return Err(format!("Unknown direction: {}", s)),
+        };
+
+        enigo
+            .key(key, direction)
+            .map_err(|e| format!("Failed to execute key: {:?}", e))?;
+    }
+
+    Ok(())
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-enum HotkeyAction {
-    Copy,
-    Paste,
-    CloseTab,
-    SelectAll,
-    Undo,
-    Redo,
-    Save,
-    SelectLine,
-    DeselectLine,
-    ShowDesktop,
-    ChangeTabRight,
-    ChangeTabLeft,
-    ChangeAppRight,
-    ChangeAppLeft,
-    CloseApp,
+#[tauri::command]
+fn mouse(state: State<AppState>, task: MouseTask, vector: &str) {
+    let mut enigo = state.enigo.lock().unwrap();
+
+    let coord: Vec<usize> = vector
+        .split_whitespace()
+        .map(|s| s.parse().expect("Failed to parse number"))
+        .collect();
+
+    match task {
+        MouseTask::Click => {
+            let _ = enigo.button(enigo::Button::Left, Click);
+        }
+        MouseTask::Move => {
+            let _ = enigo.move_mouse(
+                coord[0].try_into().unwrap(),
+                coord[1].try_into().unwrap(),
+                Coordinate::Abs,
+            );
+        }
+    }
+
+    let _ = enigo.move_mouse(
+        coord[0].try_into().unwrap(),
+        coord[1].try_into().unwrap(),
+        Coordinate::Abs,
+    );
 }
 
 #[tauri::command]
 // invoke("perform_hotkey", { hotkey: "Copy"});
 //hotkey default
 //custom, create new hotkey(comming soon)
-fn perform_hotkey(state: State<AppState>, hotkey: HotkeyAction) {
+fn perform_hotkey(state: State<AppState>, action: HotkeyAction) {
     let mut enigo = state.enigo.lock().unwrap();
 
-    match hotkey {
+    match action {
         HotkeyAction::Copy => {
             // Ctrl + C
             enigo.key(Key::Control, Press).expect("Ctrl press");
