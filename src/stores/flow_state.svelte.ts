@@ -36,10 +36,6 @@ export const edges_writable: Writable<Edge[]> = writable(edge_data);
 
 export let initial_viewport: Viewport = await load_view_data();
 
-function get_default_edges(): Edge[] {
-  return [];
-}
-
 async function load_nodes_data(): Promise<NodeRawData<any>[]> {
   const data = await read_node_raw_data_from_file();
   if (data == undefined) {
@@ -51,7 +47,7 @@ async function load_nodes_data(): Promise<NodeRawData<any>[]> {
 async function load_edges_data(): Promise<Edge[]> {
   const data = await read_edges_data_from_file();
   if (data == undefined) {
-    return get_default_edges();
+    return [];
   }
   return data as Edge[];
 }
