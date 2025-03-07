@@ -34,7 +34,13 @@ enum HotkeyAction {
     ChangeAppRight,
     ChangeAppLeft,
     CloseApp,
-    OpenApp(String), 
+    //App
+    OpenWord,
+    OpenPPT,
+    OpenExcel,
+    OpenVSCode,
+    OpenChrome,
+    OpenPaint,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -352,6 +358,79 @@ fn perform_hotkey(state: State<AppState>, action: HotkeyAction) {
             enigo.key(Key::Alt, Release).expect("Alt release");
             // Enter
             enigo.key(Key::Unicode('\n'), Click).expect("Enter click");
+        }
+        HotkeyAction::OpenWord => {
+            if cfg!(target_os = "windows") {
+                Command::new("cmd")
+                    .args(&["/C", "start", "winword"])
+                    .spawn()
+                    .expect("");
+            } else if cfg!(target_os = "macos") {
+                Command::new("open")
+                    .arg("/Applications/Microsoft Word.app")
+                    .spawn()
+                    .expect("");
+            } 
+        }
+        HotkeyAction::OpenPPT => {
+            if cfg!(target_os = "windows") {
+                Command::new("cmd")
+                    .args(&["/C", "start", "powerpnt"])
+                    .spawn()
+                    .expect("");
+            } else if cfg!(target_os = "macos") {
+                Command::new("open")
+                    .arg("/Applications/Microsoft PowerPoint.app")
+                    .spawn()
+                    .expect("");
+            }
+        }
+        HotkeyAction::OpenExcel => {
+            if cfg!(target_os = "windows") {
+                Command::new("cmd")
+                    .args(&["/C", "start", "excel"])
+                    .spawn()
+                    .expect("");
+            } else if cfg!(target_os = "macos") {
+                Command::new("open")
+                    .arg("/Applications/Microsoft Excel.app")
+                    .spawn()
+                    .expect("");
+            }
+        }
+        HotkeyAction::OpenChrome => {
+            if cfg!(target_os = "windows") {
+                Command::new("cmd")
+                    .args(&["/C", "start", "chrome"])
+                    .spawn()
+                    .expect("");
+            } else if cfg!(target_os = "macos") {
+                Command::new("open")
+                    .arg("/Applications/Google Chrome.app")
+                    .spawn()
+                    .expect("");
+            } 
+        }
+        HotkeyAction::OpenVSCode => {
+            if cfg!(target_os = "windows") {
+                Command::new("cmd")
+                    .args(&["/C", "code"])
+                    .spawn()
+                    .expect("");
+            } else if cfg!(target_os = "macos") {
+                Command::new("open")
+                    .arg("/Applications/Visual Studio Code.app")
+                    .spawn()
+                    .expect("");
+            }
+        }
+        HotkeyAction::OpenPaint => {
+            if cfg!(target_os = "windows") {
+                Command::new("cmd")
+                    .args(&["/C", "start","mspaint"])
+                    .spawn()
+                    .expect("");
+            } 
         }
     }
 }
