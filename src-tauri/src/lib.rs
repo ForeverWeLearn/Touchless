@@ -49,7 +49,6 @@ pub struct KeySequenceEntry {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        // .plugin(tauri_plugin_single_instance::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
@@ -70,10 +69,15 @@ pub fn run() {
             //Close but the app will hide in the system tray
             let window = app.get_webview_window("main").unwrap();
             let window_clone = window.clone();
+            let overlay = app.get_webview_window("overlay").unwrap();
+            let overlay_clone = overlay.clone();
+            
             window.on_window_event(move |event| match event {
                 WindowEvent::CloseRequested { api, .. } => {
                     api.prevent_close();
                     let _ = window_clone.hide();
+                    let _ = overlay.show();
+                    let _ = overlay.set_always_on_top(true);
                 }
                 _ => {}
             });
@@ -95,6 +99,9 @@ pub fn run() {
                         let _ = window.unminimize();
                         window.show().unwrap();
                         window.set_focus().unwrap();
+                        if let Some(overlay) = app.get_webview_window("overlay") {
+                            overlay.hide().unwrap();
+                        }
                     }
                     _ => {}
                 })
@@ -108,10 +115,16 @@ pub fn run() {
                         if let Some(window) = app.get_webview_window("main") {
                             if window.is_visible().unwrap() {
                                 window.hide().unwrap();
+                                if let Some(overlay) = app.get_webview_window("overlay") {
+                                    overlay.show().unwrap();
+                                }
                             } else {
                                 let _ = window.unminimize();
                                 window.show().unwrap();
                                 window.set_focus().unwrap();
+                                if let Some(overlay) = app.get_webview_window("overlay") {
+                                    overlay.hide().unwrap();
+                                }
                             }
                         }
                     }

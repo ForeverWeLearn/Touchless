@@ -21,6 +21,16 @@
         "decorations": false,
         "center": true,
         "transparent": true
+      },
+      {
+        "width": 320,
+        "height": 180,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "transparent": true,
+        "title": "Overlay",
+        "visible": false,
+        "label": "overlay"
       }
     ],
     "security": {
