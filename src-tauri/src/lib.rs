@@ -5,6 +5,7 @@ use enigo::{
 };
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
+use std::process::Command;
 use tauri::{
     menu::{Menu, MenuItem},
     tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
@@ -33,6 +34,7 @@ enum HotkeyAction {
     ChangeAppRight,
     ChangeAppLeft,
     CloseApp,
+    OpenApp(String), 
 }
 
 #[derive(Debug, Serialize, Deserialize)]
