@@ -357,6 +357,17 @@ fn perform_hotkey(state: State<AppState>, action: HotkeyAction) {
 #[tauri::command]
 //customize hotkey function
 //Get user input from UI
-fn perform_hotkey_customize(state: State<AppState>, hotkey: Hotkey){
+fn perform_hotkey_customize(state: State<AppState>, hotkey: HotkeyAction){
+    let mut enigo = state.enigo.lock().unwrap();
 
+    for key in hotkey.keys{
+        match key{
+            KeyInput::Char(c, KeyState::Press) => {
+                enigo.key(Key::Unicode(c), Press).expect("");
+            }
+            KeyInput::Char(c, KeyState::Release) => {
+                enigo.key(Key::Unicode(c), Release).expect("");
+            }
+        }
+    }
 }
