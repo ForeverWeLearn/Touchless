@@ -70,14 +70,22 @@ pub fn run() {
             let window = app.get_webview_window("main").unwrap();
             let window_clone = window.clone();
             let overlay = app.get_webview_window("overlay").unwrap();
-            let overlay_clone = overlay.clone();
-            
             window.on_window_event(move |event| match event {
                 WindowEvent::CloseRequested { api, .. } => {
                     api.prevent_close();
                     let _ = window_clone.hide();
                     let _ = overlay.show();
-                    let _ = overlay.set_always_on_top(true);
+                }
+                _ => {}
+            });
+            
+            //Hide overlay
+            let overlay = app.get_webview_window("overlay").unwrap();
+            let overlay_clone = overlay.clone();
+            overlay.on_window_event(move |event| match event {
+                WindowEvent::CloseRequested { api, .. } => {
+                    api.prevent_close();
+                    let _ = overlay_clone.hide();
                 }
                 _ => {}
             });

@@ -28,7 +28,10 @@
         "decorations": true,
         "alwaysOnTop": true,
         "transparent": true,
-        "title": "Overlay",
+        "title": "Touchless",
+        "skipTaskbar": true, 
+        "x": 0,
+        "y": 0,
         "visible": false,
         "label": "overlay"
       }
