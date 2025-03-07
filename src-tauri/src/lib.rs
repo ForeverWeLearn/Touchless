@@ -368,6 +368,36 @@ fn perform_hotkey_customize(state: State<AppState>, hotkey: HotkeyAction){
             KeyInput::Char(c, KeyState::Release) => {
                 enigo.key(Key::Unicode(c), Release).expect("");
             }
+            KeyInput::Ctrl(state) => {
+                match state {
+                    KeyState::Press => {
+                        enigo.key(Key::Control, Press).expect("");
+                    }
+                    KeyState::Release => {
+                        enigo.key(Key::Control, Release).expect("");
+                    }
+                }
+            }
+            KeyInput::Alt(state) => {
+                match state {
+                    KeyState::Press => {
+                        enigo.key(Key::Alt, Press).expect("");
+                    }
+                    KeyState::Release => {
+                        enigo.key(Key::Alt, Release).expect("");
+                    }
+                }
+            }
+            KeyInput::Ctrl(state) => {
+                match state {
+                    KeyState::Press => {
+                        enigo.key(Key::Control, Press).expect("");
+                    }
+                    KeyState::Release => {
+                        enigo.key(Key::Control, Release).expect("");
+                    }
+                }
+            }
         }
     }
 }
