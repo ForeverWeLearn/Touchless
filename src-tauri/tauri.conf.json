@@ -25,7 +25,7 @@
       {
         "width": 320,
         "height": 180,
-        "decorations": false,
+        "decorations": true,
         "alwaysOnTop": true,
         "transparent": true,
         "title": "Overlay",
