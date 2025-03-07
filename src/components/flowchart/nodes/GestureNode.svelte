@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { GestureNodeData } from "../../../scripts/utils/node";
+  import type { GestureNodeData } from "../../../scripts/flowchart/nodes/conditions/gesture";
   import { Handle, Position, type NodeProps, type Node } from "@xyflow/svelte";
-  import Gesture from "../components/Gesture.svelte";
   import { nodes } from "../../../stores/flow_state.svelte";
+  import Gesture from "./Gesture.svelte";
 
   type $$Props = NodeProps<Node<GestureNodeData>>;
 

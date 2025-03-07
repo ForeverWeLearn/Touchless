@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { HANDEDNESS_NAMES, LANDMARKS } from "../../../scripts/utils/const";
-  import type { NodePointData } from "../../../scripts/utils/node";
+  import { HANDEDNESS_NAMES, LANDMARK_NAMES } from "../../../scripts/utils/const";
+  import { PointType, type Point } from "../../../scripts/flowchart/components/point";
 
-  let { raw_data, reactive_data, name }: { raw_data: NodePointData; reactive_data: NodePointData; name: string } =
-    $props();
+  let { raw_data, reactive_data, name }: { raw_data: Point; reactive_data: Point; name: string } = $props();
 
   $effect(() => {
     raw_data.handedness = reactive_data.handedness;
@@ -15,14 +14,23 @@
   <span class="input-group-text">
     <label class="form-check-label text-start distance-label" for="."> {name} </label>
   </span>
-  <select class="form-control text-center" bind:value={reactive_data.handedness} style="min-width: 5em;max-width: 5em;">
+  <select
+    class="form-control text-center nodrag"
+    bind:value={reactive_data.handedness}
+    style="min-width: 4em;max-width: 4em;"
+  >
     {#each HANDEDNESS_NAMES as handedness, i}
       <option value={i}>{handedness}</option>
     {/each}
   </select>
-  <select class="form-control text-center" bind:value={reactive_data.landmark}>
-    {#each LANDMARKS as landmark, i}
-      <option value={i}>{landmark.id} - {landmark.name}</option>
+  <select class="form-control text-center" bind:value={reactive_data.landmark} style="min-width: 14em;max-width: 14em;">
+    {#each LANDMARK_NAMES as landmark, i}
+      <option value={i}>{landmark} - {landmark}</option>
+    {/each}
+  </select>
+  <select class="form-control text-center" bind:value={reactive_data.type} style="min-width: 5em;">
+    {#each Object.values(PointType) as type}
+      <option value={type}>{type}</option>
     {/each}
   </select>
 </div>

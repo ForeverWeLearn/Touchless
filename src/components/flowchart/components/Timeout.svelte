@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { NodeTimeoutData } from "../../../scripts/utils/node";
+  import type { Time } from "../../../scripts/flowchart/components/time";
   import Tooltip from "./Tooltip.svelte";
 
-  let { raw_data, reactive_data }: { raw_data: NodeTimeoutData; reactive_data: NodeTimeoutData } = $props();
+  let { raw_data, reactive_data }: { raw_data: Time; reactive_data: Time } = $props();
 
   $effect(() => {
-    raw_data.infinite = reactive_data.infinite;
-    raw_data.time = reactive_data.time;
+    raw_data.type = reactive_data.type;
+    raw_data.value = reactive_data.value;
   });
 </script>
 
@@ -19,6 +19,6 @@
     type="text"
     class="form-control text-center input-time"
     placeholder="Time (ms)"
-    bind:value={reactive_data.time}
+    bind:value={reactive_data.value}
   />
 </div>

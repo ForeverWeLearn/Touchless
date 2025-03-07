@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { type DistanceNodeData } from "../../../scripts/utils/node";
+  import type { DistanceNodeData } from "../../../scripts/flowchart/nodes/conditions/distance";
   import { hand_results } from "../../../stores/hand_result.svelte";
-  import Point from "./Point.svelte";
-  import Range from "./Range.svelte";
+  import Point from "../components/Point.svelte";
+  import Range from "../components/Range.svelte";
 
   let { raw_data, reactive_data, id }: { raw_data: DistanceNodeData; reactive_data: DistanceNodeData; id: string } =
     $props();
-    
+
   const hand_detected = $derived(hand_results[0].has || hand_results[1].has);
 
   $effect(() => {
@@ -14,7 +14,11 @@
   });
 </script>
 
-<div class="container node-container distance-node-container" class:node-container-disabled={!reactive_data.enable} class:node-container-active={reactive_data.active && hand_detected}>
+<div
+  class="container node-container distance-node-container"
+  class:node-container-disabled={!reactive_data.enable}
+  class:node-container-active={reactive_data.active && hand_detected}
+>
   <div class="row">
     <div class="col">
       <div class="form-check text-center mt-3 px-0">
@@ -26,7 +30,7 @@
           style="visibility: hidden; position:absolute"
         />
         <label class="form-check-label h3" for="node-{id}-label" style="cursor: pointer; text-transform: uppercase">
-          Distance
+          {raw_data.type}
         </label>
       </div>
     </div>

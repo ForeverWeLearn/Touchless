@@ -21,6 +21,19 @@
         "decorations": false,
         "center": true,
         "transparent": true
+      },
+      {
+        "width": 320,
+        "height": 180,
+        "decorations": true,
+        "alwaysOnTop": true,
+        "transparent": true,
+        "title": "Touchless",
+        "skipTaskbar": true, 
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "label": "overlay"
       }
     ],
     "security": {

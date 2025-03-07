@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { GESTURES, HANDEDNESS_NAMES, type HandednessID } from "../../../scripts/utils/const";
-  import { type NodeGestureData } from "../../../scripts/utils/node";
+  import type { Gesture } from "../../../scripts/flowchart/components/gesture";
+  import { GESTURE_NAMES, HANDEDNESS_NAMES, type HandednessID } from "../../../scripts/utils/const";
 
   let {
     raw_data,
     reactive_data,
     handedness,
     id,
-  }: { raw_data: NodeGestureData; reactive_data: NodeGestureData; handedness: HandednessID; id: string } = $props();
+  }: { raw_data: Gesture; reactive_data: Gesture; handedness: HandednessID; id: string } = $props();
 
   $effect(() => {
     raw_data.enable = reactive_data.enable;
@@ -35,7 +35,7 @@
     <div class="row" class:disabled={!reactive_data.enable}>
       <div class="input-group input-group-sm">
         <select class="form-control text-center select-gesture" bind:value={reactive_data.gesture}>
-          {#each GESTURES as gesture}
+          {#each GESTURE_NAMES as gesture}
             <option>{gesture}</option>
           {/each}
         </select>

@@ -1,18 +1,19 @@
 <script lang="ts">
+  import type { KeySequenceNodeData } from "../../../scripts/flowchart/nodes/tasks/key_sequence";
   import type { DistanceNodeData } from "../../../scripts/flowchart/nodes/conditions/distance";
   import { Handle, Position, type NodeProps, type Node } from "@xyflow/svelte";
   import { nodes } from "../../../stores/flow_state.svelte";
-  import Distance from "./Distance.svelte";
+  import KeySequence from "./KeySequence.svelte";
 
-  type $$Props = NodeProps<Node<DistanceNodeData>>;
+  type $$Props = NodeProps<Node<KeySequenceNodeData>>;
 
-  export let data: DistanceNodeData;
+  export let data: KeySequenceNodeData;
 </script>
 
 <div class="root-node">
   <Handle type="target" position={Position.Left} />
 
-  <Distance raw_data={data} reactive_data={nodes[data.id].data as DistanceNodeData} id={data.id}></Distance>
+  <KeySequence raw_data={data} reactive_data={nodes[data.id].data} id={data.id}></KeySequence>
 
   <Handle type="source" position={Position.Right} />
 </div>

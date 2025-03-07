@@ -35,3 +35,6 @@ strip = true
 [profile.release.package.wry]
 debug = true
 debug-assertions = true
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-single-instance = "2"

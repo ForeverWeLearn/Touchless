@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { NodeRangeData } from "../../../scripts/utils/node";
-  import { distance_result } from "../../../stores/distance.svelte";
+  import type { HandRange } from "../../../scripts/flowchart/components/hand_range";
+  import { distance_result } from "../../../stores/distance_result.svelte";
 
-  let { raw_data, reactive_data }: { raw_data: NodeRangeData; reactive_data: NodeRangeData } = $props();
+  let { raw_data, reactive_data }: { raw_data: HandRange; reactive_data: HandRange } = $props();
 
   $effect(() => {
     raw_data.min = reactive_data.min;
@@ -14,14 +14,30 @@
   <span class="input-group-text">
     <label class="form-check-label text-start distance-label" for="."> Range </label>
   </span>
-  <input type="text" class="form-control text-center" placeholder="Min" bind:value={reactive_data.min} />
-  <input type="text" class="form-control text-center" placeholder="Max" bind:value={reactive_data.max} />
+  <input
+    type="number"
+    min="0"
+    max="10"
+    step="0.1"
+    class="form-control text-center nodrag"
+    placeholder="Min"
+    bind:value={reactive_data.min}
+  />
+  <input
+    type="number"
+    min="0"
+    max="10"
+    step="0.1"
+    class="form-control text-center nodrag"
+    placeholder="Max"
+    bind:value={reactive_data.max}
+  />
 
   <div class="container mt-3">
     <div class="range-container">
       <div class="range-track"></div>
 
-      <div class="range-selected" style="width: {distance_result.rel_distance * 10}%;"></div>
+      <div class="range-selected" style="width: {distance_result.length * 10}%;"></div>
 
       <div class="range-pointer" style="left: {reactive_data.min * 10}%;"></div>
       <div class="range-pointer" style="left: {reactive_data.max * 10}%;"></div>

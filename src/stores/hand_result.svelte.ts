@@ -6,14 +6,14 @@ export type HandResult = {
   stability: number;
 };
 
-const result = () => {
+function create() {
   return {
     has: false,
     gesture_id: 0,
     hold_time: 0,
     confidence: 0,
     stability: 0
-  } satisfies HandResult;
+  } as HandResult;
 };
 
-export const hand_results = $state([result(), result()]);
+export const hand_results = $state([create(), create()]);

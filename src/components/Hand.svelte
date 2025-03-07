@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { GESTURE_NAMES, type HandednessName } from "../scripts/utils/const";
   import { hand_results } from "../stores/hand_result.svelte";
   import { engine_state } from "../stores/engine_state.svelte";
-  import { GESTURES, type HandednessName } from "../scripts/utils/const";
 
   let { handedness }: { handedness: HandednessName } = $props();
 
   let hand_result = handedness == "Left" ? hand_results[0] : hand_results[1];
 
   let result_text = $derived(
-    !engine_state.running ? "NONE" : !hand_result.has ? "SCANNING" : GESTURES[hand_result.gesture_id]
+    !engine_state.running ? "NONE" : !hand_result.has ? "SCANNING" : GESTURE_NAMES[hand_result.gesture_id]
   );
 
   let gesture_icon_path = $derived(
@@ -16,7 +16,7 @@
       ? "imgs/hand/Left/NONE.svg"
       : !hand_result.has
         ? "imgs/hand/Left/SCANNING.svg"
-        : `imgs/hand/${handedness}/${GESTURES[hand_result.gesture_id]}.svg`
+        : `imgs/hand/${handedness}/${GESTURE_NAMES[hand_result.gesture_id]}.svg`
   );
 </script>
 

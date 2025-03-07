@@ -2,15 +2,14 @@
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
 import { GestureClassifier } from "./gesture_classifier";
 import { GestureParser } from "./gesture_parser.svelte";
-import { Analyzer } from "./analyzer.svelte";
 import { Executor } from "./executor";
 
 // Utils
 import type { HandednessID } from "./utils/const";
-import { draw_bounding_box, draw_connections, draw_landmarks } from "./utils/draw";
-import { calc_keypoints } from "./utils/algo";
+import { calculate_keypoints } from "./utils/algo";
 import { engine_state } from "../stores/engine_state.svelte";
 import { hand_results } from "../stores/hand_result.svelte";
+import { Drawer } from "./drawer";
 
 async function inference(engine: Engine) {
   if (!engine_state.running) {
@@ -28,13 +27,12 @@ async function inference(engine: Engine) {
   engine.results = engine.landmarker.detectForVideo(engine.video, current_time);
 
   // Clear canvas
-  engine.context_2d.clearRect(0, 0, engine.canvas.width, engine.canvas.height);
+  engine.context.clearRect(0, 0, engine.canvas.width, engine.canvas.height);
 
   // No hand detected
   if (engine.results.landmarks.length == 0) {
     engine.next_trigger_time = current_time + 250;
 
-    // Update UI
     hand_results[0].has = false;
     hand_results[1].has = false;
 
@@ -53,20 +51,24 @@ async function inference(engine: Engine) {
     checked[handedness] = true;
 
     // Calculate keypoints and bounding box
-    [engine.keypoints[handedness], engine.bbox[handedness]] = calc_keypoints(landmark, engine.canvas);
-    engine.draw(handedness);
+    [engine.keypoints[handedness], engine.bbox[handedness]] = calculate_keypoints(landmark, engine.canvas);
+    engine.drawer.landmarks(engine.keypoints[handedness]);
+    engine.drawer.connections(engine.keypoints[handedness]);
+    engine.drawer.bounding_box(engine.bbox[handedness]);
 
     // Gesture classification
     engine.gesture_classifier.input(engine.keypoints[handedness], engine.bbox[handedness], handedness);
     const [label_id, confidence] = engine.gesture_classifier.inference();
-    
+
     hand_results[handedness].confidence = confidence;
 
     // Gesture parsing
     engine.gesture_parsers[handedness].parse(label_id, engine.keypoints[handedness], engine.bbox[handedness]);
     i += 1;
   }
-  engine.analyzer.analyze();
+
+  hand_results[0].has = checked[0];
+  hand_results[1].has = checked[1];
 
   window.requestAnimationFrame(() => inference(engine));
 }
@@ -77,8 +79,8 @@ export class Engine {
   public landmarker!: HandLandmarker;
   public gesture_classifier!: GestureClassifier;
   public gesture_parsers: GestureParser[] = [];
-  public analyzer!: Analyzer;
   public executor!: Executor;
+  public drawer!: Drawer;
 
   public results!: HandLandmarkerResult;
   public keypoints: [number[][], number[][]] = [[], []];
@@ -86,12 +88,7 @@ export class Engine {
 
   public video!: HTMLVideoElement;
   public canvas!: HTMLCanvasElement;
-  public context_2d!: CanvasRenderingContext2D;
-
-  public point_color = "#ff0022";
-  public point_radius = 5;
-  public line_color = "#ffffff";
-  public line_thickness = 3;
+  public context!: CanvasRenderingContext2D;
 
   private stream!: MediaStream;
   private inference_handler!: () => void;
@@ -115,12 +112,6 @@ export class Engine {
     }
   }
 
-  public draw(handedness: HandednessID) {
-    draw_connections(this.keypoints[handedness], this.context_2d, this.line_color, this.line_thickness);
-    draw_landmarks(this.keypoints[handedness], this.context_2d, this.point_color, this.point_radius);
-    draw_bounding_box(this.bbox[handedness], this.context_2d, this.line_color, this.line_thickness);
-  }
-
   private connect_camera() {
     const video = document.getElementById("webcam") as HTMLVideoElement;
     if (video == null) {
@@ -133,7 +124,7 @@ export class Engine {
       return;
     }
     this.canvas = canvas;
-    this.context_2d = canvas.getContext("2d") as CanvasRenderingContext2D;
+    this.context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
     navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
       this.video.srcObject = stream;
@@ -155,10 +146,10 @@ export class Engine {
         track.stop();
       });
     }
-    if (this.context_2d == undefined) {
+    if (this.context == undefined) {
       return;
     }
-    this.context_2d.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   private async load_model() {
@@ -177,9 +168,9 @@ export class Engine {
     this.gesture_parsers[0] = new GestureParser(hand_results[0]);
     this.gesture_parsers[1] = new GestureParser(hand_results[1]);
 
-    this.analyzer = new Analyzer(this);
+    this.executor = new Executor(this);
 
-    this.executor = new Executor();
+    this.drawer = new Drawer(this);
   }
 
   private async model_warmup() {
