@@ -398,6 +398,46 @@ fn perform_hotkey_customize(state: State<AppState>, hotkey: HotkeyAction){
                     }
                 }
             }
+            KeyInput::Shift(state) => {
+                match state {
+                    KeyState::Press => {
+                        enigo.key(Key::Shift, Press).expect("");
+                    }
+                    KeyState::Release => {
+                        enigo.key(Key::Shift, Release).expect("");
+                    }
+                }
+            }
+            KeyInput::Meta(state) => {
+                match state {
+                    KeyState::Press => {
+                        enigo.key(Key::Meta, Press).expect("");
+                    }
+                    KeyState::Release => {
+                        enigo.key(Key::Meta, Release).expect("");
+                    }
+                }
+            }
+            KeyInput::Home(state) => {
+                match state {
+                    KeyState::Press => {
+                        enigo.key(Key::Home, Press).expect("");
+                    }
+                    KeyState::Release => {
+                        enigo.key(Key::Home, Release).expect("");
+                    }
+                }
+            }
+            KeyInput::End(state) => {
+                match state {
+                    KeyState::Press => {
+                        enigo.key(Key::End, Press).expect("");
+                    }
+                    KeyState::Release => {
+                        enigo.key(Key::End, Release).expect("");
+                    }
+                }
+            }
         }
     }
 }
