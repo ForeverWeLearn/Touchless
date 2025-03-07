@@ -128,6 +128,20 @@ enum HotkeyAction {
     CloseApp,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+enum KeyInput {
+    Char(char, KeyState),
+    Ctrl(KeyState),
+    Alt(KeyState),
+    Tab(KeyState),
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+enum KeyState {
+    Press,
+    Release,
+}
+
 #[tauri::command]
 // invoke("perform_hotkey", { hotkey: "Copy"});
 //hotkey default
@@ -240,4 +254,11 @@ fn perform_hotkey(state: State<AppState>, hotkey: HotkeyAction) {
             enigo.key(Key::Unicode('\n'), Click).expect("Enter click");
         }
     }
+}
+
+#[tauri::command]
+//customize hotkey function
+//Get user input from UI
+fn perform_hotkey_customize(state: State<AppState>, hotkey: Hotkey){
+
 }
