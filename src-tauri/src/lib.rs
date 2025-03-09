@@ -47,8 +47,12 @@ enum HotkeyAction {
 enum KeyInput {
     Char(char, KeyState),
     Ctrl(KeyState),
+    Shift(KeyState),
     Alt(KeyState),
     Tab(KeyState),
+    Meta(KeyState),
+    Home(KeyState),
+    End(KeyState),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
