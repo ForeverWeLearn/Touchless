@@ -1,4 +1,4 @@
-import { type HandResult } from "../stores/hand_result.svelte";
+import type { HandResult } from "../stores/engine.svelte";
 import { Queue } from "./utils/queue";
 
 export class GestureParser {

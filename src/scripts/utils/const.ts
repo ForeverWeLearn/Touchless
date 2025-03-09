@@ -1,6 +1,5 @@
-import type { KeySequenceType } from "../flowchart/nodes/tasks/key_sequence";
+import type { KeySequenceType } from "../flow/nodes/task/key_sequence";
 import { read_default_key_sequences } from "./reader";
-
 
 export type HandednessID = 0 | 1;
 export enum HandednessName {

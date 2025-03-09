@@ -1,15 +1,12 @@
-// Core
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
+import { engine_state, hand_results } from "../stores/engine.svelte";
+import type { HandednessID } from "./utils/const";
+import { calculate_keypoints } from "./utils/algo";
+import { Drawer } from "./drawer";
 import { GestureClassifier } from "./gesture_classifier";
 import { GestureParser } from "./gesture_parser.svelte";
 import { Executor } from "./executor";
-
-// Utils
-import type { HandednessID } from "./utils/const";
-import { calculate_keypoints } from "./utils/algo";
-import { engine_state } from "../stores/engine_state.svelte";
-import { hand_results } from "../stores/hand_result.svelte";
-import { Drawer } from "./drawer";
+import { Analyzer } from "./analyzer.svelte";
 
 async function inference(engine: Engine) {
   if (!engine_state.running) {
@@ -27,16 +24,16 @@ async function inference(engine: Engine) {
   engine.results = engine.landmarker.detectForVideo(engine.video, current_time);
 
   // Clear canvas
-  engine.context.clearRect(0, 0, engine.canvas.width, engine.canvas.height);
+  engine.drawer.clear();
 
   // No hand detected
   if (engine.results.landmarks.length == 0) {
-    engine.next_trigger_time = current_time + 250;
+    engine.next_trigger_time = current_time + engine_state.idle_step;
 
     hand_results[0].has = false;
     hand_results[1].has = false;
 
-    window.requestAnimationFrame(() => inference(engine));
+    setTimeout(() => window.requestAnimationFrame(() => inference(engine)), engine_state.idle_step);
     return;
   }
 
@@ -70,6 +67,8 @@ async function inference(engine: Engine) {
   hand_results[0].has = checked[0];
   hand_results[1].has = checked[1];
 
+  engine.analyzer.analyze();
+
   window.requestAnimationFrame(() => inference(engine));
 }
 
@@ -79,6 +78,7 @@ export class Engine {
   public landmarker!: HandLandmarker;
   public gesture_classifier!: GestureClassifier;
   public gesture_parsers: GestureParser[] = [];
+  public analyzer!: Analyzer;
   public executor!: Executor;
   public drawer!: Drawer;
 
@@ -103,9 +103,6 @@ export class Engine {
   public async set_state(running: boolean) {
     engine_state.running = running;
     if (running) {
-      if (!engine_state.ready) {
-        await this.model_warmup();
-      }
       this.connect_camera();
     } else {
       this.disconnect_camera();
@@ -149,7 +146,7 @@ export class Engine {
     if (this.context == undefined) {
       return;
     }
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawer.clear();
   }
 
   private async load_model() {
@@ -168,15 +165,10 @@ export class Engine {
     this.gesture_parsers[0] = new GestureParser(hand_results[0]);
     this.gesture_parsers[1] = new GestureParser(hand_results[1]);
 
+    this.analyzer = new Analyzer(this);
+
     this.executor = new Executor(this);
 
     this.drawer = new Drawer(this);
-  }
-
-  private async model_warmup() {
-    await this.landmarker.setOptions({ runningMode: "IMAGE" });
-    this.landmarker.detect(document.getElementById("warmup") as HTMLImageElement);
-    await this.landmarker.setOptions({ runningMode: "VIDEO" });
-    engine_state.ready = true;
   }
 }

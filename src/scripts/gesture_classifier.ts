@@ -31,24 +31,24 @@ export class GestureClassifier {
   private get_label_id_and_confidence(arr: Float32Array): [number, number] {
     let max_value = arr[0];
     let max_index = 0;
-  
+
     for (let i = 1; i < arr.length; i++) {
       if (arr[i] > max_value) {
         max_value = arr[i];
         max_index = i;
       }
     }
-  
+
     return [max_index, max_value];
   }
-  
+
   private normalize_keypoints(keypoints: number[][], bbox: number[], handedness: HandednessID): number[] {
     let flat: number[] = Array(keypoints.length * keypoints[0].length);
-  
+
     const d = Math.max(bbox[2], bbox[3]);
     let base_x = keypoints[0][0];
     let base_y = keypoints[0][1];
-  
+
     for (let i = 0, j = 0; i < keypoints.length; i++, j += 2) {
       flat[j] = (keypoints[i][0] - base_x) / d;
       if (handedness == 0) {

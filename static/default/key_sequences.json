@@ -49,5 +49,14 @@
         "direction": "Release"
       }
     ]
+  },
+  {
+    "name": "Click",
+    "sequence": [
+      {
+        "key": "",
+        "direction": "Press"
+      }
+    ]
   }
 ]

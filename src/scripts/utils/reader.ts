@@ -1,8 +1,8 @@
-import type { BaseNodeData, NodeRawData } from "../flowchart/nodes/node";
-import { BASE_DIRECTORY, EDGES_DATA_FILE, NODES_DATA_FILE, VIEW_DATA_FILE, check_file_exist, join } from "./path";
-import { edges_writable, nodes } from "../../stores/flow_state.svelte";
 import { readTextFile } from "@tauri-apps/plugin-fs";
-import type { KeySequenceType } from "../flowchart/nodes/tasks/key_sequence";
+import { BASE_DIRECTORY, check_file_exist, EDGES_DATA_FILE, join, NODES_DATA_FILE, VIEW_DATA_FILE } from "./path";
+import type { RawNodeData } from "../flow/nodes/node";
+import type { KeySequenceType } from "../flow/nodes/task/key_sequence";
+import { edges_writable, nodes } from "../../stores/flow.svelte";
 
 export async function read_text_file(destination: string, file_name: string): Promise<string | undefined> {
   const exist = await check_file_exist(destination, file_name);
@@ -46,11 +46,11 @@ export async function read_local_json_file(path: string): Promise<any> {
   return raw_data;
 }
 
-export async function read_nodes_data_from_file(): Promise<NodeRawData<any>[] | undefined> {
-  return (await read_json_file(NODES_DATA_FILE.DEST, NODES_DATA_FILE.NAME)) as NodeRawData<any>[];
+export async function read_raw_node_data_from_file(): Promise<RawNodeData<any>[] | undefined> {
+  return (await read_json_file(NODES_DATA_FILE.DEST, NODES_DATA_FILE.NAME)) as RawNodeData<any>[];
 }
 
-export async function read_edges_data_from_file() {
+export async function read_edge_data_from_file() {
   return await read_json_file(EDGES_DATA_FILE.DEST, EDGES_DATA_FILE.NAME);
 }
 

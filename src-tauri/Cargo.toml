@@ -22,7 +22,7 @@ mouce = "0.2.50"
 enigo = "0.3.0"
 
 [profile.dev]
-opt-level = 0
+opt-level = "z"
 overflow-checks = true
 
 [profile.release]

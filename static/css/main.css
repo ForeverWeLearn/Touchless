@@ -1,0 +1,37 @@
+@font-face {
+    font-family: Lexend;
+    src: url(../fonts/Lexend.ttf);
+}
+
+@font-face {
+    font-family: MartianMono;
+    src: url(../fonts/MartianMono.ttf);
+}
+
+@font-face {
+    font-family: Tektur;
+    src: url(../fonts/Tektur.ttf);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+:root {
+    --border-window: 2vh;
+}
+
+html,
+body {
+    user-select: none;
+    overflow: hidden;
+}
+
+img {
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
+select {
+    cursor: pointer;
+}

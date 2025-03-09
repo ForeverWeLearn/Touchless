@@ -1,5 +1,10 @@
 import type { Engine } from "./engine.svelte";
 import { invoke } from "@tauri-apps/api/core";
+import { type RawNodeData } from "./flow/nodes/node";
+import { KEY_SEQUENCES } from "./utils/const";
+import type { KeySequenceNodeData } from "./flow/nodes/task/key_sequence";
+import type { CommandNodeData } from "./flow/nodes/task/command";
+import { NodeType } from "./flow/nodes/note_type";
 
 export class Executor {
   private engine!: Engine;
@@ -8,26 +13,18 @@ export class Executor {
     this.engine = engine;
   }
 
-  public async parse() {}
+  public async parse(node: RawNodeData<NodeType>) {
+    if (node.type == NodeType.KEY_SEQUENCE) {
+      const data = node.data as KeySequenceNodeData;
 
-  public async move_mouse(point: number[]) {
-    const coord = this.calc_coordnite(point);
-    await invoke("move_mouse", { pos: `${coord[0]} ${coord[1]}` });
-  }
+      const sequence = KEY_SEQUENCES.filter((v) => v.name == data.sequence_name)[0].sequence;
 
-  private calc_coordnite(point: number[]): number[] {
-    const rel_point = [point[0] - 128, point[1] - 96];
-    let coord = [(rel_point[0] / 384) * 3839, (rel_point[1] / 288) * 2159];
-    if (coord[0] < 0) {
-      coord[0] = 0;
-    } else if (coord[0] > 3839) {
-      coord[0] = 3839;
+      await invoke("execute_key_sequence", { sequence: sequence });
     }
-    if (coord[1] < 0) {
-      coord[1] = 0;
-    } else if (coord[1] > 2159) {
-      coord[1] = 2159;
+    if (node.type == NodeType.COMMAND) {
+      const data = node.data as CommandNodeData;
+
+      await invoke("execute_command", { command: data.command });
     }
-    return [Math.floor(coord[0]), Math.floor(coord[1])];
   }
 }

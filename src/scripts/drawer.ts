@@ -8,7 +8,6 @@ export class Drawer {
   public line_width = 3;
 
   private engine!: Engine;
-  private CONNECTIONS = HandLandmarker.HAND_CONNECTIONS;
 
   constructor(engine: Engine) {
     this.engine = engine;
@@ -16,6 +15,8 @@ export class Drawer {
 
   public clear() {
     this.engine.context.clearRect(0, 0, this.engine.canvas.width, this.engine.canvas.height);
+    this.engine.canvas.width = this.engine.video.videoWidth;
+    this.engine.canvas.height = this.engine.video.videoHeight;
   }
 
   public bounding_box(box: number[]) {
@@ -34,7 +35,7 @@ export class Drawer {
   }
 
   public connections(keypoints: number[][]) {
-    for (const connection of this.CONNECTIONS) {
+    for (const connection of HandLandmarker.HAND_CONNECTIONS) {
       const start = keypoints[connection.start];
       const end = keypoints[connection.end];
       this.engine.context.strokeStyle = this.line_color;

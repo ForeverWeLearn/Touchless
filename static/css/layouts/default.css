@@ -1,0 +1,136 @@
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+button {
+    border-radius: 0 !important;
+}
+
+.app-icon {
+    width: 4em;
+    aspect-ratio: 1;
+    margin-left: 20px;
+}
+
+.link-sidebar {
+    font-size: 16px;
+}
+
+.text-sidebar {
+    font-size: 1.2em;
+    margin-left: 1em;
+}
+
+.btn-sidebar {
+    border: none;
+    border-radius: 0;
+    padding-left: 20px;
+    height: 4em;
+}
+
+.btn-sidebar>img {
+    width: 32px;
+    border: none;
+    aspect-ratio: 1;
+}
+
+.sidebar {
+    width: 100%;
+    height: 100vh;
+}
+
+.col-sidebar {
+    min-width: 14em;
+    max-width: 20em;
+}
+
+.page {
+    width: 100%;
+    height: 100vh;
+}
+
+.titlebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 50px;
+    opacity: 0;
+    cursor: move;
+    z-index: 999;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.titlebar:hover {
+    opacity: 1;
+}
+
+.titlebar:active {
+    opacity: 1;
+}
+
+.titlebar-btn-group {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.titlebar-button {
+    border: none;
+    aspect-ratio: 1;
+}
+
+.titlebar-button>img {
+    width: 28px;
+    aspect-ratio: 1;
+}
+
+.start-banner {
+    border: solid 1px;
+    background-color: rgba(18, 18, 18, 0.503);
+    box-shadow: 0px 3px 15px #a1a1a15d;
+}
+
+.btn-launch {
+    border: solid 1px;
+}
+
+.btn-launch:hover {
+    border: solid 1px;
+}
+
+/* Svelte Flow */
+.svelte-flow .svelte-flow__handle {
+    width: 18px;
+    height: 36px;
+    border-radius: 5px;
+}
+
+.svelte-flow .svelte-flow__handle-left {
+    left: -10px;
+}
+
+.svelte-flow .svelte-flow__handle-right {
+    right: -10px;
+}
+
+.svelte-flow .svelte-flow__edge path,
+.svelte-flow__connectionline path {
+    stroke-width: 2;
+}
+
+.svelte-flow__background {
+    margin: -3px;
+    stroke-width: 1;
+}
+
+.node-container {
+    border: solid;
+    border-radius: 9px;
+}
+
+.node-container-active {
+    border-width: 5px;
+}

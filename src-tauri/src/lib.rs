@@ -4,13 +4,13 @@ use enigo::{
     Enigo, Key, Keyboard, Mouse, Settings,
 };
 use serde::{Deserialize, Serialize};
+use std::process::Command;
 use std::sync::Mutex;
 use tauri::{
     menu::{Menu, MenuItem},
     tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
     Manager, State, WindowEvent,
 };
-
 struct AppState {
     enigo: Mutex<Enigo>,
 }
@@ -57,7 +57,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             perform_hotkey,
             mouse,
-            execute_key_sequence
+            execute_key_sequence,
+            execute_command
         ])
         .setup(|app| {
             //Close but the app will hide in the system tray
@@ -115,6 +116,11 @@ pub fn run() {
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[tauri::command]
+fn execute_command(command: &str) {
+    let _ = Command::new("cmd").args(&["/C", command]).status();
 }
 
 #[tauri::command]
