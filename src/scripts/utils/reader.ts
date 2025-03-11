@@ -20,12 +20,18 @@ export class AppFileReader {
   }
 
   static async json(destination: string, file_name: string): Promise<object | undefined> {
-    const data = await this.text(destination, file_name);
-    console.log(data);
-    if (data == undefined || data.length == 0) {
+    const raw_data = await this.text(destination, file_name);
+    
+    if (raw_data == undefined || raw_data.length == 0) {
+      console.log(`No data found in "${destination}/${file_name}"`);
       return undefined;
     }
-    return JSON.parse(data);
+    
+    const data = JSON.parse(raw_data);
+
+    console.log(`Data from "${destination}/${file_name}":`, data);
+
+    return data;
   }
 
   static async raw_node_data(): Promise<RawNodeData<any>[] | undefined> {
@@ -55,14 +61,14 @@ export class LocalFileReader {
         raw_data = data;
       })
       .catch((error) => {
-        console.error("Error fetching file:", error);
+        console.error("Error fetching file: ", error);
       });
     return raw_data;
   }
 
   static async default_key_sequences(): Promise<KeySequenceType[]> {
     const data: KeySequenceType[] = await this.json("default/key_sequences.json");
-    console.log(data);
+    console.log(`Default key sequences:`, data);
     return data;
   }
 }
