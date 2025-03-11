@@ -24,6 +24,19 @@
         "shadow": false,
         "resizable": true,
         "windowEffects": null
+      },
+      {
+        "width": 320,
+        "height": 180,
+        "decorations": true,
+        "alwaysOnTop": true,
+        "transparent": true,
+        "title": "Touchless",
+        "skipTaskbar": true,
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "label": "overlay"
       }
     ],
     "security": {

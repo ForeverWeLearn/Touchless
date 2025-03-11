@@ -15,23 +15,10 @@ struct AppState {
     enigo: Mutex<Enigo>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-enum HotkeyAction {
-    Copy,
-    Paste,
-    CloseTab,
-    SelectAll,
-    Undo,
-    Redo,
-    Save,
-    SelectLine,
-    DeselectLine,
-    ShowDesktop,
-    ChangeTabRight,
-    ChangeTabLeft,
-    ChangeAppRight,
-    ChangeAppLeft,
-    CloseApp,
+#[derive(Deserialize)]
+pub struct KeySequenceEntry {
+    key: String,
+    direction: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -40,22 +27,21 @@ enum MouseTask {
     Click,
 }
 
-#[derive(Deserialize)]
-pub struct KeySequenceEntry {
-    key: String,
-    direction: String,
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
+            let window = app.get_webview_window("main").unwrap();
+            let _ = window.unminimize();
+            let _ = window.show();
+            let _ = window.set_focus();
+        }))
         .manage(AppState {
             enigo: Mutex::new(Enigo::new(&Settings::default()).unwrap()),
         })
-        .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
-            perform_hotkey,
             mouse,
             execute_key_sequence,
             execute_command
@@ -64,10 +50,23 @@ pub fn run() {
             //Close but the app will hide in the system tray
             let window = app.get_webview_window("main").unwrap();
             let window_clone = window.clone();
+            let overlay = app.get_webview_window("overlay").unwrap();
             window.on_window_event(move |event| match event {
                 WindowEvent::CloseRequested { api, .. } => {
                     api.prevent_close();
                     let _ = window_clone.hide();
+                    // let _ = overlay.show();
+                }
+                _ => {}
+            });
+
+            //Hide overlay
+            let overlay = app.get_webview_window("overlay").unwrap();
+            let overlay_clone = overlay.clone();
+            overlay.on_window_event(move |event| match event {
+                WindowEvent::CloseRequested { api, .. } => {
+                    api.prevent_close();
+                    let _ = overlay_clone.hide();
                 }
                 _ => {}
             });
@@ -89,6 +88,9 @@ pub fn run() {
                         let _ = window.unminimize();
                         window.show().unwrap();
                         window.set_focus().unwrap();
+                        if let Some(overlay) = app.get_webview_window("overlay") {
+                            overlay.hide().unwrap();
+                        }
                     }
                     _ => {}
                 })
@@ -102,10 +104,16 @@ pub fn run() {
                         if let Some(window) = app.get_webview_window("main") {
                             if window.is_visible().unwrap() {
                                 window.hide().unwrap();
+                                if let Some(overlay) = app.get_webview_window("overlay") {
+                                    overlay.show().unwrap();
+                                }
                             } else {
                                 let _ = window.unminimize();
                                 window.show().unwrap();
                                 window.set_focus().unwrap();
+                                if let Some(overlay) = app.get_webview_window("overlay") {
+                                    overlay.hide().unwrap();
+                                }
                             }
                         }
                     }
@@ -200,119 +208,6 @@ fn mouse(state: State<AppState>, task: MouseTask, vector: &str) {
                 coord[1].try_into().unwrap(),
                 Coordinate::Abs,
             );
-        }
-    }
-
-    let _ = enigo.move_mouse(
-        coord[0].try_into().unwrap(),
-        coord[1].try_into().unwrap(),
-        Coordinate::Abs,
-    );
-}
-
-#[tauri::command]
-// invoke("perform_hotkey", { hotkey: "Copy"});
-//hotkey default
-//custom, create new hotkey(comming soon)
-fn perform_hotkey(state: State<AppState>, action: HotkeyAction) {
-    let mut enigo = state.enigo.lock().unwrap();
-
-    match action {
-        HotkeyAction::Copy => {
-            // Ctrl + C
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Unicode('c'), Click).expect("C click");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::Paste => {
-            // Ctrl + V
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Unicode('v'), Click).expect("V click");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::CloseTab => {
-            // Ctrl + W
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Unicode('w'), Click).expect("W click");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::SelectAll => {
-            // Ctrl + A
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Unicode('a'), Click).expect("A click");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::Undo => {
-            // Ctrl + Z
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Unicode('z'), Click).expect("Z click");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::Redo => {
-            // Ctrl + Y
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Unicode('y'), Click).expect("Y click");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::Save => {
-            // Ctrl + S
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Unicode('s'), Click).expect("S click");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::SelectLine => {
-            // Ctrl + S
-            enigo.key(Key::Shift, Press).expect("Shift press");
-            enigo.key(Key::Home, Click).expect("Home click");
-            enigo.key(Key::Shift, Release).expect("Shift release");
-        }
-        HotkeyAction::DeselectLine => {
-            // Ctrl + S
-            enigo.key(Key::Shift, Press).expect("Shift press");
-            enigo.key(Key::End, Click).expect("End click");
-            enigo.key(Key::Shift, Release).expect("Shift release");
-        }
-        HotkeyAction::ShowDesktop => {
-            // Meta + D
-            enigo.key(Key::Meta, Press).expect("Meta press");
-            enigo.key(Key::Unicode('d'), Click).expect("D click");
-            enigo.key(Key::Meta, Release).expect("Meta release");
-        }
-        HotkeyAction::ChangeTabRight => {
-            // Ctrl + Tab
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Tab, Click).expect("Tab click");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::ChangeTabLeft => {
-            // Ctrl + Shift + Tab
-            enigo.key(Key::Control, Press).expect("Ctrl press");
-            enigo.key(Key::Shift, Press).expect("Shift press");
-            enigo.key(Key::Tab, Click).expect("Tab click");
-            enigo.key(Key::Shift, Release).expect("Shift release");
-            enigo.key(Key::Control, Release).expect("Ctrl release");
-        }
-        HotkeyAction::ChangeAppRight => {
-            // Alt + Tab
-            enigo.key(Key::Alt, Press).expect("Alt press");
-            enigo.key(Key::Tab, Click).expect("Tab click");
-            enigo.key(Key::Alt, Release).expect("Alt release");
-        }
-        HotkeyAction::ChangeAppLeft => {
-            // Alt + Shift + Tab
-            enigo.key(Key::Alt, Press).expect("Alt press");
-            enigo.key(Key::Shift, Press).expect("Shift press");
-            enigo.key(Key::Tab, Click).expect("Tab click");
-            enigo.key(Key::Shift, Release).expect("Shift release");
-            enigo.key(Key::Alt, Release).expect("Alt release");
-        }
-        HotkeyAction::CloseApp => {
-            // Alt + F4
-            enigo.key(Key::Alt, Press).expect("Alt press");
-            enigo.key(Key::F4, Click).expect("F4 click");
-            enigo.key(Key::Alt, Release).expect("Alt release");
-            // Enter
-            enigo.key(Key::Unicode('\n'), Click).expect("Enter click");
         }
     }
 }
