@@ -2,25 +2,19 @@
   import "@xyflow/svelte/dist/style.css";
 
   import { SvelteFlow, Controls, Background, BackgroundVariant, type OnConnectEnd } from "@xyflow/svelte";
-  import { client_size, edges_writable, initial_viewport, nodes, nodes_writable } from "../../stores/flow.svelte";
+  import {
+    initial_viewport,
+    edges_writable,
+    nodes_writable,
+    client_size,
+    node_types,
+    nodes,
+  } from "../../stores/flow.svelte";
   import { connect_end_menu, node_context_menu } from "../../stores/menu.svelte";
-  import ConnectEndMenu from "./menus/ConnectEndMenu.svelte";
-  import NodeContextMenu from "./menus/NodeContextMenu.svelte";
-  import ButtonGroup from "./components/ButtonGroup.svelte";
-  import EntryNode from "./nodes/entry/EntryNode.svelte";
-  import GestureNode from "./nodes/condition/GestureNode.svelte";
-  import KeySequenceNode from "./nodes/task/KeySequenceNode.svelte";
-  import CommandNode from "./nodes/task/CommandNode.svelte";
-  import RotationNode from "./nodes/condition/RotationNode.svelte";
   import { NodeType } from "../../scripts/flow/nodes/note_type";
-
-  const node_types = {
-    [NodeType.ENTRY]: EntryNode,
-    [NodeType.GESTURE]: GestureNode,
-    [NodeType.ROTATION]: RotationNode,
-    [NodeType.KEY_SEQUENCE]: KeySequenceNode,
-    [NodeType.COMMAND]: CommandNode,
-  };
+  import NodeContextMenu from "./menus/NodeContextMenu.svelte";
+  import ConnectEndMenu from "./menus/ConnectEndMenu.svelte";
+  import ButtonGroup from "./components/ButtonGroup.svelte";
 
   const handle_connect_end: OnConnectEnd = (event, connectionState) => {
     if (connectionState.isValid) return;

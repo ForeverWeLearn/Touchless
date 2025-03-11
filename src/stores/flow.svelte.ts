@@ -4,12 +4,24 @@ import { get_default_node_data, type RawNodeData } from "../scripts/flow/nodes/n
 import { get_random_string } from "../scripts/utils/algo";
 import { NodeType } from "../scripts/flow/nodes/note_type";
 import { AppFileReader } from "../scripts/utils/reader";
-console.log("FileReader module loaded");
+import EntryNode from "../components/flow/nodes/entry/EntryNode.svelte";
+import GestureNode from "../components/flow/nodes/condition/GestureNode.svelte";
+import RotationNode from "../components/flow/nodes/condition/RotationNode.svelte";
+import KeySequenceNode from "../components/flow/nodes/task/KeySequenceNode.svelte";
+import CommandNode from "../components/flow/nodes/task/CommandNode.svelte";
 
 export const client_size = $state({ width: 1366, height: 768 });
 
 export const raw_node_data = await load_raw_node_data();
 export const nodes_writable = writable(raw_node_data);
+
+export const node_types = {
+  [NodeType.ENTRY]: EntryNode,
+  [NodeType.GESTURE]: GestureNode,
+  [NodeType.ROTATION]: RotationNode,
+  [NodeType.KEY_SEQUENCE]: KeySequenceNode,
+  [NodeType.COMMAND]: CommandNode,
+};
 
 export const nodes: Record<string, RawNodeData<NodeType>> = $state(
   raw_node_data.reduce((accumulator, node) => {
