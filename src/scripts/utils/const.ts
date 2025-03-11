@@ -1,5 +1,5 @@
 import type { KeySequenceType } from "../flow/nodes/task/key_sequence";
-import { read_default_key_sequences } from "./reader";
+import { LocalFileReader } from "./reader";
 
 export type HandednessID = 0 | 1;
 export enum HandednessName {
@@ -55,5 +55,5 @@ export const GESTURE_NAMES: GestureName[] = Object.values(GestureName);
 export const LANDMARK_IDS: LandmarkID[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 export const LANDMARK_NAMES: LandmarkName[] = Object.values(LandmarkName);
 
-export const KEY_SEQUENCES: KeySequenceType[] = await read_default_key_sequences();
+export const KEY_SEQUENCES: KeySequenceType[] = await LocalFileReader.default_key_sequences();
 export const KEY_SEQUENCE_NAMES: string[] = KEY_SEQUENCES.map((v) => v.name);

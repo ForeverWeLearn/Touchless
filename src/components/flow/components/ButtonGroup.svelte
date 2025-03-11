@@ -1,11 +1,15 @@
 <script lang="ts">
+  import { get_current_edge_data, get_current_node_data } from "../../../stores/flow.svelte";
+  import { AppFileWriter } from "../../../scripts/utils/writer";
   import { useSvelteFlow } from "@xyflow/svelte";
-  import { save_chart } from "../../../scripts/utils/writer";
 
   const { fitView, getViewport } = useSvelteFlow();
 
-  async function save_and_reload() {
-    await save_chart(getViewport());
+  async function save() {
+    const node_data = get_current_node_data();
+    const edge_data = get_current_edge_data();
+    const viewport = getViewport();
+    AppFileWriter.chart_data(node_data, edge_data, viewport);
   }
 </script>
 
@@ -14,7 +18,7 @@
     <div class="col me-2">
       <div class="row">
         <button class="btn btn-sm btn-secondary mt-1" onclick={() => fitView({ duration: 1000 })}>Fit View</button>
-        <button class="btn btn-sm btn-success mt-1" onclick={() => save_and_reload()}>Save</button>
+        <button class="btn btn-sm btn-success mt-1" onclick={() => save()}>Save</button>
       </div>
     </div>
   </div>

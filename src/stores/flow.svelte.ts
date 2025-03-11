@@ -2,12 +2,9 @@ import type { Edge, Viewport, XYPosition } from "@xyflow/svelte";
 import { writable, type Writable } from "svelte/store";
 import { get_default_node_data, type RawNodeData } from "../scripts/flow/nodes/node";
 import { get_random_string } from "../scripts/utils/algo";
-import {
-  read_edge_data_from_file,
-  read_raw_node_data_from_file,
-  read_view_data_from_file,
-} from "../scripts/utils/reader";
 import { NodeType } from "../scripts/flow/nodes/note_type";
+import { AppFileReader } from "../scripts/utils/reader";
+console.log("FileReader module loaded");
 
 export const client_size = $state({ width: 1366, height: 768 });
 
@@ -38,7 +35,7 @@ function get_default_raw_node_data(): RawNodeData<any>[] {
 export let initial_viewport: Viewport = await load_view_data();
 
 async function load_raw_node_data(): Promise<RawNodeData<NodeType>[]> {
-  const data = await read_raw_node_data_from_file();
+  const data = await AppFileReader.raw_node_data();
   if (data == undefined) {
     return get_default_raw_node_data();
   }
@@ -46,7 +43,7 @@ async function load_raw_node_data(): Promise<RawNodeData<NodeType>[]> {
 }
 
 async function load_edge_data(): Promise<Edge[]> {
-  const data = await read_edge_data_from_file();
+  const data = await AppFileReader.edge_data();
   if (data == undefined) {
     return [];
   }
@@ -54,7 +51,7 @@ async function load_edge_data(): Promise<Edge[]> {
 }
 
 async function load_view_data(): Promise<Viewport> {
-  const data = await read_view_data_from_file();
+  const data = await AppFileReader.view_data();
   if (data == undefined) {
     return { x: 0, y: 0, zoom: 1 };
   }
@@ -91,4 +88,17 @@ export function create_node(type: NodeType, pos: XYPosition, parent: string = ""
   nodes_writable.update((value) => [...value.filter((v) => v.id != parent && v.id != id), nodes[parent], nodes[id]]);
 
   console.log(`Node ${new_node.id} created at ${pos.x} ${pos.y}`);
+}
+
+export function get_current_node_data() {
+  return Object.values(nodes);
+}
+
+export function get_current_edge_data() {
+  let data;
+  edges_writable.update((value) => {
+    data = value;
+    return value;
+  });
+  return data;
 }
