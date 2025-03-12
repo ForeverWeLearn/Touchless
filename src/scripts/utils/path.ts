@@ -5,6 +5,7 @@ export const BASE_DIRECTORY = BaseDirectory.AppData;
 enum Directory {
   Flow = "flow",
   Settings = "settings",
+  Task = "tasks",
 }
 
 export const NODES_DATA_FILE = {
@@ -20,6 +21,16 @@ export const EDGES_DATA_FILE = {
 export const VIEW_DATA_FILE = {
   DEST: Directory.Flow,
   NAME: "view.json",
+};
+
+export const KEY_SEQUENCE_DATA_FILE = {
+  DEST: Directory.Task,
+  NAME: "key_sequences.json",
+};
+
+export const COMMAND_DATA_FILE = {
+  DEST: Directory.Task,
+  NAME: "commands.json",
 };
 
 export function join(destination: string, file_name: string): string {

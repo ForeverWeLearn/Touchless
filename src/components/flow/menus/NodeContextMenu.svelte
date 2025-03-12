@@ -41,14 +41,6 @@
   class="context-menu px-0"
   onclick={() => (node_context_menu.show = false)}
 >
-  <button class="btn btn-sm btn-outline-primary btn-first" onclick={duplicate_node}>Duplicate</button>
-  <button class="btn btn-sm btn-outline-primary btn-last" onclick={delete_node}>Delete</button>
+  <button class="btn" onclick={duplicate_node}>Duplicate</button>
+  <button class="btn" onclick={delete_node}>Delete</button>
 </div>
-
-<style>
-  .context-menu {
-    z-index: 999;
-    position: absolute;
-    background-color: aqua;
-  }
-</style>

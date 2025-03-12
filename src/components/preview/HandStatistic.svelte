@@ -20,7 +20,7 @@
 
 <style>
   .statistic {
-    padding: 2em;
+    padding: 2rem;
     width: 100%;
   }
 </style>

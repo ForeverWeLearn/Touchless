@@ -1,0 +1,54 @@
+.context-menu {
+    background-color: var(--color-bg);
+}
+
+.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.faded {
+    opacity: 0.4;
+}
+
+.gesture-checkbox {
+    opacity: 0;
+}
+
+.gesture-select-box {
+    border-color: transparent;
+}
+
+.gesture-select-box:hover {
+    border-color: var(--color);
+}
+
+.gesture-select-box:hover>input {
+    opacity: 1;
+}
+
+.sidebar {
+    background-color: transparent;
+}
+
+.sidebar-container {
+    background-color: var(--color-bg-dim);
+}
+
+.start-banner {
+    box-shadow: 0px 3px 15px var(--color-secondary);
+    border-color: var(--color);
+    background-color: rgba(18, 18, 18, 0.5);
+}
+
+.titlebar:active {
+    opacity: 1;
+}
+
+.titlebar:hover {
+    opacity: 1;
+}
+
+.input-name {
+    border-color: aqua;
+}

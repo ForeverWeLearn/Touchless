@@ -50,7 +50,7 @@ pub fn run() {
             //Close but the app will hide in the system tray
             let window = app.get_webview_window("main").unwrap();
             let window_clone = window.clone();
-            let overlay = app.get_webview_window("overlay").unwrap();
+            let _overlay = app.get_webview_window("overlay").unwrap();
             window.on_window_event(move |event| match event {
                 WindowEvent::CloseRequested { api, .. } => {
                     api.prevent_close();
@@ -147,6 +147,15 @@ fn execute_key_sequence(
             "Tab" => Key::Tab,
             "Home" => Key::Home,
             "End" => Key::End,
+            "Insert" => Key::Insert,
+            "Delete" => Key::Delete,
+            "Space" => Key::Space,
+            "Scroll" => Key::Scroll,
+            "Up" => Key::UpArrow,
+            "Down" => Key::DownArrow,
+            "Left" => Key::LeftArrow,
+            "Right" => Key::RightArrow,
+            "Zoom" => Key::Zoom,
             "F1" => Key::F1,
             "F2" => Key::F2,
             "F3" => Key::F3,

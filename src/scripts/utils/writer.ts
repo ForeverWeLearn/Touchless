@@ -1,5 +1,14 @@
 import type { Viewport } from "@xyflow/svelte";
-import { BASE_DIRECTORY, EDGES_DATA_FILE, ensure_directory, join, NODES_DATA_FILE, VIEW_DATA_FILE } from "./path";
+import {
+  BASE_DIRECTORY,
+  EDGES_DATA_FILE,
+  ensure_directory,
+  join,
+  NODES_DATA_FILE,
+  KEY_SEQUENCE_DATA_FILE,
+  VIEW_DATA_FILE,
+  COMMAND_DATA_FILE,
+} from "./path";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 export class AppFileWriter {
@@ -25,6 +34,14 @@ export class AppFileWriter {
 
   static async view_data(viewport: Viewport) {
     await this.json(viewport, VIEW_DATA_FILE.DEST, VIEW_DATA_FILE.NAME);
+  }
+
+  static async key_sequence_data(data: any) {
+    await this.json(data, KEY_SEQUENCE_DATA_FILE.DEST, KEY_SEQUENCE_DATA_FILE.NAME);
+  }
+
+  static async command_data(data: any) {
+    await this.json(data, COMMAND_DATA_FILE.DEST, COMMAND_DATA_FILE.NAME);
   }
 
   static async chart_data(node_data: any, edge_data: any, viewport: Viewport) {

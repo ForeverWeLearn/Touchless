@@ -1,0 +1,45 @@
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+button {
+    border: solid var(--btn-border-width);
+    border-radius: var(--btn-border-radius);
+}
+
+select {
+    padding: 0.5rem 0.5rem;
+    border: solid 1px;
+    border-radius: 4px;
+}
+
+select option {
+    padding: 0.5rem 0.5rem;
+    border: solid 1px;
+    border-radius: 4px;
+}
+
+input[type=text] {
+    padding: 0.5rem 0.5rem;
+    border: solid 1px;
+    border-radius: 4px;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border: 1px solid #fff;
+    box-shadow: 0 0 5px #fff;
+}
+
+input[type=number] {
+    padding: 0.5rem 0.5rem;
+    border: solid 1px;
+    border-radius: 4px;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border: 1px solid #fff;
+    box-shadow: 0 0 5px #fff;
+}

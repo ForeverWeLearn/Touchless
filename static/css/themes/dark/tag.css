@@ -1,0 +1,43 @@
+body {
+    font-family: var(--font-family);
+    color: var(--color);
+    background-color: var(--color-bg);
+}
+
+button {
+    color: var(--color-secondary) !important;
+}
+
+button:hover {
+    color: var(--color);
+}
+
+select {
+    background: var(--color-bg) !important;
+    color: var(--color) !important;
+}
+
+select option {
+    background: var(--color-bg) !important;
+    color: var(--color) !important;
+}
+
+input[type=text] {
+    background-color: transparent;
+    color: var(--color);
+}
+
+input[type=number] {
+    background-color: transparent;
+    color: var(--color);
+}
+
+input[type=text]:focus {
+    color: var(--color);
+    background-color: transparent;
+}
+
+input[type=number]:focus {
+    color: var(--color);
+    background-color: transparent;
+}

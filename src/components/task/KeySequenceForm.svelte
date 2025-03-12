@@ -1,15 +1,30 @@
 <script lang="ts">
-  import type { KeySequenceType } from "../../scripts/flow/nodes/task/key_sequence";
+  import type { Key, KeySequence } from "../../scripts/utils/const";
+  import KeyForm from "./KeyForm.svelte";
 
-  let { key_sequence }: { key_sequence: KeySequenceType } = $props();
+  let { key_sequence, delete_sequence }: { key_sequence: KeySequence; delete_sequence: () => void } = $props();
 </script>
 
-<div class="h3">{key_sequence.name}</div>
-<div class="row">
-  {#each key_sequence.sequence as key}
-    <div class="d-flex">
-        <button class="btn btn-secondary m-1">{key.direction}</button>
-      <button class="btn btn-primary m-1">{key.key}</button>
-    </div>
-  {/each}
+<div class="d-flex flex-column gap-2">
+  <div class="d-flex gap-1">
+    <input class="form-control input-name" type="text" spellcheck="false" bind:value={key_sequence.name} />
+
+    <button class="btn btn-sm btn-danger" onclick={() => delete_sequence()}>
+      <img src="imgs/svg/delete.svg" alt="Delete Key" />
+    </button>
+  </div>
+
+  <div class="d-flex flex-column gap-2">
+    {#each key_sequence.sequence as key}
+      <KeyForm
+        {key}
+        append_key={(new_key: Key) => key_sequence.sequence.splice(key_sequence.sequence.indexOf(key) + 1, 0, new_key)}
+        delete_key={() => {
+          if (key_sequence.sequence.length > 1) {
+            key_sequence.sequence.splice(key_sequence.sequence.indexOf(key), 1);
+          }
+        }}
+      />
+    {/each}
+  </div>
 </div>

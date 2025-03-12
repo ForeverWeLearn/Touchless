@@ -1,0 +1,9 @@
+:root {
+    --font-family: 'Lexend', sans-serif;
+    --font-family-mono: 'MartianMono', monospace;
+    --color: aliceblue;
+    --color-secondary: #b3b3b3;
+    --color-bg: #181818;
+    --color-bg-dim: #141414;
+    --color-bg-secondary: #282828;
+}

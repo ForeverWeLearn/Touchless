@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { EntryNodeData } from "../../../../scripts/flow/nodes/entry/entry";
+  import type { EntryNodeData } from "../../../../scripts/flow/nodes/entry";
   import { Handle, Position, type NodeProps, type Node } from "@xyflow/svelte";
   import { nodes } from "../../../../stores/flow.svelte";
   import EntryLayout from "./EntryLayout.svelte";

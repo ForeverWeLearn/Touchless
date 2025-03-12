@@ -31,7 +31,7 @@
   }
 
   .hide {
-    margin-top: -100vh;
+    margin-top: -200vh;
   }
 
   .board {
@@ -58,15 +58,15 @@
 
   .video-container {
     position: relative;
-    margin-left: 2em;
-    margin-right: 2em;
+    margin-left: 2rem;
+    margin-right: 2rem;
     width: 100%;
     aspect-ratio: 1.6;
     background-color: rgb(0, 0, 0);
   }
 
   .placehold {
-    font-size: 3em;
+    font-size: 3rem;
     position: absolute;
     top: 0;
     left: 0;

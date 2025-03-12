@@ -1,6 +1,14 @@
-import type { KeySequenceType } from "../flow/nodes/task/key_sequence";
 import type { RawNodeData } from "../flow/nodes/node";
-import { BASE_DIRECTORY, check_file_exist, EDGES_DATA_FILE, join, NODES_DATA_FILE, VIEW_DATA_FILE } from "./path";
+import type { KeySequence } from "./const";
+import {
+  BASE_DIRECTORY,
+  check_file_exist,
+  EDGES_DATA_FILE,
+  join,
+  NODES_DATA_FILE,
+  KEY_SEQUENCE_DATA_FILE,
+  VIEW_DATA_FILE,
+} from "./path";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 
 export class AppFileReader {
@@ -21,12 +29,12 @@ export class AppFileReader {
 
   static async json(destination: string, file_name: string): Promise<object | undefined> {
     const raw_data = await this.text(destination, file_name);
-    
+
     if (raw_data == undefined || raw_data.length == 0) {
       console.log(`No data found in "${destination}/${file_name}"`);
       return undefined;
     }
-    
+
     const data = JSON.parse(raw_data);
 
     console.log(`Data from "${destination}/${file_name}":`, data);
@@ -44,6 +52,10 @@ export class AppFileReader {
 
   static async view_data() {
     return await this.json(VIEW_DATA_FILE.DEST, VIEW_DATA_FILE.NAME);
+  }
+
+  static async key_sequence_data() {
+    return await this.json(KEY_SEQUENCE_DATA_FILE.DEST, KEY_SEQUENCE_DATA_FILE.NAME);
   }
 }
 
@@ -66,8 +78,8 @@ export class LocalFileReader {
     return raw_data;
   }
 
-  static async default_key_sequences(): Promise<KeySequenceType[]> {
-    const data: KeySequenceType[] = await this.json("default/key_sequences.json");
+  static async default_key_sequences(): Promise<KeySequence[]> {
+    const data: KeySequence[] = await this.json("default/key_sequences.json");
     console.log(`Default key sequences:`, data);
     return data;
   }

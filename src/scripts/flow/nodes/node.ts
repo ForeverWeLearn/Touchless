@@ -1,17 +1,20 @@
-import { get_default_entry_node_data, type EntryNodeData } from "./entry/entry";
-import { get_default_gesture_node_data, type GestureNodeData } from "./condition/gesture";
-import { get_default_key_sequence_node_data, type KeySequenceNodeData } from "./task/key_sequence";
-import { get_default_command_node_data, type CommandNodeData } from "./task/command";
-import { get_default_rotation_node_data, type RotationNodeData } from "./condition/rotation";
-import { NodeType } from "./note_type";
-import type { NodeGroup } from "./node_group";
+import { get_default_conditions_node_data, type ConditionsNodeData } from "./conditions";
+import { get_default_tasks_node_data, type TasksNodeData } from "./tasks";
+import { get_default_entry_node_data, type EntryNodeData } from "./entry";
+import { get_default_power_node_data, type PowerNodeData } from "./power";
+
+export const enum NodeType {
+  ENTRY = "ENTRY",
+  CONDITIONS = "CONDITIONS",
+  TASKS = "TASKS",
+  POWER = "POWER",
+}
 
 export type NodeTypeDataMap = {
   [NodeType.ENTRY]: EntryNodeData;
-  [NodeType.GESTURE]: GestureNodeData;
-  [NodeType.ROTATION]: RotationNodeData;
-  [NodeType.KEY_SEQUENCE]: KeySequenceNodeData;
-  [NodeType.COMMAND]: CommandNodeData;
+  [NodeType.CONDITIONS]: ConditionsNodeData;
+  [NodeType.TASKS]: TasksNodeData;
+  [NodeType.POWER]: PowerNodeData;
 };
 
 export type NodeTypeData<T extends NodeType> = NodeTypeDataMap[T];
@@ -27,29 +30,36 @@ export type RawNodeData<T extends NodeType> = {
 export type BaseNodeData = {
   id: string;
   type: NodeType;
-  group: NodeGroup;
   active: boolean;
   enable: boolean;
   prev: string;
   next: string[];
 };
 
+export function get_default_base_node_data(id: string): BaseNodeData {
+  return {
+    id: id,
+    type: NodeType.ENTRY,
+    active: false,
+    enable: true,
+    prev: "",
+    next: [],
+  };
+}
+
 export function get_default_node_data(type: NodeType, id: string): BaseNodeData {
   switch (type) {
     case NodeType.ENTRY: {
       return get_default_entry_node_data(id);
     }
-    case NodeType.GESTURE: {
-      return get_default_gesture_node_data(id);
+    case NodeType.CONDITIONS: {
+      return get_default_conditions_node_data(id);
     }
-    case NodeType.ROTATION: {
-      return get_default_rotation_node_data(id);
+    case NodeType.TASKS: {
+      return get_default_tasks_node_data(id);
     }
-    case NodeType.KEY_SEQUENCE: {
-      return get_default_key_sequence_node_data(id);
-    }
-    case NodeType.COMMAND: {
-      return get_default_command_node_data(id);
+    case NodeType.POWER: {
+      return get_default_power_node_data(id);
     }
   }
 }

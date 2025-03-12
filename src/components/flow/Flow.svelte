@@ -1,7 +1,14 @@
 <script lang="ts">
   import "@xyflow/svelte/dist/style.css";
 
-  import { SvelteFlow, Controls, Background, BackgroundVariant, type OnConnectEnd } from "@xyflow/svelte";
+  import {
+    SvelteFlow,
+    Controls,
+    Background,
+    BackgroundVariant,
+    type OnConnectEnd,
+    useSvelteFlow,
+  } from "@xyflow/svelte";
   import {
     initial_viewport,
     edges_writable,
@@ -9,12 +16,17 @@
     client_size,
     node_types,
     nodes,
+    appearance,
   } from "../../stores/flow.svelte";
   import { connect_end_menu, node_context_menu } from "../../stores/menu.svelte";
-  import { NodeType } from "../../scripts/flow/nodes/note_type";
+  import { NodeType } from "../../scripts/flow/nodes/node";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
   import ConnectEndMenu from "./menus/ConnectEndMenu.svelte";
-  import ButtonGroup from "./components/ButtonGroup.svelte";
+  import ButtonGroup from "./float/ButtonGroup.svelte";
+
+  const { fitView } = useSvelteFlow();
+
+  setTimeout(() => fitView({ duration: 1000 }), 100);
 
   const handle_connect_end: OnConnectEnd = (event, connectionState) => {
     if (connectionState.isValid) return;
@@ -72,6 +84,10 @@
     <Controls showLock={false} showZoom={false} showFitView={false} />
     <Background variant={BackgroundVariant.Dots} />
 
+    {#if appearance.faded}
+      <div class="faded-layer">Hwllo!</div>
+    {/if}
+
     {#if connect_end_menu.show}
       <ConnectEndMenu />
     {/if}
@@ -86,7 +102,17 @@
 
 <style>
   main {
+    /* width: 100%; */
     width: 103%;
     height: 103%;
+    margin-top: -1px;
+    margin-bottom: -20px;
+    /* margin-right: -1px; */
+    /* max-height: calc(100% + 4px); */
+    /* height: 100%; */
+  }
+
+  .faded-layer {
+    background-color: aqua;
   }
 </style>

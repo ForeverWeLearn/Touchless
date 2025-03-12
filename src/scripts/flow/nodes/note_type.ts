@@ -1,7 +1,0 @@
-export const enum NodeType {
-  ENTRY = "ENTRY",
-  GESTURE = "GESTURE",
-  ROTATION = "ROTATION",
-  KEY_SEQUENCE = "KEY_SEQUENCE",
-  COMMAND = "COMMAND",
-}

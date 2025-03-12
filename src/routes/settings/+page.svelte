@@ -1,5 +1,5 @@
 <script>
-  import { theme } from "../../stores/theme.svelte";
+  import { theme } from "../../stores/appearance.svelte";
 </script>
 
 <h1>Settings</h1>

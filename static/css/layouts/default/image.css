@@ -1,0 +1,14 @@
+.app-icon {
+    aspect-ratio: 1;
+    width: 4rem;
+}
+
+.gesture-icon {
+    aspect-ratio: 1;
+    width: 5rem;
+}
+
+.gesture-icon-sm {
+    aspect-ratio: 1;
+    width: 3rem;
+}

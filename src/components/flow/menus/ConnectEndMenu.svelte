@@ -3,7 +3,7 @@
   import { create_node } from "../../../stores/flow.svelte";
   import { connect_end_menu } from "../../../stores/menu.svelte";
   import { sidebar_size } from "../../../stores/sidebar.svelte";
-  import { NodeType } from "../../../scripts/flow/nodes/note_type";
+  import { NodeType } from "../../../scripts/flow/nodes/node";
 
   const { screenToFlowPosition } = useSvelteFlow();
 
@@ -19,40 +19,31 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-  class="context-menu px-0"
+  class="d-flex flex-column context-menu px-0"
   style="top: {connect_end_menu.top}px; left: {connect_end_menu.left - sidebar_size.width}px;"
   onclick={() => (connect_end_menu.show = false)}
 >
   <button
-    class="btn btn-sm btn-outline-primary btn-first"
-    onclick={() => create_node(NodeType.GESTURE, get_pos(), connect_end_menu.source)}
+    class="btn d-flex align-items-center btn-context-menu"
+    onclick={() => create_node(NodeType.CONDITIONS, get_pos(), connect_end_menu.source)}
   >
-    {NodeType.GESTURE}</button
-  >
-  <button
-    class="btn btn-sm btn-outline-primary btn-first"
-    onclick={() => create_node(NodeType.ROTATION, get_pos(), connect_end_menu.source)}
-  >
-    {NodeType.ROTATION}</button
-  >
-  <button
-    class="btn btn-sm btn-outline-primary btn-first"
-    onclick={() => create_node(NodeType.KEY_SEQUENCE, get_pos(), connect_end_menu.source)}
-  >
-    {NodeType.KEY_SEQUENCE}</button
-  >
-  <button
-    class="btn btn-sm btn-outline-primary btn-first"
-    onclick={() => create_node(NodeType.COMMAND, get_pos(), connect_end_menu.source)}
-  >
-    {NodeType.COMMAND}</button
-  >
-</div>
+    <img src="imgs/svg/flowchart.svg" alt="Icon" />
+    <span>{NodeType.CONDITIONS}</span>
+  </button>
 
-<style>
-  .context-menu {
-    z-index: 999;
-    position: absolute;
-    background-color: aqua;
-  }
-</style>
+  <button
+    class="btn d-flex align-items-center btn-context-menu"
+    onclick={() => create_node(NodeType.TASKS, get_pos(), connect_end_menu.source)}
+  >
+    <img src="imgs/svg/bolt.svg" alt="Icon" />
+    <span>{NodeType.TASKS}</span>
+  </button>
+
+  <button
+    class="btn d-flex align-items-center btn-context-menu"
+    onclick={() => create_node(NodeType.POWER, get_pos(), connect_end_menu.source)}
+  >
+    <img src="imgs/svg/token.svg" alt="Icon" />
+    <span>{NodeType.POWER}</span>
+  </button>
+</div>

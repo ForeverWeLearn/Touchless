@@ -1,26 +1,23 @@
 import type { Edge, Viewport, XYPosition } from "@xyflow/svelte";
 import { writable, type Writable } from "svelte/store";
-import { get_default_node_data, type RawNodeData } from "../scripts/flow/nodes/node";
+import { get_default_node_data, NodeType, type RawNodeData } from "../scripts/flow/nodes/node";
 import { get_random_string } from "../scripts/utils/algo";
-import { NodeType } from "../scripts/flow/nodes/note_type";
 import { AppFileReader } from "../scripts/utils/reader";
 import EntryNode from "../components/flow/nodes/entry/EntryNode.svelte";
-import GestureNode from "../components/flow/nodes/condition/GestureNode.svelte";
-import RotationNode from "../components/flow/nodes/condition/RotationNode.svelte";
-import KeySequenceNode from "../components/flow/nodes/task/KeySequenceNode.svelte";
-import CommandNode from "../components/flow/nodes/task/CommandNode.svelte";
+import ConditionsNode from "../components/flow/nodes/conditions/ConditionsNode.svelte";
+import TaskNode from "../components/flow/nodes/tasks/TaskNode.svelte";
 
 export const client_size = $state({ width: 1366, height: 768 });
+export const appearance = $state({ theme: "light", faded: false });
 
 export const raw_node_data = await load_raw_node_data();
 export const nodes_writable = writable(raw_node_data);
 
 export const node_types = {
   [NodeType.ENTRY]: EntryNode,
-  [NodeType.GESTURE]: GestureNode,
-  [NodeType.ROTATION]: RotationNode,
-  [NodeType.KEY_SEQUENCE]: KeySequenceNode,
-  [NodeType.COMMAND]: CommandNode,
+  [NodeType.CONDITIONS]: ConditionsNode,
+  [NodeType.TASKS]: TaskNode,
+  // [NodeType.POWER]: KeySequenceNode,
 };
 
 export const nodes: Record<string, RawNodeData<NodeType>> = $state(
@@ -79,7 +76,7 @@ export function create_node(type: NodeType, pos: XYPosition, parent: string = ""
     type: type,
     data: data,
     position: pos,
-    origin: [0.0, 0.5],
+    origin: [0.0, 0.0],
   };
 
   if (parent) {

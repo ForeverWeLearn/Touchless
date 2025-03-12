@@ -1,0 +1,17 @@
+.node-container {
+    border-color: var(--color);
+    background-color: var(--color-bg);
+}
+
+.svelte-flow .svelte-flow__handle {
+    background-color: var(--color);
+}
+
+.svelte-flow__background {
+    stroke: var(--color-secondary);
+    background-color: var(--color-bg);
+}
+
+.svelte-flow__connectionline path {
+    stroke: var(--color);
+}

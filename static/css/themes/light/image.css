@@ -1,0 +1,14 @@
+#titlebar-close:hover {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(255, 37, 37, 0.6));
+}
+
+#titlebar-maximize:hover {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 195, 0.6));
+}
+
+#titlebar-minimize:hover {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(255, 196, 0, 0.6));
+}

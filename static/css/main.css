@@ -17,11 +17,10 @@
     display: none;
 }
 
-:root {
-    --border-window: 2vh;
+* {
+    box-sizing: border-box;
 }
 
-html,
 body {
     user-select: none;
     overflow: hidden;
