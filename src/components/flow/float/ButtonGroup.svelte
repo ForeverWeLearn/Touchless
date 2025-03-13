@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { get_current_edge_data, get_current_node_data } from "../../../stores/flow.svelte";
+  import { get_current_edge_data, get_current_node_data, nodes } from "../../../stores/flow.svelte";
   import { AppFileWriter } from "../../../scripts/utils/writer";
   import { useSvelteFlow } from "@xyflow/svelte";
 
@@ -14,22 +14,17 @@
 </script>
 
 <aside>
-  <div class="row">
-    <div class="col me-2">
-      <div class="row">
-        <button class="btn btn-sm btn-secondary mt-1" onclick={() => fitView({ duration: 1000 })}>Fit View</button>
-        <button class="btn btn-sm btn-success mt-1" onclick={() => save()}>Save</button>
-      </div>
-    </div>
+  <div class="d-flex flex-column gap-1">
+    <button class="btn btn-sm btn-secondary" onclick={() => fitView({ duration: 1000 })}>Fit View</button>
+    <button class="btn btn-sm btn-success" onclick={() => save()}>Save</button>
   </div>
 </aside>
 
 <style>
   aside {
     position: absolute;
-    right: 30px;
-    top: 80px;
-    width: 4rem;
+    right: 1rem;
+    top: 4rem;
     background: transparent;
     z-index: 997;
   }
