@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { CommandTaskAttribute } from "../../../../scripts/flow/attributes/task/command";
-  import type { KeySequenceTaskAttribute } from "../../../../scripts/flow/attributes/task/key_sequence";
   import type { TasksNodeData } from "../../../../scripts/flow/nodes/tasks";
   import CommandAttribute from "../../attributes/command/CommandAttribute.svelte";
   import KeySequenceAttribute from "../../attributes/key_sequence/KeySequenceAttribute.svelte";
@@ -24,14 +22,14 @@
     {#each reactive_data.tasks as task}
       {#if task.type == "KEY_SEQUENCE"}
         <KeySequenceAttribute
-          raw_data={task as KeySequenceTaskAttribute}
-          reactive_data={task as KeySequenceTaskAttribute}
+          raw_data={task}
+          reactive_data={task}
           delete_task={() => reactive_data.tasks.splice(reactive_data.tasks.indexOf(task), 1)}
         />
       {:else if task.type == "COMMAND"}
         <CommandAttribute
-          raw_data={task as CommandTaskAttribute}
-          reactive_data={task as CommandTaskAttribute}
+          raw_data={task}
+          reactive_data={task}
           delete_task={() => reactive_data.tasks.splice(reactive_data.tasks.indexOf(task), 1)}
         />
       {/if}

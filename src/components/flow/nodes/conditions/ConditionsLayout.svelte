@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { GesturesConditionAttribute } from "../../../../scripts/flow/attributes/condition/gestures";
   import type { ConditionsNodeData } from "../../../../scripts/flow/nodes/conditions";
+  import DistanceAttribute from "../../attributes/distance/DistanceAttribute.svelte";
   import GesturesAttribute from "../../attributes/gestures/GesturesAttribute.svelte";
   import AddConditionButtons from "../../generic/AddConditionButtons.svelte";
   import NodeLabel from "../../generic/NodeLabel.svelte";
@@ -21,9 +21,15 @@
   <div class="d-flex flex-column">
     {#if reactive_data.gestures.enable}
       <GesturesAttribute
-        raw_data={raw_data.gestures as GesturesConditionAttribute}
+        raw_data={raw_data.gestures}
         reactive_data={reactive_data.gestures}
       ></GesturesAttribute>
+    {/if}
+    {#if reactive_data.distance.enable}
+      <DistanceAttribute
+        raw_data={raw_data.distance}
+        reactive_data={reactive_data.distance}
+      ></DistanceAttribute>
     {/if}
   </div>
 </div>
