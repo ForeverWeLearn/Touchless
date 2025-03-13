@@ -24,7 +24,7 @@
 <div class="gesture-select-box" style="position: relative;">
   <input class="form-check-input gesture-checkbox" type="checkbox" bind:checked={reactive_data.enable} />
   
-  <button class="btn" class:faded={!reactive_data.enable} onclick={() => (select_data.selecting = true)}>
+  <button class="btn" class:faded={!reactive_data.enable} onclick={() => (select_data.selecting = !select_data.selecting)}>
     <img class="gesture-icon" src="imgs/hand/{HANDEDNESS_NAMES[handedness]}/{reactive_data.name}.svg" alt="Gesture" />
   </button>
 
