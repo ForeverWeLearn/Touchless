@@ -16,12 +16,12 @@
     <Gesture raw_data={raw_data.gestures[1]} reactive_data={reactive_data.gestures[1]} handedness={1} />
 
     <Slider
-      {reactive_data}
       name="Hold"
       min={DEFAULT_ACTIVE_TIME.min}
       max={DEFAULT_ACTIVE_TIME.max}
       step={DEFAULT_ACTIVE_TIME.step}
       unit="ms"
+      bind:value={reactive_data.active_time}
     />
   </div>
 
