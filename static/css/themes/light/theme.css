@@ -6,3 +6,5 @@
 @import url("../share/image.css");
 @import url("../share/flow.css");
 @import url("../share/custom.css");
+
+@import url("./image.css");

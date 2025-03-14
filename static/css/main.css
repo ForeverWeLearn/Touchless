@@ -31,6 +31,10 @@ img {
     pointer-events: none;
 }
 
+input {
+    cursor: pointer;
+}
+
 select {
     cursor: pointer;
 }

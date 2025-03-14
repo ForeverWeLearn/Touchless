@@ -1,3 +1,4 @@
+
 .context-menu {
     background-color: var(--color-bg);
 }
@@ -16,7 +17,7 @@
 }
 
 .gesture-select-box {
-    border-color: transparent;
+    border-color: var(--color-secondary);
 }
 
 .gesture-select-box:hover {
@@ -25,6 +26,16 @@
 
 .gesture-select-box:hover>input {
     opacity: 1;
+}
+
+.input-name {
+    border-color: aqua;
+}
+
+.point-container {
+    position: absolute;
+    width: 0;
+    height: 0;
 }
 
 .sidebar {
@@ -47,8 +58,4 @@
 
 .titlebar:hover {
     opacity: 1;
-}
-
-.input-name {
-    border-color: aqua;
 }

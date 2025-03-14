@@ -28,6 +28,14 @@
     border-color: var(--color);
 }
 
+.btn-increment {
+    opacity: 0;
+}
+
+.btn-increment:hover {
+    opacity: 1;
+}
+
 .btn-launch {
     color: var(--color);
     font-weight: 500;

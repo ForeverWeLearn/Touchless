@@ -17,6 +17,7 @@
 }
 
 .gesture-select-box {
+    width: 5rem;
     border: solid var(--btn-border-width);
     border-radius: var(--btn-border-radius);
     aspect-ratio: 1;
@@ -82,3 +83,28 @@
 .input-name:focus {
     box-shadow: 0 0 0 transparent !important;
 }
+
+
+.btn-increment {
+    position: absolute;
+    padding-left: 0;
+    padding-right: 0;
+    width: 2rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-increment > img {
+    width: 50%;
+  }
+
+  .input-slider {
+    text-align: center;
+  }
+  .input-slider::-webkit-outer-spin-button,
+  .input-slider::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
