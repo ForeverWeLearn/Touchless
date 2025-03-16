@@ -1,5 +1,6 @@
 @import url("./variables.css");
 
+@import url("../share/animation.css");
 @import url("../share/tag.css");
 @import url("../share/button.css");
 @import url("../share/text.css");

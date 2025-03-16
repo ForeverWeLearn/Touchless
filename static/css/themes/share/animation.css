@@ -1,0 +1,15 @@
+.appear {
+    animation-name: appear;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+}
+
+@keyframes appear {
+    0% {
+        filter: invert(1);
+    }
+
+    100% {
+        filter: invert(0);
+    }
+}
