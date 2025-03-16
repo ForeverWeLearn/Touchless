@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { CommandTaskAttribute } from "../../../../scripts/flow/attributes/task/command";
-  import { commands } from "../../../../stores/task.svelte";
+  import type { CommandTaskAttribute } from "../../../scripts/flow/attributes/task/command";
+  import { command_store } from "../../../stores/task.svelte";
 
   let {
     raw_data,
@@ -17,7 +17,7 @@
   <div style="white-space: nowrap;">Command</div>
 
   <select class="form-select form-select-sm" bind:value={reactive_data.name}>
-    {#each commands as command}
+    {#each command_store.commands as command}
       <option value={command.name}>{command.name}</option>
     {/each}
   </select>

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Shutdown",
+    "comamnd": "shutdown /s"
+  },
+  {
+    "name": "VS Code",
+    "comamnd": "code"
+  },
+  {
+    "name": "Browser",
+    "comamnd": "start https://"
+  }
+]
