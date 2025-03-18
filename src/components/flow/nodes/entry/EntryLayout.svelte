@@ -3,19 +3,17 @@
   import { hand_results } from "../../../../stores/engine.svelte";
   import NodeLabel from "../../generic/NodeLabel.svelte";
 
-  let { raw_data, reactive_data }: { raw_data: EntryNodeData; reactive_data: EntryNodeData } = $props();
+  let { data }: { data: EntryNodeData } = $props();
 
   const hand_detected = $derived(hand_results[0].has || hand_results[1].has);
-
-  $effect(() => {
-    raw_data.enable = reactive_data.enable;
-  });
 </script>
 
-<div
-  class="node-container"
-  class:node-container-active={hand_detected}
->
-  <NodeLabel id={raw_data.id} name="Entry" enable={reactive_data.enable} />
+<div class="node d-flex flex-column gap-2" class:node-active={hand_detected} style="width: 300px;">
+  <div class="d-flex flex-column mt-3">
+    <NodeLabel {data} />
+  </div>
 
+  <div class="d-flex flex-column mx-1 mb-4 nodrag">
+    <cite contenteditable="true" spellcheck="false" bind:textContent={data.message} style="padding: 0.5rem;"></cite>
+  </div>
 </div>

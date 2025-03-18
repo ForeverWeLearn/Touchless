@@ -1,70 +1,79 @@
 <script lang="ts">
   import "@xyflow/svelte/dist/style.css";
 
-  import {
-    SvelteFlow,
-    Controls,
-    Background,
-    BackgroundVariant,
-    type OnConnectEnd,
-    useSvelteFlow,
-  } from "@xyflow/svelte";
-  import {
-    initial_viewport,
-    edges_writable,
-    nodes_writable,
-    client_size,
-    node_types,
-    nodes,
-    appearance,
-  } from "../../stores/flow.svelte";
-  import { connect_end_menu, node_context_menu } from "../../stores/menu.svelte";
-  import { NodeType } from "../../scripts/flow/nodes/node";
+  import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, Controls } from "@xyflow/svelte";
+  import { nodes_writable, nodeTypes, viewStore, edges_writable } from "../../stores/flow.svelte";
+  import { connectEndMenu, nodeContextMenu, paneContextMenu } from "../../stores/menu.svelte";
+  import { client_size } from "../../stores/geometry.svelte";
+  import { settings } from "../../stores/settings.svelte";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
+  import PaneContextMenu from "./menus/PaneContextMenu.svelte";
   import ConnectEndMenu from "./menus/ConnectEndMenu.svelte";
-  import ButtonGroup from "./float/ButtonGroup.svelte";
+  import StatusBar from "./float/StatusBar.svelte";
 
-  const { fitView } = useSvelteFlow();
+  // When edges changed, pending save
+  edges_writable.subscribe((v) => {
+    settings.pendingSave = true;
+  });
 
-  setTimeout(() => fitView({ duration: 1000 }), 100);
+  // When nodes changed, pending save
+  nodes_writable.subscribe((v) => {
+    settings.pendingSave = true;
+  });
 
-  const handle_connect_end: OnConnectEnd = (event, connectionState) => {
+  const handleConnectEnd: OnConnectEnd = (event, connectionState) => {
     if (connectionState.isValid) return;
     if (connectionState.fromHandle?.type == "target") return;
+
+    hideAllMenu();
 
     const sourceNodeId = connectionState.fromNode?.id ?? "0";
 
     event.preventDefault();
     event = event as MouseEvent;
 
-    connect_end_menu.show = true;
-    connect_end_menu.source = sourceNodeId;
-    connect_end_menu.top = event.clientY;
-    connect_end_menu.left = event.clientX;
+    connectEndMenu.show = true;
+    connectEndMenu.source = sourceNodeId;
+    connectEndMenu.top = event.clientY;
+    connectEndMenu.left = event.clientX;
 
-    connect_end_menu.last_open = performance.now();
+    connectEndMenu.lastOpen = performance.now();
   };
 
   // @ts-ignore
-  function handle_node_context_menu({ detail: { event, node } }) {
+  function handleNodeContextMenu({ detail: { event, node } }) {
     event.preventDefault();
 
-    const nd = nodes[node.id];
-    if (nd != undefined && nd.type == NodeType.ENTRY) {
-      return;
-    }
+    hideAllMenu();
 
-    node_context_menu.show = true;
-    node_context_menu.source = node.id;
-    node_context_menu.top = event.clientY;
-    node_context_menu.left = event.clientX;
+    nodeContextMenu.show = true;
+    nodeContextMenu.source = node.id;
+    nodeContextMenu.top = event.clientY;
+    nodeContextMenu.left = event.clientX;
   }
 
-  function handle_pane_click() {
-    if (performance.now() - connect_end_menu.last_open > 250) {
-      connect_end_menu.show = false;
+  // @ts-ignore
+  function handlePaneContextMenu({ detail: { event } }) {
+    event.preventDefault();
+    event = event as MouseEvent;
+
+    hideAllMenu();
+
+    paneContextMenu.show = true;
+    paneContextMenu.top = event.clientY;
+    paneContextMenu.left = event.clientX;
+  }
+
+  function handlePaneClick() {
+    hideAllMenu();
+  }
+
+  function hideAllMenu() {
+    if (performance.now() - connectEndMenu.lastOpen > 250) {
+      connectEndMenu.show = false;
     }
-    node_context_menu.show = false;
+    nodeContextMenu.show = false;
+    paneContextMenu.show = false;
   }
 </script>
 
@@ -72,47 +81,40 @@
   <SvelteFlow
     nodes={nodes_writable}
     edges={edges_writable}
-    nodeTypes={node_types}
-    initialViewport={initial_viewport}
+    {nodeTypes}
+    initialViewport={viewStore.initialViewport}
     minZoom={0.2}
-    maxZoom={1.5}
-    snapGrid={[20, 20]}
-    onconnectend={handle_connect_end}
-    on:paneclick={handle_pane_click}
-    on:nodecontextmenu={handle_node_context_menu}
+    maxZoom={10}
+    snapGrid={[50, 50]}
+    onconnectend={handleConnectEnd}
+    on:paneclick={handlePaneClick}
+    on:panecontextmenu={handlePaneContextMenu}
+    on:nodecontextmenu={handleNodeContextMenu}
   >
     <Controls showLock={false} showZoom={false} showFitView={false} />
-    <Background variant={BackgroundVariant.Dots} />
+    <Background variant={BackgroundVariant.Dots} gap={50} />
 
-    {#if appearance.faded}
-      <div class="faded-layer">Hwllo!</div>
-    {/if}
-
-    {#if connect_end_menu.show}
+    {#if connectEndMenu.show}
       <ConnectEndMenu />
     {/if}
 
-    {#if node_context_menu.show}
+    {#if paneContextMenu.show}
+      <PaneContextMenu />
+    {/if}
+
+    {#if nodeContextMenu.show}
       <NodeContextMenu />
     {/if}
   </SvelteFlow>
 
-  <ButtonGroup />
+  <StatusBar />
 </main>
 
 <style>
   main {
-    /* width: 100%; */
-    width: 103%;
+    width: 102%;
     height: 103%;
     margin-top: -1px;
-    margin-bottom: -20px;
-    /* margin-right: -1px; */
-    /* max-height: calc(100% + 4px); */
-    /* height: 100%; */
-  }
-
-  .faded-layer {
-    background-color: aqua;
+    margin-left: -1%;
   }
 </style>

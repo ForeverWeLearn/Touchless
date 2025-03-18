@@ -1,38 +1,32 @@
 <script lang="ts">
+  import { TaskType } from "../../../../scripts/flow/attributes/task";
   import type { TasksNodeData } from "../../../../scripts/flow/nodes/tasks";
-  import CommandAttribute from "../../attributes/command/CommandAttribute.svelte";
-  import KeySequenceAttribute from "../../attributes/key_sequence/KeySequenceAttribute.svelte";
+  import CommandAttribute from "../../attributes/CommandAttribute.svelte";
+  import KeySequenceAttribute from "../../attributes/KeySequenceAttribute.svelte";
   import AddTaskButtons from "../../generic/AddTaskButtons.svelte";
   import NodeLabel from "../../generic/NodeLabel.svelte";
 
-  let { raw_data, reactive_data }: { raw_data: TasksNodeData; reactive_data: TasksNodeData } = $props();
-
-  $effect(() => {
-    raw_data.enable = reactive_data.enable;
-  });
+  let { data }: { data: TasksNodeData } = $props();
 </script>
 
-<div class="node-container d-flex flex-column gap-3">
-  <div class="d-flex flex-column">
-    <NodeLabel id={raw_data.id} name="Task" enable={reactive_data.enable} />
-    <AddTaskButtons {reactive_data} />
+<div class="node d-flex flex-column gap-2" style="width: 500px;">
+  <div class="d-flex flex-column mt-3">
+    <NodeLabel {data} />
   </div>
 
-  <div class="d-flex flex-column">
-    {#each reactive_data.tasks as task}
-      {#if task.type == "KEY_SEQUENCE"}
-        <KeySequenceAttribute
-          raw_data={task}
-          reactive_data={task}
-          delete_task={() => reactive_data.tasks.splice(reactive_data.tasks.indexOf(task), 1)}
-        />
-      {:else if task.type == "COMMAND"}
-        <CommandAttribute
-          raw_data={task}
-          reactive_data={task}
-          delete_task={() => reactive_data.tasks.splice(reactive_data.tasks.indexOf(task), 1)}
-        />
-      {/if}
-    {/each}
+  <div class="d-flex flex-column gap-4" class:disabled={!data.enable}>
+    <div class="d-flex justify-content-center">
+      <AddTaskButtons {data} />
+    </div>
+
+    <div class="d-flex flex-column gap-1 mb-4">
+      {#each data.tasks as task, i (task)}
+        {#if task.type == TaskType.KEY_SEQUENCE}
+          <KeySequenceAttribute data={task} remove={() => data.tasks.splice(i, 1)} />
+        {:else if task.type == TaskType.COMMAND}
+          <CommandAttribute data={task} remove={() => data.tasks.splice(i, 1)} />
+        {/if}
+      {/each}
+    </div>
   </div>
 </div>
