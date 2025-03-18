@@ -1,40 +1,53 @@
-<script>
+<script lang="ts">
   import { board_state } from "../../stores/board.svelte";
+  import { engine_state } from "../../stores/engine.svelte";
   import HandStatistic from "./HandStatistic.svelte";
 </script>
 
-<div class="d-flex flex-column justify-content-center align-items-center board {board_state.show ? 'show' : 'hide'}">
+<div class="d-flex justify-content-center board {board_state.show ? 'show' : 'hide'}">
+  <div class="d-flex board-content">
+    <div class="d-flex board-visualize">
+      <div class="info">
+        {engine_state.running ? `FPS: ${engine_state.fps}` : ""}
+      </div>
 
-  <div class="d-flex flex-column justify-content-center align-items-center board-content">
-    <div class="h1 mb-5">PREVIEW</div>
-    <div class="board-visualize d-flex justify-content-center align-items-center">
       <HandStatistic handedness={0}></HandStatistic>
+
       <div class="video-container">
-        <div class="d-flex flex-column align-items-center justify-content-center w-100 placehold">
+        <div class="d-flex flex-column align-items-center justify-content-center placehold">
           <div class="h5 fw-light mb-3">There is nothing here...</div>
           <div>o(*￣▽￣*)ブ</div>
-          <div class="h5 fw-light mt-3">Press the 'Start' button?!</div>
         </div>
+
         <!-- svelte-ignore a11y_media_has_caption -->
         <video id="webcam" autoplay playsinline></video>
         <canvas id="webcam-overlay"></canvas>
       </div>
+
       <HandStatistic handedness={1}></HandStatistic>
     </div>
   </div>
-
 </div>
 
 <style>
+  .info {
+    font-family: MartianMono;
+    color: var(--color-secondary);
+    position: absolute;
+    top: 0.4rem;
+    left: 0.6rem;
+  }
+
   .show {
     margin-top: 0;
   }
 
   .hide {
-    margin-top: -200vh;
+    margin-top: -100vh;
   }
 
   .board {
+    pointer-events: none;
     position: absolute;
     z-index: 998;
     height: 100%;
@@ -43,13 +56,17 @@
     left: 0;
     right: 0;
     bottom: 0;
-    backdrop-filter: blur(5px);
+    transition: margin-top 0.3s ease;
   }
 
   .board-content {
-    width: 90%;
-    padding: 24px;
-    background-color: #0f0f0f;
+    position: relative;
+    max-height: 20rem;
+    aspect-ratio: 1.6;
+    padding: 0.4rem;
+    background-color: var(--bg-color-dim);
+    border-bottom-left-radius: var(--window-border-radius);
+    border-bottom-right-radius: var(--window-border-radius);
   }
 
   .board-visualize {
@@ -58,11 +75,9 @@
 
   .video-container {
     position: relative;
-    margin-left: 2rem;
-    margin-right: 2rem;
     width: 100%;
     aspect-ratio: 1.6;
-    background-color: rgb(0, 0, 0);
+    background-color: var(--bg-color);
   }
 
   .placehold {
@@ -72,7 +87,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    aspect-ratio: 1.6;
     margin: auto;
   }
 
@@ -96,6 +110,6 @@
   canvas,
   .placehold {
     max-width: 640px;
-    max-height: 480px;
+    max-height: 100%;
   }
 </style>
