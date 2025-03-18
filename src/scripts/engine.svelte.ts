@@ -1,20 +1,25 @@
+import type { HandednessID } from "./utils/const";
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
 import { engine_state, hand_results } from "../stores/engine.svelte";
-import type { HandednessID } from "./utils/const";
-import { calculate_keypoints } from "./utils/algo";
-import { Drawer } from "./drawer";
+import { calculateKeypoints } from "./utils/algo";
 import { GestureClassifier } from "./gesture_classifier";
 import { GestureParser } from "./gesture_parser.svelte";
-import { Executor } from "./executor";
+import { settings } from "../stores/settings.svelte";
 import { Analyzer } from "./analyzer.svelte";
+import { Executor } from "./executor";
+import { Drawer } from "./drawer";
+import { Queue } from "./utils/queue";
 
 async function inference(engine: Engine) {
   if (!engine_state.running) {
     return;
   }
 
-  // Do nothing until next trigger time
   const current_time = performance.now();
+
+  engine.calculateFPS(current_time);
+
+  // Do nothing until next trigger time
   if (current_time < engine.next_trigger_time) {
     window.requestAnimationFrame(() => inference(engine));
     return;
@@ -28,12 +33,14 @@ async function inference(engine: Engine) {
 
   // No hand detected
   if (engine.results.landmarks.length == 0) {
-    engine.next_trigger_time = current_time + engine_state.idle_step;
+    engine.next_trigger_time = current_time + settings.engineIdleStep;
+
+    await engine.analyzer.analyze();
 
     hand_results[0].has = false;
     hand_results[1].has = false;
 
-    setTimeout(() => window.requestAnimationFrame(() => inference(engine)), engine_state.idle_step);
+    setTimeout(() => window.requestAnimationFrame(() => inference(engine)), settings.engineIdleStep);
     return;
   }
 
@@ -48,7 +55,7 @@ async function inference(engine: Engine) {
     checked[handedness] = true;
 
     // Calculate keypoints and bounding box
-    [engine.keypoints[handedness], engine.bbox[handedness]] = calculate_keypoints(landmark, engine.canvas);
+    [engine.keypoints[handedness], engine.bbox[handedness]] = calculateKeypoints(landmark, engine.canvas);
     engine.drawer.landmarks(engine.keypoints[handedness]);
     engine.drawer.connections(engine.keypoints[handedness]);
     engine.drawer.bounding_box(engine.bbox[handedness]);
@@ -67,7 +74,7 @@ async function inference(engine: Engine) {
   hand_results[0].has = checked[0];
   hand_results[1].has = checked[1];
 
-  engine.analyzer.analyze();
+  await engine.analyzer.analyze();
 
   window.requestAnimationFrame(() => inference(engine));
 }
@@ -90,6 +97,7 @@ export class Engine {
   public canvas!: HTMLCanvasElement;
   public context!: CanvasRenderingContext2D;
 
+  private queueFPS: Queue<number> = new Queue();
   private stream!: MediaStream;
   private inference_handler!: () => void;
 
@@ -170,5 +178,14 @@ export class Engine {
     this.executor = new Executor(this);
 
     this.drawer = new Drawer(this);
+  }
+
+  public calculateFPS(t: number) {
+    this.queueFPS.push(t);
+    // @ts-ignore
+    while (t - this.queueFPS.peek_back() > 1000) {
+      this.queueFPS.pop();
+    }
+    engine_state.fps = this.queueFPS.size();
   }
 }

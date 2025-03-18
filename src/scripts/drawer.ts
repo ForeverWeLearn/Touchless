@@ -47,9 +47,9 @@ export class Drawer {
     }
   }
 
-  public line(point1: number[], point2: number[]) {
+  public line(point1: number[], point2: number[], text: string = "", scale: number = 1) {
     this.engine.context.fillStyle = this.line_color;
-    this.engine.context.lineWidth = this.line_width;
+    this.engine.context.lineWidth = this.line_width * scale;
     this.engine.context.beginPath();
     this.engine.context.moveTo(point1[0], point1[1]);
     this.engine.context.lineTo(point2[0], point2[1]);
@@ -60,5 +60,10 @@ export class Drawer {
     this.engine.context.arc(point1[0], point1[1], this.point_radius, 0, 2 * Math.PI);
     this.engine.context.arc(point2[0], point2[1], this.point_radius, 0, 2 * Math.PI);
     this.engine.context.fill();
+
+    if (text) {
+      this.engine.context.font = "42px Lexend";
+      this.engine.context.fillText(text, point1[0], point1[1]);
+    }
   }
 }
