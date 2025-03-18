@@ -3,7 +3,7 @@
     --font-family-mono: 'MartianMono', monospace;
     --color: #181818;
     --color-secondary: #282828;
-    --color-bg: aliceblue;
-    --color-bg-dim: #b3b3b3;
-    --color-bg-secondary: #d0d0d0;
+    --bg-color: aliceblue;
+    --bg-color-dim: #b3b3b3;
+    --bg-color-secondary: #d0d0d0;
 }

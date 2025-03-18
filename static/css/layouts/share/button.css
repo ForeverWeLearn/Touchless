@@ -1,0 +1,67 @@
+.btn-add-attribute {
+    padding: 0.6rem 1rem !important;
+    border-style: solid;
+    border-radius: calc(var(--btn-border-radius) * 0.8) !important;
+}
+
+.btn-context-menu {
+    border: none;
+    padding: 1rem;
+}
+
+.btn-context-menu>img {
+    margin-right: 1rem;
+}
+
+.btn-gesture-selection {
+    aspect-ratio: 1;
+}
+
+.btn-gesture-selection:hover {
+    border-style: solid;
+    border-width: var(--btn-border-width);
+}
+
+.btn-launch {
+    padding: 1rem;
+    padding-left: 0rem;
+    border-style: solid;
+    border-width: var(--btn-border-width);
+}
+
+.btn-launch>img {
+    padding-right: 1rem;
+}
+
+.btn-launch:hover {
+    border-style: solid;
+    border-width: var(--btn-border-width);
+}
+
+.btn-sidebar {
+    border-style: none;
+    border-radius: var(--btn-border-radius);
+    font-weight: 300;
+    padding-left: 1rem;
+    height: 4.2rem;
+}
+
+.btn-sidebar>img {
+    border-style: none;
+    aspect-ratio: 1;
+    width: 1.6rem;
+}
+
+.btn-titlebar {
+    border-style: none;
+    aspect-ratio: 1;
+}
+
+.btn-titlebar>img {
+    aspect-ratio: 1;
+    width: 28px;
+}
+
+.btn-nbd {
+    border: none !important;
+}

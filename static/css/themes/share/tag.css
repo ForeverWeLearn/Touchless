@@ -1,48 +1,73 @@
 ::selection {
-    color: var(--color-bg);
+    color: var(--bg-color);
     background: var(--color);
 }
 
 select {
-    background: var(--color-bg) !important;
+    background: var(--bg-color) !important;
     color: var(--color) !important;
 }
 
 select option {
-    background: var(--color-bg) !important;
+    background: var(--bg-color) !important;
     color: var(--color) !important;
 }
 
-input[type=number] {
-    background-color: transparent;
-    color: var(--color);
+input[type="text"] {
+    color: var(--color) !important;
+    background-color: var(--bg-color-dim) !important;
+    border-color: var(--color-secondary);
 }
 
-input[type=number]:focus {
-    color: var(--color);
-    background-color: transparent;
+input[type="number"] {
+    color: var(--color) !important;
+    background-color: var(--bg-color) !important;
+    border-color: var(--color-secondary);
 }
 
-input[type=text] {
-    background-color: transparent;
-    color: var(--color);
+input[type="text"]:focus {
+    box-shadow: 0 0 5px black;
+    outline-color: #fff;
 }
 
-input[type=text]:focus {
-    color: var(--color);
-    background-color: transparent;
+textarea:focus,
+input:focus,
+input[type]:focus,
+.uneditable-input:focus {
+    border-color: var(--color);
+    box-shadow: 0 1px 1px transparent inset, 0 0 8px var(--color-secondary);
+    outline: 0 none;
+}
+
+input::placeholder {
+    color: var(--color-secondary) !important;
 }
 
 body {
     font-family: var(--font-family);
     color: var(--color);
-    background-color: var(--color-bg);
+    background-color: transparent;
 }
 
 button {
-    color: var(--color-secondary) !important;
+    color: var(--color) !important;
+    border-color: var(--color-secondary) !important;
 }
 
 button:hover {
     color: var(--color);
+    border-color: var(--color) !important;
+}
+
+main {
+    background-color: var(--bg-color-dim);
+    border-color: var(--window-border-color);
+    box-shadow: 0 6px 10px #00000068;
+}
+
+textarea {
+    max-height: 50rem;
+    height: 4rem;
+    color: var(--color) !important;
+    background-color: var(--bg-color) !important;
 }

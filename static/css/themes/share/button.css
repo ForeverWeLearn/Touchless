@@ -1,22 +1,19 @@
-.btn-add-condition {
-    opacity: 0.6;
-    border-color: var(--color);
+.btn-add-attribute {
+    border-color: var(--color-secondary);
     color: var(--color);
 }
 
-.btn-add-condition:hover {
-    opacity: 1;
+.btn-add-attribute:hover {
     border-color: var(--color);
 }
 
 .btn-context-menu {
     opacity: 0.7;
-    color: var(--color);
 }
 
 .btn-context-menu:hover {
     opacity: 1;
-    border-color: var(--color);
+    background-color: var(--bg-color-secondary);
 }
 
 .btn-gesture-selection {
@@ -37,25 +34,17 @@
 }
 
 .btn-launch {
-    color: var(--color);
+    border-color: var(--color-secondary);
     font-weight: 500;
 }
 
-.btn-launch-stop {
-    background-color: var(--color);
-    color: var(--color-bg);
-    font-weight: 700;
-}
-
-.btn-launch-stop:hover {
-    background-color: var(--color);
-    color: var(--color-bg);
+.btn-launch:hover {
+    border-color: var(--color);
 }
 
 .btn-sidebar {
     opacity: 0.65;
     background-color: transparent;
-    font-weight: 300;
 }
 
 .btn-sidebar:active {
@@ -65,7 +54,7 @@
 
 .btn-sidebar:hover {
     opacity: 1;
-    background-color: var(--color-bg-secondary);
+    background-color: var(--bg-color-secondary);
 }
 
 .btn-titlebar {
