@@ -29,3 +29,9 @@
     </button>
   </div>
 </div>
+
+<style>
+  .titlebar {
+    opacity: 0;
+  }
+</style>
