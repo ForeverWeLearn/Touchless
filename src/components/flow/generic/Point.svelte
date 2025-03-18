@@ -49,7 +49,7 @@
   >
     <div class="hand-landmark" class:flip-h={data.handedness == 0} style="position: relative;">
       <div class="marker" style="left: {POSITIONS[data.landmark].left}%; top: {POSITIONS[data.landmark].top}%"></div>
-      <img class="" src="imgs/svg/hand_landmarks.svg" alt="Landmarks" />
+      <img src="imgs/svg/hand_landmarks.svg" alt="Landmarks" />
     </div>
 
     <div class="landmark-name">
