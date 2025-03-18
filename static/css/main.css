@@ -8,11 +8,6 @@
     src: url(../fonts/MartianMono.ttf);
 }
 
-@font-face {
-    font-family: Tektur;
-    src: url(../fonts/Tektur.ttf);
-}
-
 ::-webkit-scrollbar {
     display: none;
 }
@@ -31,10 +26,6 @@ img {
     pointer-events: none;
 }
 
-input {
-    cursor: pointer;
-}
-
-select {
-    cursor: pointer;
+.flip-h {
+    transform: scaleX(-1);
 }
