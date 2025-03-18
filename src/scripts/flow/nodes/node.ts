@@ -3,26 +3,26 @@ import { get_default_tasks_node_data, type TasksNodeData } from "./tasks";
 import { get_default_entry_node_data, type EntryNodeData } from "./entry";
 import { get_default_power_node_data, type PowerNodeData } from "./power";
 
-export const enum NodeType {
+export enum NodeType {
   ENTRY = "ENTRY",
   CONDITIONS = "CONDITIONS",
   TASKS = "TASKS",
   POWER = "POWER",
 }
 
-export type NodeTypeDataMap = {
+export type CustomNodeDataMap = {
   [NodeType.ENTRY]: EntryNodeData;
   [NodeType.CONDITIONS]: ConditionsNodeData;
   [NodeType.TASKS]: TasksNodeData;
   [NodeType.POWER]: PowerNodeData;
 };
 
-export type NodeTypeData<T extends NodeType> = NodeTypeDataMap[T];
+export type CustomNodeData<T extends NodeType> = CustomNodeDataMap[T];
 
-export type RawNodeData<T extends NodeType> = {
+export type CustomNode<T extends NodeType> = {
   id: string;
   type: T;
-  data: NodeTypeData<T>;
+  data: CustomNodeData<T>;
   position: { x: number; y: number };
   origin?: [number, number];
 };
@@ -30,24 +30,50 @@ export type RawNodeData<T extends NodeType> = {
 export type BaseNodeData = {
   id: string;
   type: NodeType;
-  active: boolean;
   enable: boolean;
-  prev: string;
-  next: string[];
 };
 
-export function get_default_base_node_data(id: string): BaseNodeData {
+/**
+ * Creates a default BaseNode data object
+ *
+ * This function generates a base data structure that serves as the foundation
+ * for all node types in the system. It initializes a node with default values
+ * and the specified ID.
+ *
+ * @param {string} id - Unique identifier for the node
+ * @returns {BaseNodeData} A new node data object initialized with default values
+ *
+ * @example
+ * const nodeData = getDefaultBaseNodeData("node-123");
+ * // Returns: { id: "node-123", type: NodeType.ENTRY, enable: true: "", next: [] }
+ */
+export function getDefaultBaseNodeData(id: string): BaseNodeData {
   return {
     id: id,
     type: NodeType.ENTRY,
-    active: false,
     enable: true,
-    prev: "",
-    next: [],
   };
 }
 
-export function get_default_node_data(type: NodeType, id: string): BaseNodeData {
+/**
+ * Creates default node data for a specific node type
+ *
+ * This function serves as a factory method that generates appropriate default data
+ * based on the specified node type. It delegates to type-specific helper functions
+ * to create the appropriate data structure for each node type.
+ *
+ * @param {NodeType} type - The type of node to create default data for
+ * @param {string} id - Unique identifier for the node
+ * @returns {EntryNodeData | ConditionsNodeData | TasksNodeData | PowerNodeData} A node data object initialized with type-specific default values
+ *
+ * @example
+ * const entryNodeData = getDefaultNodeData(NodeType.ENTRY, "node-123");
+ * const tasksNodeData = getDefaultNodeData(NodeType.TASKS, "tasks-456");
+ */
+export function getDefaultNodeData(
+  type: NodeType,
+  id: string
+): EntryNodeData | ConditionsNodeData | TasksNodeData | PowerNodeData {
   switch (type) {
     case NodeType.ENTRY: {
       return get_default_entry_node_data(id);

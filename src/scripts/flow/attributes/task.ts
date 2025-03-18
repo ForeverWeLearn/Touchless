@@ -1,19 +1,19 @@
-import type { KeySequenceTaskAttribute } from "./task/key_sequence";
-import type { CommandTaskAttribute } from "./task/command";
-
-export type TaskType = "KEY_SEQUENCE" | "COMMAND";
+export enum TaskType {
+  KEY_SEQUENCE = "KEY_SEQUENCE",
+  COMMAND = "COMMAND",
+}
 
 export type TaskAttribute = {
   type: TaskType;
+  name: string;
   enable: boolean;
   delay: number;
 };
 
-export type TaskAttributes = KeySequenceTaskAttribute | CommandTaskAttribute;
-
 export function get_default_task_attribute(): TaskAttribute {
   return {
-    type: "KEY_SEQUENCE",
+    type: TaskType.KEY_SEQUENCE,
+    name: "",
     enable: true,
     delay: 0,
   };

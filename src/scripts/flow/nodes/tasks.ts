@@ -1,13 +1,13 @@
-import { get_default_base_node_data, NodeType, type BaseNodeData } from "./node";
-import type { TaskAttributes } from "../attributes/task";
+import type { TaskAttribute } from "../attributes/task";
+import { getDefaultBaseNodeData, NodeType, type BaseNodeData } from "./node";
 
 export type TasksNodeData = BaseNodeData & {
-  tasks: TaskAttributes[];
+  tasks: TaskAttribute[];
 };
 
 export function get_default_tasks_node_data(id: string): TasksNodeData {
   return {
-    ...get_default_base_node_data(id),
+    ...getDefaultBaseNodeData(id),
     type: NodeType.TASKS,
     tasks: [],
   };

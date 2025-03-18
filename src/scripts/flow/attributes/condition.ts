@@ -1,40 +1,44 @@
-import { type StandardRange } from "../generic/range";
 import { get_default_distance_condition_attribute, type DistanceConditionAttribute } from "./condition/distance";
 import { get_default_gestures_condition_attribute, type GesturesConditionAttribute } from "./condition/gestures";
 import { get_default_rotation_condition_attribute, type RotationConditionAttribute } from "./condition/rotation";
 
-export const DEFAULT_ACTIVE_TIME: StandardRange = {
-  min: 0,
-  max: 5000,
-  step: 50,
-  value: 1000,
-}
+export type Logic = "AND" | "OR";
+
+export type Runtime = {
+  activated: boolean;
+  firstSatisfy: number;
+  lastSatisfy: number;
+};
 
 export type ConditionAttribute = {
+  included: boolean;
   enable: boolean;
-  active_time: number;
-  deactive_time: number;
-  runtime: {
-    activated: boolean;
-    last_active: number;
-  }
+  time2active: number;
+  runtime: Runtime;
 };
 
 export type ConditionAttributes = {
   gestures: GesturesConditionAttribute;
   distance: DistanceConditionAttribute;
   rotation: RotationConditionAttribute;
+  logic: Logic;
+  duration: number;
+  runtime: Runtime;
 };
 
+function get_default_runtime_data(): Runtime {
+  return {
+    activated: false,
+    firstSatisfy: 0,
+    lastSatisfy: 0,
+  };
+}
 export function get_default_condition_attribute(): ConditionAttribute {
   return {
+    included: false,
     enable: true,
-    active_time: DEFAULT_ACTIVE_TIME.value,
-    deactive_time: 2000,
-    runtime: {
-      activated: false,
-      last_active: 0,
-    },
+    time2active: 1000,
+    runtime: get_default_runtime_data(),
   };
 }
 
@@ -52,5 +56,8 @@ export function get_default_condition_attributes(): ConditionAttributes {
       ...get_default_rotation_condition_attribute(),
       enable: false,
     },
+    logic: "AND",
+    duration: 5000,
+    runtime: get_default_runtime_data(),
   };
 }

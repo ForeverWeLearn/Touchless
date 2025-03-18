@@ -5,11 +5,23 @@ export type StandardRange = {
   value: number;
 };
 
+export type AngleRange = {
+  angle: number;
+  spread: number;
+};
+
 export function get_default_standard_range(): StandardRange {
   return {
     min: 0,
     max: 100,
     step: 1,
     value: 50,
+  };
+}
+
+export function get_default_angle_range(): AngleRange {
+  return {
+    angle: 0,
+    spread: 30,
   };
 }
