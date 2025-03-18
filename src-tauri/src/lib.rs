@@ -145,17 +145,16 @@ fn execute_key_sequence(
             "Shift" => Key::Shift,
             "Meta" => Key::Meta,
             "Tab" => Key::Tab,
+            "CapsLock" => Key::CapsLock,
             "Home" => Key::Home,
             "End" => Key::End,
             "Insert" => Key::Insert,
             "Delete" => Key::Delete,
             "Space" => Key::Space,
-            "Scroll" => Key::Scroll,
-            "Up" => Key::UpArrow,
-            "Down" => Key::DownArrow,
-            "Left" => Key::LeftArrow,
-            "Right" => Key::RightArrow,
-            "Zoom" => Key::Zoom,
+            "ArrowUp" => Key::UpArrow,
+            "ArrowDown" => Key::DownArrow,
+            "ArrowLeft" => Key::LeftArrow,
+            "ArrowRight" => Key::RightArrow,
             "F1" => Key::F1,
             "F2" => Key::F2,
             "F3" => Key::F3,
@@ -170,16 +169,7 @@ fn execute_key_sequence(
             "F12" => Key::F12,
             "Escape" => Key::Escape,
             "Enter" => Key::Unicode('\n'),
-            s if s.starts_with("Unicode(") => {
-                let c = s
-                    .trim_start_matches("Unicode(")
-                    .trim_end_matches(")")
-                    .trim_matches('\'')
-                    .chars()
-                    .next()
-                    .ok_or_else(|| format!("Invalid Unicode character in: {}", s))?;
-                Key::Unicode(c)
-            }
+            s if s.chars().count() == 1 => Key::Unicode(s.chars().next().unwrap()),
             s => return Err(format!("Unknown key: {}", s)),
         };
 
