@@ -13,10 +13,11 @@
 
     const spread_percent = (data.spread / 360) * 100;
 
-    pieChart.style.rotate = `${angle - data.spread}deg`;
+    pieChart.style.rotate = `${angle}deg`;
     pieChart.style.background = `conic-gradient(
-        var(--color) 0% ${spread_percent * 2}%,
-        var(--bg-color) ${spread_percent * 2}% 100%)`;
+        var(--color) 0% ${spread_percent}%,
+        var(--bg-color) ${spread_percent}% ${100 - spread_percent}%,
+        var(--color) ${100 - spread_percent}% 100%)`;
   };
 
   $effect(() => {
@@ -107,11 +108,11 @@
   .pie-chart::before {
     position: absolute;
     top: 5%;
-    left: 40%;
+    left: 47.5%;
     width: 5%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background-color: #ffffff;
+    background-color: var(--bg-color);
     content: "";
   }
 </style>
