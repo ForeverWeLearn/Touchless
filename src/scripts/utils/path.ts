@@ -2,34 +2,30 @@ import { BaseDirectory, exists, mkdir } from "@tauri-apps/plugin-fs";
 
 export const BASE_DIRECTORY = BaseDirectory.AppData;
 
-enum Directory {
-  Flow = "flow",
-  Settings = "settings",
-  Task = "tasks",
-}
+const DIRECTORY = "v0.0.3"
 
 export const NODES_DATA_FILE = {
-  DEST: Directory.Flow,
+  DEST: DIRECTORY,
   NAME: "nodes.json",
 };
 
 export const EDGES_DATA_FILE = {
-  DEST: Directory.Flow,
+  DEST: DIRECTORY,
   NAME: "edges.json",
 };
 
-export const VIEW_DATA_FILE = {
-  DEST: Directory.Flow,
-  NAME: "view.json",
+export const VIEWPORT_DATA_FILE = {
+  DEST: DIRECTORY,
+  NAME: "viewport.json",
 };
 
 export const KEY_SEQUENCE_DATA_FILE = {
-  DEST: Directory.Task,
+  DEST: DIRECTORY,
   NAME: "key_sequences.json",
 };
 
 export const COMMAND_DATA_FILE = {
-  DEST: Directory.Task,
+  DEST: DIRECTORY,
   NAME: "commands.json",
 };
 
