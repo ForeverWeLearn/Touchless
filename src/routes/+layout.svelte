@@ -10,6 +10,7 @@
   import Titlebar from "../components/Titlebar.svelte";
   import Sidebar from "../components/Sidebar.svelte";
   import Board from "../components/preview/Board.svelte";
+  import { onMount } from "svelte";
 
   const appWindow = getCurrentWindow();
 
@@ -31,6 +32,14 @@
       main.classList.add("window-decoration");
     }
   });
+
+  onMount(async () => {
+    if (await appWindow.isMaximized()) {
+      main.classList.remove("window-decoration");
+    } else {
+      main.classList.add("window-decoration");
+    }
+  })
 
   document.addEventListener("contextmenu", (event) => event.preventDefault());
 
