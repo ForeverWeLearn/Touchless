@@ -1,5 +1,6 @@
-import type { RawNodeData } from "../flow/nodes/node";
-import type { KeySequence } from "./const";
+import type { Edge, Viewport } from "@xyflow/svelte";
+import type { CustomNode, NodeType } from "../flow/nodes/node";
+import type { Command, KeySequence } from "./const";
 import {
   BASE_DIRECTORY,
   check_file_exist,
@@ -7,7 +8,8 @@ import {
   join,
   NODES_DATA_FILE,
   KEY_SEQUENCE_DATA_FILE,
-  VIEW_DATA_FILE,
+  VIEWPORT_DATA_FILE,
+  COMMAND_DATA_FILE,
 } from "./path";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 
@@ -42,20 +44,24 @@ export class AppFileReader {
     return data;
   }
 
-  static async raw_node_data(): Promise<RawNodeData<any>[] | undefined> {
-    return (await this.json(NODES_DATA_FILE.DEST, NODES_DATA_FILE.NAME)) as RawNodeData<any>[];
+  static async nodeData(): Promise<CustomNode<NodeType>[] | undefined> {
+    return (await this.json(NODES_DATA_FILE.DEST, NODES_DATA_FILE.NAME)) as CustomNode<NodeType>[];
   }
 
-  static async edge_data() {
-    return await this.json(EDGES_DATA_FILE.DEST, EDGES_DATA_FILE.NAME);
+  static async edgeData(): Promise<Edge[] | undefined> {
+    return (await this.json(EDGES_DATA_FILE.DEST, EDGES_DATA_FILE.NAME)) as Edge[];
   }
 
-  static async view_data() {
-    return await this.json(VIEW_DATA_FILE.DEST, VIEW_DATA_FILE.NAME);
+  static async viewData(): Promise<Viewport | undefined> {
+    return (await this.json(VIEWPORT_DATA_FILE.DEST, VIEWPORT_DATA_FILE.NAME)) as Viewport;
   }
 
-  static async key_sequence_data() {
+  static async keySequenceData() {
     return await this.json(KEY_SEQUENCE_DATA_FILE.DEST, KEY_SEQUENCE_DATA_FILE.NAME);
+  }
+
+  static async commandData() {
+    return await this.json(COMMAND_DATA_FILE.DEST, COMMAND_DATA_FILE.NAME);
   }
 }
 
@@ -78,9 +84,23 @@ export class LocalFileReader {
     return raw_data;
   }
 
-  static async default_key_sequences(): Promise<KeySequence[]> {
-    const data: KeySequence[] = await this.json("default/key_sequences.json");
-    console.log(`Default key sequences:`, data);
-    return data;
+  static async defaultKeySequences(): Promise<KeySequence[]> {
+    return await this.json("default/key_sequences.json");
+  }
+
+  static async defaultCommands(): Promise<Command[]> {
+    return await this.json("default/commands.json");
+  }
+
+  static async defaultNodes(): Promise<CustomNode<NodeType>[]> {
+    return await this.json("default/nodes.json");
+  }
+
+  static async defaultEdges(): Promise<Edge[]> {
+    return await this.json("default/edges.json");
+  }
+
+  static async defaultViewport(): Promise<Viewport> {
+    return await this.json("default/viewport.json");
   }
 }
