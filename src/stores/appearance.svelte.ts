@@ -1,9 +1,11 @@
 export const theme = $state({
   default: "dark",
+  current: "dark",
   list: ["dark", "light"],
 });
 
 export const layout = $state({
-  default: "default",
-  list: ["default", "chaos"],
+  default: "flex",
+  current: "flex",
+  list: ["flex", "chaos"],
 });

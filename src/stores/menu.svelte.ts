@@ -1,12 +1,18 @@
-export const connect_end_menu = $state({
+export const connectEndMenu = $state({
   show: false,
   source: "",
   top: 0,
   left: 0,
-  last_open: 0,
+  lastOpen: 0,
 });
 
-export const node_context_menu = $state({
+export const paneContextMenu = $state({
+  show: false,
+  top: 0,
+  left: 0,
+});
+
+export const nodeContextMenu = $state({
   show: false,
   source: "",
   top: 0,

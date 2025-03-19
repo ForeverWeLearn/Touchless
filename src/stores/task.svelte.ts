@@ -2,48 +2,105 @@ import type { Command, Key, KeySequence } from "../scripts/utils/const";
 import { check_file_exist, COMMAND_DATA_FILE, KEY_SEQUENCE_DATA_FILE } from "../scripts/utils/path";
 import { AppFileReader, LocalFileReader } from "../scripts/utils/reader";
 
-export function get_default_key(): Key {
+export function getDefaultKey(): Key {
   return {
     key: "Enter",
     direction: "Click",
   };
 }
 
-export function get_default_command(): Command {
+export function getDefaultKeySequence(): KeySequence {
+  return {
+    name: "Key Sequence",
+    sequence: [getDefaultKey()],
+  };
+}
+
+export function getDefaultCommand(): Command {
   return {
     name: "Command",
     comamnd: "shutdown",
   };
 }
 
-const exist = await check_file_exist(KEY_SEQUENCE_DATA_FILE.DEST, KEY_SEQUENCE_DATA_FILE.NAME);
+let keySequences: KeySequence[] = $state(await loadKeySequenceData());
+let commands: Command[] = $state(await loadCommandData());
 
-let key_sequence_data: any;
-if (exist) {
-  key_sequence_data = await AppFileReader.key_sequence_data();
-} else {
-  key_sequence_data = await LocalFileReader.default_key_sequences();
+function createKeySequenceStore() {
+  const getKeySequenceByName = (name: string): Key[] => {
+    for (const sequence of keySequences) {
+      if (sequence.name == name) {
+        return sequence.sequence;
+      }
+    }
+    return [];
+  };
+
+  const push = (new_sequence: KeySequence = getDefaultKeySequence()) => {
+    keySequences.push(new_sequence);
+  };
+
+  const pushKey = (key_sequence: KeySequence, new_key: Key = getDefaultKey()) => {
+    key_sequence.sequence.push(new_key);
+  };
+
+  const insert = (index: number, new_sequence: KeySequence = getDefaultKeySequence()) => {
+    keySequences.splice(index, 0, new_sequence);
+  };
+
+  const insertKey = (key_sequence: KeySequence, index: number, new_key: Key = getDefaultKey()) => {
+    key_sequence.sequence.splice(index, 0, new_key);
+  };
+
+  const remove = (key_sequence: KeySequence) => {
+    const index = keySequences.indexOf(key_sequence);
+
+    if (index == -1) {
+      return;
+    }
+
+    keySequences.splice(index, 1);
+  };
+
+  const remove_key = (key_sequence: KeySequence, key: Key) => {
+    const index = key_sequence.sequence.indexOf(key);
+
+    if (index == -1) {
+      return;
+    }
+
+    key_sequence.sequence.splice(index, 1);
+  };
+
+  return {
+    get key_sequences() {
+      return keySequences;
+    },
+    getKeySequenceByName,
+    push,
+    pushKey,
+    insert,
+    insertKey,
+    remove,
+    remove_key,
+  };
 }
 
-export const key_sequences: KeySequence[] = $state(key_sequence_data);
+function createCommandStore() {
+  const getCommandByName = (name: string): string => {
+    for (const cmd of commands) {
+      if (cmd.name == name) {
+        return cmd.comamnd;
+      }
+    }
+    return "";
+  };
 
-const command_exist = await check_file_exist(COMMAND_DATA_FILE.DEST, COMMAND_DATA_FILE.NAME);
-
-let command_data: any;
-if (command_exist) {
-  command_data = await AppFileReader.command_data();
-} else {
-  command_data = await LocalFileReader.default_key_sequences();
-}
-
-function create_command_store() {
-  let commands: Command[] = $state(command_data);
-
-  const push = (new_command: Command = get_default_command()) => {
+  const push = (new_command: Command = getDefaultCommand()) => {
     commands.push(new_command);
   };
 
-  const insert = (index: number, new_command: Command = get_default_command()) => {
+  const insert = (index: number, new_command: Command = getDefaultCommand()) => {
     commands.splice(index, 0, new_command);
   };
 
@@ -61,10 +118,31 @@ function create_command_store() {
     get commands() {
       return commands;
     },
+    getCommandByName,
     push,
     insert,
     remove,
   };
 }
 
-export const command_store = create_command_store();
+async function loadKeySequenceData(): Promise<KeySequence[]> {
+  const keySequenceExist = await check_file_exist(KEY_SEQUENCE_DATA_FILE.DEST, KEY_SEQUENCE_DATA_FILE.NAME);
+
+  if (keySequenceExist) {
+    return (await AppFileReader.keySequenceData()) as KeySequence[];
+  }
+  return await LocalFileReader.defaultKeySequences();
+}
+
+async function loadCommandData(): Promise<Command[]> {
+  const commandExist = await check_file_exist(COMMAND_DATA_FILE.DEST, COMMAND_DATA_FILE.NAME);
+
+  if (commandExist) {
+    return (await AppFileReader.commandData()) as Command[];
+  }
+
+  return await LocalFileReader.defaultCommands();
+}
+
+export const keySequenceStore = createKeySequenceStore();
+export const commandStore = createCommandStore();
