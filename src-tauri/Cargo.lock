@@ -3873,6 +3873,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "tauri-plugin-fs"
+version = "2.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a1a1edf18000f02903a7c2e5997fb89aca455ecbc0acc15c6535afbb883be223"
+dependencies = [
+ "anyhow",
+ "dunce",
+ "glob",
+ "percent-encoding",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_repr",
+ "tauri",
+ "tauri-plugin",
+ "tauri-utils",
+ "thiserror 2.0.11",
+ "toml 0.8.20",
+ "url",
+ "uuid",
+]
+
+[[package]]
 name = "tauri-plugin-opener"
 version = "2.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3891,6 +3914,21 @@ dependencies = [
  "thiserror 2.0.11",
  "url",
  "windows",
+ "zbus",
+]
+
+[[package]]
+name = "tauri-plugin-single-instance"
+version = "2.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25bbc73eed15bba8ad290a52614f2711280df4bf575b36ce78f64367074b90b7"
+dependencies = [
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror 2.0.11",
+ "tracing",
+ "windows-sys 0.59.0",
  "zbus",
 ]
 
@@ -4231,7 +4269,9 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
+ "tauri-plugin-fs",
  "tauri-plugin-opener",
+ "tauri-plugin-single-instance",
 ]
 
 [[package]]

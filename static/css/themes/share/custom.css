@@ -1,0 +1,74 @@
+.context-menu {
+    background-color: var(--bg-color);
+}
+
+.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.faded {
+    opacity: 0.4;
+}
+
+.gesture-checkbox {
+    opacity: 0;
+}
+
+.select-box {
+    border-color: var(--color-secondary);
+}
+
+.select-box:hover {
+    border-color: var(--color);
+}
+
+.gesture-select-box:hover>input {
+    opacity: 1;
+}
+
+.input-command {
+    background-image: url('../../../imgs/svg/terminal.svg');
+    font-family: MartianMono;
+}
+
+.input-name {
+    border-color: transparent !important;
+}
+
+.input-name:focus {
+    border-color: var(--color) !important;
+}
+
+.point-container {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.sidebar {
+    background-color: transparent;
+}
+
+.sidebar-container {
+    background-color: var(--bg-color-dim);
+}
+
+.start-banner {
+    box-shadow: 0px 3px 15px var(--bg-color);
+    border-color: var(--color);
+    background-color: rgba(18, 18, 18, 0.5);
+}
+
+.titlebar:active {
+    opacity: 1;
+}
+
+.titlebar:hover {
+    opacity: 1;
+}
+
+.home-page-container {
+    background-image: url("../../../imgs/image.png");
+    background-size: cover;
+}

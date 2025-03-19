@@ -1,0 +1,18 @@
+.gesture-selection-name {
+    font-size: 0.7rem;
+}
+
+.link-sidebar {
+    font-size: 0.9rem;
+}
+
+.text-sidebar {
+    margin-left: 1rem;
+    font-size: 1rem;
+}
+
+.task-group-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 1rem;
+}

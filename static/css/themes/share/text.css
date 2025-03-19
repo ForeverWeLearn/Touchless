@@ -1,0 +1,12 @@
+.gesture-selection-name {
+    color: var(--color);
+}
+
+.link-sidebar {
+    color: var(--color);
+    text-decoration: none;
+}
+
+.text-sidebar {
+    color: var(--color);
+}

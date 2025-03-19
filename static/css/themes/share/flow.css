@@ -1,0 +1,25 @@
+.node {
+    border-color: var(--color-secondary);
+    background-color: var(--bg-color);
+}
+
+.node-active {
+    border-color: var(--color);
+}
+
+.attr-active {
+    background-color: var(--bg-color-bright);
+}
+
+.svelte-flow .svelte-flow__handle {
+    background-color: var(--color);
+}
+
+.svelte-flow__background {
+    stroke: var(--color-secondary);
+    background-color: var(--bg-color);
+}
+
+.svelte-flow__connectionline path {
+    stroke: var(--color);
+}

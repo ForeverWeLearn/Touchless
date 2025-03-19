@@ -8,24 +8,24 @@
     src: url(../fonts/MartianMono.ttf);
 }
 
-@font-face {
-    font-family: Tektur;
-    src: url(../fonts/Tektur.ttf);
-}
-
 ::-webkit-scrollbar {
     display: none;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     user-select: none;
-    font-family: Lexend !important;
+    overflow: hidden;
 }
 
 img {
+    -webkit-user-drag: none;
     pointer-events: none;
 }
 
-a {
-    -webkit-user-drag: none;
+.flip-h {
+    transform: scaleX(-1);
 }

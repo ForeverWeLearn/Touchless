@@ -1,0 +1,56 @@
+.node {
+    border-width: calc(var(--btn-border-width) * 2);
+    border-style: solid;
+    border-radius: calc(var(--btn-border-radius) * 2);
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+.node-active {
+    border-width: calc(var(--btn-border-width) * 6);
+}
+
+.node-selected {
+    border-width: calc(var(--btn-border-width) * 2);
+}
+
+.attr {
+    padding: 1rem;
+    border-radius: var(--btn-border-radius);
+}
+
+.node-label {
+    font-size: 2rem;
+}
+
+.node-label-box {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.svelte-flow .svelte-flow__handle {
+    border-radius: calc(var(--btn-border-radius) / 2);
+    width: 1.2rem;
+    height: 2.4rem;
+}
+
+.svelte-flow .svelte-flow__handle-left {
+    left: -0.8rem;
+}
+
+.svelte-flow .svelte-flow__handle-right {
+    right: -0.8rem;
+}
+
+.svelte-flow__background {
+    margin-left: -1px;
+}
+
+.svelte-flow__connectionline path {
+    stroke-width: 2;
+}
+
+.svelte-flow__edge-path {
+    stroke-width: 4;
+}
