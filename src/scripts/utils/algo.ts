@@ -2,7 +2,7 @@ import type { NormalizedLandmark } from "@mediapipe/tasks-vision";
 
 export const RANDOM_STRING_LENGTH = 6;
 
-export function get_random_string(length = RANDOM_STRING_LENGTH): string {
+export function getRandomString(length = RANDOM_STRING_LENGTH): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   let result = "";
 
@@ -14,14 +14,25 @@ export function get_random_string(length = RANDOM_STRING_LENGTH): string {
   return result;
 }
 
-export function calculate_distance(point1: number[], point2: number[]) {
+export function calculateDistance(point1: number[], point2: number[]) {
   return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2) ** 0.5;
 }
 
-export function calculate_keypoints(
-  landmarks: NormalizedLandmark[],
-  canvas: HTMLCanvasElement
-): [number[][], number[]] {
+export function calculateVectorAngle(initial: number[], terminal: number[]): number {
+  const vector = [terminal[0] - initial[0], terminal[1] - initial[1]];
+
+  const angleRad = Math.atan2(vector[1], vector[0]);
+
+  let angleDeg = (angleRad * 180) / Math.PI;
+
+  if (angleDeg < 0) {
+    angleDeg += 360;
+  }
+
+  return angleDeg;
+}
+
+export function calculateKeypoints(landmarks: NormalizedLandmark[], canvas: HTMLCanvasElement): [number[][], number[]] {
   let imgw = canvas.width;
   let imgh = canvas.height;
   let box = [9999, 9999, 0, 0];
