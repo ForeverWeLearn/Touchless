@@ -32,7 +32,7 @@ export const parentMap: Record<string, string> = edges.reduce((accumulator, edge
   return accumulator;
 }, {} as Record<string, string>);
 
-export let nodes_writable: Writable<CustomNode<NodeType>[]> = writable(nodes);
+export let nodesWritable: Writable<CustomNode<NodeType>[]> = writable(nodes);
 export let edgesWritable: Writable<Edge[]> = writable(edges);
 
 function createNodeStore() {
@@ -69,7 +69,7 @@ function createNodeStore() {
     nodes.push(newNode);
     nodeMap[id] = newNode;
 
-    nodes_writable.set(nodes);
+    nodesWritable.set(nodes);
 
     console.log(`Node ${newNode.id} created at ${pos.x} ${pos.y}`);
   };
@@ -84,7 +84,7 @@ function createNodeStore() {
     nodes.splice(index, 1);
     delete nodeMap[index];
 
-    nodes_writable.set(nodes);
+    nodesWritable.set(nodes);
     edgesWritable.update((v) => {
       const r = v.filter((e) => e.target != id && e.source != id);
       recalculateParent(r);

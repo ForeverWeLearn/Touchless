@@ -2,9 +2,9 @@
   import "@xyflow/svelte/dist/style.css";
 
   import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, Controls } from "@xyflow/svelte";
-  import { nodes_writable, nodeTypes, viewStore, edgesWritable } from "../../stores/flow.svelte";
+  import { nodesWritable, nodeTypes, viewStore, edgesWritable } from "../../stores/flow.svelte";
   import { connectEndMenu, nodeContextMenu, paneContextMenu } from "../../stores/menu.svelte";
-  import { client_size } from "../../stores/geometry.svelte";
+  import { clientSize } from "../../stores/geometry.svelte";
   import { settings } from "../../stores/settings.svelte";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
   import PaneContextMenu from "./menus/PaneContextMenu.svelte";
@@ -17,7 +17,7 @@
   });
 
   // When nodes changed, pending save
-  nodes_writable.subscribe((v) => {
+  nodesWritable.subscribe((v) => {
     settings.pendingSave = true;
   });
 
@@ -77,9 +77,9 @@
   }
 </script>
 
-<main bind:clientWidth={client_size.width} bind:clientHeight={client_size.height}>
+<main bind:clientWidth={clientSize.width} bind:clientHeight={clientSize.height}>
   <SvelteFlow
-    nodes={nodes_writable}
+    nodes={nodesWritable}
     edges={edgesWritable}
     {nodeTypes}
     initialViewport={viewStore.initialViewport}
