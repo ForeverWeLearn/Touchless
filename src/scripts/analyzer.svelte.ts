@@ -7,7 +7,7 @@ import type { TasksNodeData } from "./flow/nodes/tasks";
 import type { Runtime } from "./flow/attributes/condition";
 import type { Engine } from "./engine.svelte";
 import { GESTURE_NAMES, type HandednessID } from "./utils/const";
-import { calculateDistance, calculateVectorAngle } from "./utils/algo";
+import { calculateDistance, calculateAngle } from "./utils/algo";
 import { hand_results } from "../stores/engine.svelte";
 import { nodeStore } from "../stores/flow.svelte";
 import { NodeType } from "./flow/nodes/node";
@@ -194,7 +194,7 @@ export class Analyzer {
     const initial = this.engine.keypoints[rotation.initial.handedness][rotation.initial.landmark];
     const terminal = this.engine.keypoints[rotation.terminal.handedness][rotation.terminal.landmark];
 
-    const angle = 360 - calculateVectorAngle(initial, terminal);
+    const angle = 360 - calculateAngle(initial, terminal);
 
     this.engine.drawer.line(initial, terminal, angle.toFixed(0) + "°", 3);
 
@@ -203,8 +203,6 @@ export class Analyzer {
       rotation.range.angle - rotation.range.spread,
       rotation.range.angle + rotation.range.spread
     );
-
-    console.log(inRange);
 
     return inRange;
   }
