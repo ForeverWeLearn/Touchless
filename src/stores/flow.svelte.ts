@@ -33,7 +33,7 @@ export const parentMap: Record<string, string> = edges.reduce((accumulator, edge
 }, {} as Record<string, string>);
 
 export let nodes_writable: Writable<CustomNode<NodeType>[]> = writable(nodes);
-export let edges_writable: Writable<Edge[]> = writable(edges);
+export let edgesWritable: Writable<Edge[]> = writable(edges);
 
 function createNodeStore() {
   const add = (type: NodeType, pos: XYPosition, parent: string = "") => {
@@ -59,7 +59,7 @@ function createNodeStore() {
         id: edgeID,
       };
 
-      edges_writable.update((v) => {
+      edgesWritable.update((v) => {
         v.push(newEdge);
         recalculateParent(v);
         return v;
@@ -85,7 +85,7 @@ function createNodeStore() {
     delete nodeMap[index];
 
     nodes_writable.set(nodes);
-    edges_writable.update((v) => {
+    edgesWritable.update((v) => {
       const r = v.filter((e) => e.target != id && e.source != id);
       recalculateParent(r);
       return r;

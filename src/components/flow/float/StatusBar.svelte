@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { edges_writable, nodeStore } from "../../../stores/flow.svelte";
+  import { edgesWritable, nodeStore } from "../../../stores/flow.svelte";
   import { appStore, refresh } from "../../../stores/app.svelte";
   import { AppFileWriter } from "../../../scripts/utils/writer";
   import { useSvelteFlow } from "@xyflow/svelte";
@@ -11,7 +11,7 @@
   async function save() {
     await nodeStore.resetRuntimeState();
     await AppFileWriter.writeNodeData(nodeStore.nodes);
-    await AppFileWriter.writeEdgeData($edges_writable);
+    await AppFileWriter.writeEdgeData($edgesWritable);
     await AppFileWriter.writeViewData(getViewport());
     await refresh();
   }

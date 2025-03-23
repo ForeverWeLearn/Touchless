@@ -2,7 +2,7 @@
   import "@xyflow/svelte/dist/style.css";
 
   import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, Controls } from "@xyflow/svelte";
-  import { nodes_writable, nodeTypes, viewStore, edges_writable } from "../../stores/flow.svelte";
+  import { nodes_writable, nodeTypes, viewStore, edgesWritable } from "../../stores/flow.svelte";
   import { connectEndMenu, nodeContextMenu, paneContextMenu } from "../../stores/menu.svelte";
   import { client_size } from "../../stores/geometry.svelte";
   import { settings } from "../../stores/settings.svelte";
@@ -12,7 +12,7 @@
   import StatusBar from "./float/StatusBar.svelte";
 
   // When edges changed, pending save
-  edges_writable.subscribe((v) => {
+  edgesWritable.subscribe((v) => {
     settings.pendingSave = true;
   });
 
@@ -80,7 +80,7 @@
 <main bind:clientWidth={client_size.width} bind:clientHeight={client_size.height}>
   <SvelteFlow
     nodes={nodes_writable}
-    edges={edges_writable}
+    edges={edgesWritable}
     {nodeTypes}
     initialViewport={viewStore.initialViewport}
     minZoom={0.2}
