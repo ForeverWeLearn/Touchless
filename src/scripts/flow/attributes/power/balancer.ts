@@ -1,4 +1,4 @@
-import { get_default_point, type Point } from "../../generic/point";
+import { getDefaultPoint, type Point } from "../../generic/point";
 import type { TaskAttribute } from "../task";
 
 export type BalancerAttribute = {
@@ -15,8 +15,8 @@ export type BalancerAttribute = {
 
 export function get_default_command_attribute(): BalancerAttribute {
   return {
-    initial: get_default_point(),
-    terminal: get_default_point(),
+    initial: getDefaultPoint(),
+    terminal: getDefaultPoint(),
     unit: 1,
     tasks: {},
   };

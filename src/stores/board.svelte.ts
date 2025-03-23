@@ -1,3 +1,3 @@
-export const board_state = $state({
+export const boardState = $state({
   show: false,
 });

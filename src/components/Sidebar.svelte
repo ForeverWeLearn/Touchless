@@ -1,15 +1,15 @@
 <script lang="ts">
   import { page } from "$app/state";
-  import { board_state } from "../stores/board.svelte";
-  import { engine_state } from "../stores/engine.svelte";
-  import { sidebar_size } from "../stores/geometry.svelte";
+  import { boardState } from "../stores/board.svelte";
+  import { engineState } from "../stores/engine.svelte";
+  import { sizebarSize } from "../stores/geometry.svelte";
 
-  function is_active(path: string) {
+  function isActive(path: string) {
     return page.url.pathname === path ? "active" : "";
   }
 </script>
 
-<div class="d-flex flex-column gap-4 sidebar" bind:clientWidth={sidebar_size.width} data-tauri-drag-region>
+<div class="d-flex flex-column gap-4 sidebar" bind:clientWidth={sizebarSize.width} data-tauri-drag-region>
   <div class="d-flex justify-content-left align-items-end gap-2 m-3">
     <img class="app-icon" src="imgs/svg/token.svg" alt="Home" />
 
@@ -27,37 +27,37 @@
   <div class="d-flex justify-content-center align-items-center gap-3 px-4">
     <button
       class="btn d-flex flex-fill justify-content-center align-items-center btn-launch"
-      onclick={() => (engine_state.running = !engine_state.running)}
+      onclick={() => (engineState.running = !engineState.running)}
     >
-      <img src="imgs/svg/{engine_state.running ? 'stop' : 'play_arrow'}.svg" alt="" />
+      <img src="imgs/svg/{engineState.running ? 'stop' : 'play_arrow'}.svg" alt="" />
       <div>
-        {engine_state.running ? "Stop" : "Run"}
+        {engineState.running ? "Stop" : "Run"}
       </div>
     </button>
 
-    <button class="btn btn-nbd" onclick={() => (board_state.show = !board_state.show)}>
-      <img src="imgs/svg/{board_state.show ? 'preview_off' : 'preview'}.svg" alt="" />
+    <button class="btn btn-nbd" onclick={() => (boardState.show = !boardState.show)}>
+      <img src="imgs/svg/{boardState.show ? 'preview_off' : 'preview'}.svg" alt="" />
     </button>
   </div>
 
   <div class="d-flex flex-column p-2 h-100">
     <div class="d-flex flex-column mb-auto gap-2">
-      <a href="/" class="link-sidebar" onclick={() => (board_state.show = false)}>
-        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {is_active('/')}">
+      <a href="/" class="link-sidebar" onclick={() => (boardState.show = false)}>
+        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/')}">
           <img src="imgs/svg/home.svg" alt="Home" />
           <div class="my-0 text-sidebar">Home</div>
         </div>
       </a>
 
-      <a href="/flow" class="link-sidebar" onclick={() => (board_state.show = false)}>
-        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {is_active('/flow')}">
+      <a href="/flow" class="link-sidebar" onclick={() => (boardState.show = false)}>
+        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/flow')}">
           <img src="imgs/svg/automation.svg" alt="Flow" />
           <div class="my-0 text-sidebar">Flow</div>
         </div>
       </a>
 
-      <a href="/task" class="link-sidebar" onclick={() => (board_state.show = false)}>
-        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {is_active('/task')}">
+      <a href="/task" class="link-sidebar" onclick={() => (boardState.show = false)}>
+        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/task')}">
           <img src="imgs/svg/bolt.svg" alt="Task" />
           <div class="my-0 text-sidebar">Task</div>
         </div>
@@ -65,8 +65,8 @@
     </div>
 
     <div class="d-flex flex-column mt-auto">
-      <a href="/settings" class="link-sidebar" onclick={() => (board_state.show = false)}>
-        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {is_active('/settings')}">
+      <a href="/settings" class="link-sidebar" onclick={() => (boardState.show = false)}>
+        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/settings')}">
           <img src="imgs/svg/settings.svg" alt="Settings" />
           <div class="my-0 text-sidebar">Settings</div>
         </div>

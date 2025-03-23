@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
   import { paneContextMenu } from "../../../stores/menu.svelte";
-  import { sidebar_size } from "../../../stores/geometry.svelte";
+  import { sizebarSize } from "../../../stores/geometry.svelte";
   import { nodeStore } from "../../../stores/flow.svelte";
   import { NodeType } from "../../../scripts/flow/nodes/node";
   import { settings } from "../../../stores/settings.svelte";
@@ -21,7 +21,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="context-menu"
-  style="top: {paneContextMenu.top}px; left: {paneContextMenu.left - sidebar_size.width}px;"
+  style="top: {paneContextMenu.top}px; left: {paneContextMenu.left - sizebarSize.width}px;"
   onclick={() => (paneContextMenu.show = false)}
 >
   <button

@@ -8,7 +8,7 @@ export type Point = {
   landmark: LandmarkID;
 };
 
-export function get_default_point(): Point {
+export function getDefaultPoint(): Point {
   return {
     type: "DYNAMIC",
     handedness: 1,
