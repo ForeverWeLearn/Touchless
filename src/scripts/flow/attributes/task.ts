@@ -10,7 +10,7 @@ export type TaskAttribute = {
   delay: number;
 };
 
-export function get_default_task_attribute(): TaskAttribute {
+export function getDefaultTaskAttribute(): TaskAttribute {
   return {
     type: TaskType.KEY_SEQUENCE,
     name: "",

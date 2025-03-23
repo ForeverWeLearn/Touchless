@@ -26,6 +26,6 @@ function create_hand_result(): HandResult {
   };
 }
 
-export const engine_state = $state(create_engine_state());
+export const engineState = $state(create_engine_state());
 
 export const handResults = $state([create_hand_result(), create_hand_result()]);

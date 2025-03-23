@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { board_state } from "../../stores/board.svelte";
-  import { engine_state } from "../../stores/engine.svelte";
+  import { boardState } from "../../stores/board.svelte";
+  import { engineState } from "../../stores/engine.svelte";
   import HandStatistic from "./HandStatistic.svelte";
 </script>
 
-<div class="d-flex justify-content-center board {board_state.show ? 'show' : 'hide'}">
+<div class="d-flex justify-content-center board {boardState.show ? 'show' : 'hide'}">
   <div class="d-flex board-content">
     <div class="d-flex board-visualize">
       <div class="info">
-        {engine_state.running ? `FPS: ${engine_state.fps}` : ""}
+        {engineState.running ? `FPS: ${engineState.fps}` : ""}
       </div>
 
       <HandStatistic handedness={0}></HandStatistic>

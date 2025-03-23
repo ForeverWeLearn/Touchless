@@ -5,7 +5,7 @@
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import { layout, theme } from "../stores/appearance.svelte";
   import { handleKeyDown } from "../stores/user_key.svelte";
-  import { engine_state } from "../stores/engine.svelte";
+  import { engineState } from "../stores/engine.svelte";
   import { Engine } from "../scripts/engine.svelte";
   import Titlebar from "../components/Titlebar.svelte";
   import Sidebar from "../components/Sidebar.svelte";
@@ -20,7 +20,7 @@
   let main: HTMLElement;
 
   $effect(() => {
-    engine.set_state(engine_state.running);
+    engine.set_state(engineState.running);
   });
 
   appWindow.onResized(async ({ payload: size }) => {

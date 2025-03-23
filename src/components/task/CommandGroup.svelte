@@ -9,7 +9,7 @@
       <CommandForm
         {command}
         add={() => commandStore.insert(i + 1)}
-        delete_command={() => commandStore.remove(command)}
+        deleteCommand={() => commandStore.remove(command)}
       />
     {/each}
 

@@ -1,5 +1,5 @@
 import type { TaskAttribute } from "../attributes/task";
-import { get_default_condition_attributes, type ConditionAttributes } from "../attributes/condition";
+import { getDefaultConditionAttributes, type ConditionAttributes } from "../attributes/condition";
 import { getDefaultBaseNodeData, NodeType, type BaseNodeData } from "./node";
 
 export type PowerNodeData = BaseNodeData &
@@ -12,7 +12,7 @@ export type PowerNodeData = BaseNodeData &
 export function get_default_power_node_data(id: string): PowerNodeData {
   return {
     ...getDefaultBaseNodeData(id),
-    ...get_default_condition_attributes(),
+    ...getDefaultConditionAttributes(),
     type: NodeType.POWER,
   };
 }

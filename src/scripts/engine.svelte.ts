@@ -1,6 +1,6 @@
 import type { HandednessID } from "./utils/const";
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
-import { engine_state, handResults } from "../stores/engine.svelte";
+import { engineState, handResults } from "../stores/engine.svelte";
 import { calculateKeypoints } from "./utils/algo";
 import { GestureClassifier } from "./gesture_classifier";
 import { GestureParser } from "./gesture_parser.svelte";
@@ -11,7 +11,7 @@ import { Drawer } from "./drawer";
 import { Queue } from "./utils/queue";
 
 async function inference(engine: Engine) {
-  if (!engine_state.running) {
+  if (!engineState.running) {
     return;
   }
 
@@ -103,13 +103,13 @@ export class Engine {
 
   constructor() {
     $effect(() => {
-      this.set_state(engine_state.running);
+      this.set_state(engineState.running);
     });
     this.load_model();
   }
 
   public async set_state(running: boolean) {
-    engine_state.running = running;
+    engineState.running = running;
     if (running) {
       this.connect_camera();
     } else {
@@ -186,6 +186,6 @@ export class Engine {
     while (t - this.queueFPS.peek_back() > 1000) {
       this.queueFPS.pop();
     }
-    engine_state.fps = this.queueFPS.size();
+    engineState.fps = this.queueFPS.size();
   }
 }

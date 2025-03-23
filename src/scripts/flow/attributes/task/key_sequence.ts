@@ -1,8 +1,8 @@
-import { get_default_task_attribute, TaskType, type TaskAttribute } from "../task";
+import { getDefaultTaskAttribute, TaskType, type TaskAttribute } from "../task";
 
 export function getDefaultKeySequenceTaskAttribute(): TaskAttribute {
   return {
-    ...get_default_task_attribute(),
+    ...getDefaultTaskAttribute(),
     type: TaskType.KEY_SEQUENCE,
   };
 }
