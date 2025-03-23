@@ -40,8 +40,8 @@
     </div>
 
     <div class="d-flex mt-auto gap-2 mx-5">
-      <button class="btn btn-nbd btn-dark" onclick={() => fitView({ duration: 1000 })}>Fit View</button>
-      <button class="btn btn-nbd btn-dark" onclick={() => resetDefault()}>Default</button>
+      <button class="btn btn-nbd " onclick={() => fitView({ duration: 1000 })}>Fit View</button>
+      <button class="btn btn-nbd " onclick={() => resetDefault()}>Default</button>
       <button class="btn btn-nbd {settings.pendingSave ? 'btn-success' : 'btn-success'}" onclick={() => save()}>
         {settings.pendingSave ? "Save and Reload" : "Saved"}
       </button>

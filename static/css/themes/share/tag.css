@@ -41,6 +41,7 @@ input[type]:focus,
 
 input::placeholder {
     color: var(--color-secondary) !important;
+    
 }
 
 body {
@@ -50,7 +51,7 @@ body {
 }
 
 button {
-    color: var(--color) !important;
+    color: var(--btn-text-color) !important;
     border-color: var(--color-secondary) !important;
 }
 

@@ -11,7 +11,7 @@
   {/each}
 
   <div class="d-flex">
-    <button class="btn btn-nbd btn-dark" onclick={() => keySequenceStore.push()}>
+    <button class="btn btn-nbd" onclick={() => keySequenceStore.push()}>
       <img src="imgs/svg/add.svg" alt="Add Key Sequence" />
     </button>
   </div>

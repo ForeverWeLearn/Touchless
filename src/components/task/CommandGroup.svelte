@@ -14,7 +14,7 @@
     {/each}
 
     <div class="d-flex flex-fill">
-      <button class="btn btn-nbd btn-dark flex-fill" onclick={() => commandStore.push()}>
+      <button class="btn btn-nbd flex-fill" onclick={() => commandStore.push()}>
         <img src="imgs/svg/add.svg" alt="Add Command" />
       </button>
     </div>
