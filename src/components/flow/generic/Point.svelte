@@ -66,14 +66,6 @@
 </div>
 
 <style>
-  .marker {
-    position: absolute;
-    width: 4px;
-    aspect-ratio: 1;
-    rotate: 45deg;
-    background-color: aliceblue;
-    box-shadow: 0 0 2px aliceblue;
-  }
 
   .point-select-box > button {
     padding: 0;

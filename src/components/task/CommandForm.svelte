@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Command } from "../../scripts/utils/const";
 
-  let { command, add, delete_command }: { command: Command; add: () => void; delete_command: () => void } = $props();
+  let { command, add, deleteCommand }: { command: Command; add: () => void; deleteCommand: () => void } = $props();
 </script>
 
 <div class="d-flex flex-column" style="position: relative;">
@@ -22,7 +22,7 @@
       <img src="imgs/svg/add.svg" alt="Add Command" />
     </button>
 
-    <button class="btn btn-nbd" onclick={() => delete_command()}>
+    <button class="btn btn-nbd" onclick={() => deleteCommand()}>
       <img src="imgs/svg/close.svg" alt="Delete Command" />
     </button>
   </div>

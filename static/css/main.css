@@ -29,3 +29,7 @@ img {
 .flip-h {
     transform: scaleX(-1);
 }
+
+.btn .btn-nbd .btn-dark{
+    color: #fdfdfd !important;
+}

@@ -28,7 +28,6 @@
 }
 
 .input-command {
-    background-image: url('../../../imgs/svg/terminal.svg');
     font-family: MartianMono;
 }
 
@@ -72,3 +71,14 @@
     background-image: url("../../../imgs/image.png");
     background-size: cover;
 }
+
+.marker {
+    border-radius: 50px;
+    position: absolute;
+    width: 4px;
+    aspect-ratio: 1;
+    rotate: 45deg;
+    background-color: var(--marker-bg-color);
+    box-shadow: 0 0 2px aliceblue;
+  }
+

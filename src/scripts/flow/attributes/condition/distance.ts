@@ -1,4 +1,4 @@
-import { get_default_condition_attribute, type ConditionAttribute } from "../condition";
+import { getDefaultConditionAttribute, type ConditionAttribute } from "../condition";
 import { type StandardRange } from "../../generic/range";
 import { type Point } from "../../generic/point";
 
@@ -9,9 +9,9 @@ export type DistanceConditionAttribute = ConditionAttribute & {
   range: StandardRange;
 };
 
-export function get_default_distance_condition_attribute(): DistanceConditionAttribute {
+export function getDefaultDistanceConditionAttribute(): DistanceConditionAttribute {
   return {
-    ...get_default_condition_attribute(),
+    ...getDefaultConditionAttribute(),
     initial: {
       type: "DYNAMIC",
       handedness: 0,

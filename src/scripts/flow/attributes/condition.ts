@@ -1,6 +1,6 @@
-import { get_default_distance_condition_attribute, type DistanceConditionAttribute } from "./condition/distance";
-import { get_default_gestures_condition_attribute, type GesturesConditionAttribute } from "./condition/gestures";
-import { get_default_rotation_condition_attribute, type RotationConditionAttribute } from "./condition/rotation";
+import { getDefaultDistanceConditionAttribute, type DistanceConditionAttribute } from "./condition/distance";
+import { getDefaultGesturesConditionAttribute, type GesturesConditionAttribute } from "./condition/gestures";
+import { getDefaultRotationConditionAttribute, type RotationConditionAttribute } from "./condition/rotation";
 
 export type Logic = "AND" | "OR";
 
@@ -33,7 +33,7 @@ function get_default_runtime_data(): Runtime {
     lastSatisfy: 0,
   };
 }
-export function get_default_condition_attribute(): ConditionAttribute {
+export function getDefaultConditionAttribute(): ConditionAttribute {
   return {
     included: false,
     enable: true,
@@ -42,18 +42,18 @@ export function get_default_condition_attribute(): ConditionAttribute {
   };
 }
 
-export function get_default_condition_attributes(): ConditionAttributes {
+export function getDefaultConditionAttributes(): ConditionAttributes {
   return {
     gestures: {
-      ...get_default_gestures_condition_attribute(),
+      ...getDefaultGesturesConditionAttribute(),
       enable: false,
     },
     distance: {
-      ...get_default_distance_condition_attribute(),
+      ...getDefaultDistanceConditionAttribute(),
       enable: false,
     },
     rotation: {
-      ...get_default_rotation_condition_attribute(),
+      ...getDefaultRotationConditionAttribute(),
       enable: false,
     },
     logic: "AND",

@@ -1,6 +1,6 @@
 export const theme = $state({
-  default: "dark",
-  current: "dark",
+  default: "light",
+  current: "light",
   list: ["dark", "light"],
 });
 

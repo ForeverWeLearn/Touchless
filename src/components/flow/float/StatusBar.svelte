@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { edges_writable, nodeStore } from "../../../stores/flow.svelte";
+  import { edgesWritable, nodeStore } from "../../../stores/flow.svelte";
   import { appStore, refresh } from "../../../stores/app.svelte";
   import { AppFileWriter } from "../../../scripts/utils/writer";
   import { useSvelteFlow } from "@xyflow/svelte";
@@ -11,7 +11,7 @@
   async function save() {
     await nodeStore.resetRuntimeState();
     await AppFileWriter.writeNodeData(nodeStore.nodes);
-    await AppFileWriter.writeEdgeData($edges_writable);
+    await AppFileWriter.writeEdgeData($edgesWritable);
     await AppFileWriter.writeViewData(getViewport());
     await refresh();
   }
@@ -40,8 +40,8 @@
     </div>
 
     <div class="d-flex mt-auto gap-2 mx-5">
-      <button class="btn btn-nbd btn-dark" onclick={() => fitView({ duration: 1000 })}>Fit View</button>
-      <button class="btn btn-nbd btn-dark" onclick={() => resetDefault()}>Default</button>
+      <button class="btn btn-nbd " onclick={() => fitView({ duration: 1000 })}>Fit View</button>
+      <button class="btn btn-nbd " onclick={() => resetDefault()}>Default</button>
       <button class="btn btn-nbd {settings.pendingSave ? 'btn-success' : 'btn-success'}" onclick={() => save()}>
         {settings.pendingSave ? "Save and Reload" : "Saved"}
       </button>

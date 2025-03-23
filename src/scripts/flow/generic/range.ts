@@ -19,7 +19,7 @@ export function get_default_standard_range(): StandardRange {
   };
 }
 
-export function get_default_angle_range(): AngleRange {
+export function getDefaultAngleRange(): AngleRange {
   return {
     angle: 0,
     spread: 30,

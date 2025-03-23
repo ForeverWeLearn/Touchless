@@ -1,6 +1,6 @@
 import type { HandednessID } from "./utils/const";
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
-import { engine_state, hand_results } from "../stores/engine.svelte";
+import { engineState, handResults } from "../stores/engine.svelte";
 import { calculateKeypoints } from "./utils/algo";
 import { GestureClassifier } from "./gesture_classifier";
 import { GestureParser } from "./gesture_parser.svelte";
@@ -11,7 +11,7 @@ import { Drawer } from "./drawer";
 import { Queue } from "./utils/queue";
 
 async function inference(engine: Engine) {
-  if (!engine_state.running) {
+  if (!engineState.running) {
     return;
   }
 
@@ -37,8 +37,8 @@ async function inference(engine: Engine) {
 
     await engine.analyzer.analyze();
 
-    hand_results[0].has = false;
-    hand_results[1].has = false;
+    handResults[0].has = false;
+    handResults[1].has = false;
 
     setTimeout(() => window.requestAnimationFrame(() => inference(engine)), settings.engineIdleStep);
     return;
@@ -71,14 +71,14 @@ async function inference(engine: Engine) {
     }
     const [label_id, confidence] = prediction;
 
-    hand_results[handedness].confidence = confidence;
+    handResults[handedness].confidence = confidence;
 
     // Gesture parsing
     engine.gesture_parsers[handedness].parse(label_id, engine.keypoints[handedness], engine.bbox[handedness]);
   }
 
-  hand_results[0].has = checked[0];
-  hand_results[1].has = checked[1];
+  handResults[0].has = checked[0];
+  handResults[1].has = checked[1];
 
   await engine.analyzer.analyze();
 
@@ -112,10 +112,10 @@ export class Engine {
   }
 
   public async set_state(running: boolean) {
-    if (!engine_state.ready) {
+    if (!engineState.ready) {
       return;
     }
-    engine_state.running = running;
+    engineState.running = running;
     if (running) {
       this.connect_camera();
     } else {
@@ -176,8 +176,8 @@ export class Engine {
 
     this.gesture_classifier = new GestureClassifier("models/gesture_classifier/world/nano.tflite");
 
-    this.gesture_parsers[0] = new GestureParser(hand_results[0]);
-    this.gesture_parsers[1] = new GestureParser(hand_results[1]);
+    this.gesture_parsers[0] = new GestureParser(handResults[0]);
+    this.gesture_parsers[1] = new GestureParser(handResults[1]);
 
     this.analyzer = new Analyzer(this);
 
@@ -185,7 +185,7 @@ export class Engine {
 
     this.drawer = new Drawer(this);
 
-    engine_state.ready = true;
+    engineState.ready = true;
   }
 
   public calculateFPS(t: number) {
@@ -194,6 +194,6 @@ export class Engine {
     while (t - this.queueFPS.peek_back() > 1000) {
       this.queueFPS.pop();
     }
-    engine_state.fps = this.queueFPS.size();
+    engineState.fps = this.queueFPS.size();
   }
 }

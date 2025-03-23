@@ -1,9 +1,29 @@
 :root {
     --font-family: 'Lexend', sans-serif;
     --font-family-mono: 'MartianMono', monospace;
-    --color: #181818;
-    --color-secondary: #282828;
-    --bg-color: aliceblue;
-    --bg-color-dim: #b3b3b3;
-    --bg-color-secondary: #d0d0d0;
+    --color: #000;
+    --color-secondary: #00000080;
+    --bg-color: #fff;
+    --bg-color-dim: #fdfdfd  ;
+    --bg-color-secondary: #0000004c;
+    --marker-bg-color: blue;
+    --btn-text-color: #000;
+}
+
+.btn .btn-nbd{
+    border: #000 solid 1px;
+    color: #fdfdfd !important;
+}
+
+.btn-dark{
+    background-color: rgba(240, 248, 255, 0.363);
+}
+
+.btn-dark:hover{
+    background-color: aliceblue;
+}
+
+
+.gesture-select-overlay{
+    background-color: #ffffff5e !important;
 }
