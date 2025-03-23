@@ -2,14 +2,14 @@
   import { page } from "$app/state";
   import { board_state } from "../stores/board.svelte";
   import { engine_state } from "../stores/engine.svelte";
-  import { sidebar_size } from "../stores/geometry.svelte";
+  import { sizebarSize } from "../stores/geometry.svelte";
 
   function is_active(path: string) {
     return page.url.pathname === path ? "active" : "";
   }
 </script>
 
-<div class="d-flex flex-column gap-4 sidebar" bind:clientWidth={sidebar_size.width} data-tauri-drag-region>
+<div class="d-flex flex-column gap-4 sidebar" bind:clientWidth={sizebarSize.width} data-tauri-drag-region>
   <div class="d-flex justify-content-left align-items-end gap-2 m-3">
     <img class="app-icon" src="imgs/svg/token.svg" alt="Home" />
 

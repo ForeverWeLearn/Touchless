@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
   import { connectEndMenu } from "../../../stores/menu.svelte";
-  import { sidebar_size } from "../../../stores/geometry.svelte";
+  import { sizebarSize } from "../../../stores/geometry.svelte";
   import { nodeStore } from "../../../stores/flow.svelte";
   import { NodeType } from "../../../scripts/flow/nodes/node";
 
@@ -20,7 +20,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="context-menu"
-  style="top: {connectEndMenu.top}px; left: {connectEndMenu.left - sidebar_size.width}px;"
+  style="top: {connectEndMenu.top}px; left: {connectEndMenu.left - sizebarSize.width}px;"
   onclick={() => (connectEndMenu.show = false)}
 >
   <button
