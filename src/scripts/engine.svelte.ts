@@ -1,6 +1,6 @@
 import type { HandednessID } from "./utils/const";
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
-import { engine_state, hand_results } from "../stores/engine.svelte";
+import { engine_state, handResults } from "../stores/engine.svelte";
 import { calculateKeypoints } from "./utils/algo";
 import { GestureClassifier } from "./gesture_classifier";
 import { GestureParser } from "./gesture_parser.svelte";
@@ -37,8 +37,8 @@ async function inference(engine: Engine) {
 
     await engine.analyzer.analyze();
 
-    hand_results[0].has = false;
-    hand_results[1].has = false;
+    handResults[0].has = false;
+    handResults[1].has = false;
 
     setTimeout(() => window.requestAnimationFrame(() => inference(engine)), settings.engineIdleStep);
     return;
@@ -64,15 +64,15 @@ async function inference(engine: Engine) {
     engine.gesture_classifier.input(engine.keypoints[handedness], engine.bbox[handedness], handedness);
     const [label_id, confidence] = engine.gesture_classifier.inference();
 
-    hand_results[handedness].confidence = confidence;
+    handResults[handedness].confidence = confidence;
 
     // Gesture parsing
     engine.gesture_parsers[handedness].parse(label_id, engine.keypoints[handedness], engine.bbox[handedness]);
     i += 1;
   }
 
-  hand_results[0].has = checked[0];
-  hand_results[1].has = checked[1];
+  handResults[0].has = checked[0];
+  handResults[1].has = checked[1];
 
   await engine.analyzer.analyze();
 
@@ -170,8 +170,8 @@ export class Engine {
 
     this.gesture_classifier = new GestureClassifier("models/gesture_classifier_right.tflite");
 
-    this.gesture_parsers[0] = new GestureParser(hand_results[0]);
-    this.gesture_parsers[1] = new GestureParser(hand_results[1]);
+    this.gesture_parsers[0] = new GestureParser(handResults[0]);
+    this.gesture_parsers[1] = new GestureParser(handResults[1]);
 
     this.analyzer = new Analyzer(this);
 

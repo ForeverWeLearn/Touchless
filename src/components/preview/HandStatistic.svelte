@@ -1,23 +1,23 @@
 <script lang="ts">
   import { GESTURE_NAMES, type HandednessID } from "../../scripts/utils/const";
-  import { hand_results } from "../../stores/engine.svelte";
+  import { handResults } from "../../stores/engine.svelte";
 
   let { handedness }: { handedness: HandednessID } = $props();
 </script>
 
-<div class="col statistic {hand_results[handedness].has ? '' : 'faded'}">
+<div class="col statistic {handResults[handedness].has ? '' : 'faded'}">
   <div class="row">
     <img
       class:flip-h={handedness == 0}
-      src="imgs/gestures/{GESTURE_NAMES[hand_results[handedness].gesture_id]}.svg"
+      src="imgs/gestures/{GESTURE_NAMES[handResults[handedness].gesture_id]}.svg"
       alt=""
     />
 
     <div class="h6 text-center mt-4">Confidence</div>
-    <progress value={hand_results[handedness].confidence}></progress>
+    <progress value={handResults[handedness].confidence}></progress>
 
     <div class="h6 text-center mt-2">Stability</div>
-    <progress value={hand_results[handedness].stability}></progress>
+    <progress value={handResults[handedness].stability}></progress>
   </div>
 </div>
 

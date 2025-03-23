@@ -8,7 +8,7 @@ import type { Runtime } from "./flow/attributes/condition";
 import type { Engine } from "./engine.svelte";
 import { GESTURE_NAMES, type HandednessID } from "./utils/const";
 import { calculateDistance, calculateVectorAngle } from "./utils/algo";
-import { hand_results } from "../stores/engine.svelte";
+import { handResults } from "../stores/engine.svelte";
 import { nodeStore } from "../stores/flow.svelte";
 import { NodeType } from "./flow/nodes/node";
 import { settings } from "../stores/settings.svelte";
@@ -136,8 +136,8 @@ export class Analyzer {
 
   private satisfyGestures(gestures: GesturesConditionAttribute): boolean {
     function gestureMatching(handedness: HandednessID) {
-      if (hand_results[handedness].has) {
-        return GESTURE_NAMES[hand_results[handedness].gesture_id] == gestures.gestures[handedness].name;
+      if (handResults[handedness].has) {
+        return GESTURE_NAMES[handResults[handedness].gesture_id] == gestures.gestures[handedness].name;
       }
     }
 
@@ -157,7 +157,7 @@ export class Analyzer {
   }
 
   private satisfyDistance(distance: DistanceConditionAttribute): boolean {
-    if (!hand_results[distance.initial.handedness].has || !hand_results[distance.terminal.handedness].has) {
+    if (!handResults[distance.initial.handedness].has || !handResults[distance.terminal.handedness].has) {
       return false;
     }
 
@@ -187,7 +187,7 @@ export class Analyzer {
       return min <= angle || angle <= max;
     };
 
-    if (!hand_results[rotation.initial.handedness].has || !hand_results[rotation.terminal.handedness].has) {
+    if (!handResults[rotation.initial.handedness].has || !handResults[rotation.terminal.handedness].has) {
       return false;
     }
 
