@@ -21,11 +21,11 @@ export class Queue<T> {
     this.backIdx++;
   }
 
-  public peek_back(): T | undefined {
+  public peepBack(): T | undefined {
     return this.empty() ? undefined : this.items[this.backIdx];
   }
 
-  public peek_front(): T | undefined {
+  public peepFront(): T | undefined {
     return this.empty() ? undefined : this.items[this.frontIdx - 1];
   }
 

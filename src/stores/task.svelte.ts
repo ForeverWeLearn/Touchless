@@ -1,5 +1,5 @@
 import type { Command, Key, KeySequence } from "../scripts/utils/const";
-import { check_file_exist, COMMAND_DATA_FILE, KEY_SEQUENCE_DATA_FILE } from "../scripts/utils/path";
+import { checkFileExist, COMMAND_DATA_FILE, KEY_SEQUENCE_DATA_FILE } from "../scripts/utils/path";
 import { AppFileReader, LocalFileReader } from "../scripts/utils/reader";
 
 export function getDefaultKey(): Key {
@@ -126,7 +126,7 @@ function createCommandStore() {
 }
 
 async function loadKeySequenceData(): Promise<KeySequence[]> {
-  const keySequenceExist = await check_file_exist(KEY_SEQUENCE_DATA_FILE.DEST, KEY_SEQUENCE_DATA_FILE.NAME);
+  const keySequenceExist = await checkFileExist(KEY_SEQUENCE_DATA_FILE.DEST, KEY_SEQUENCE_DATA_FILE.NAME);
 
   if (keySequenceExist) {
     return (await AppFileReader.keySequenceData()) as KeySequence[];
@@ -135,7 +135,7 @@ async function loadKeySequenceData(): Promise<KeySequence[]> {
 }
 
 async function loadCommandData(): Promise<Command[]> {
-  const commandExist = await check_file_exist(COMMAND_DATA_FILE.DEST, COMMAND_DATA_FILE.NAME);
+  const commandExist = await checkFileExist(COMMAND_DATA_FILE.DEST, COMMAND_DATA_FILE.NAME);
 
   if (commandExist) {
     return (await AppFileReader.commandData()) as Command[];

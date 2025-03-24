@@ -28,7 +28,7 @@ export class GestureParser {
 
     this.unit = (box[2] + box[3]) / 2;
 
-    const front = this.time_label_id.peek_front();
+    const front = this.time_label_id.peepFront();
 
     if (front && (front[1] !== label_id || now - front[0] > 300)) {
       this.time_label_id.clear();
@@ -36,7 +36,7 @@ export class GestureParser {
     }
 
     this.time_label_id.push([now, label_id]);
-    const back = this.time_label_id.peek_back();
+    const back = this.time_label_id.peepBack();
 
     if (back) {
       this.hand_result.gesture_id = back[1];
@@ -53,7 +53,7 @@ export class GestureParser {
     this.distance.push(d);
 
     while (this.distance.size() > 20) {
-      const back = this.distance.peek_back();
+      const back = this.distance.peepBack();
       if (back != undefined) {
         this.diff -= back;
       }

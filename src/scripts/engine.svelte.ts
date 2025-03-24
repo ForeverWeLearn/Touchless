@@ -191,7 +191,7 @@ export class Engine {
   public calculateFPS(t: number) {
     this.queueFPS.push(t);
     // @ts-ignore
-    while (t - this.queueFPS.peek_back() > 1000) {
+    while (t - this.queueFPS.peepBack() > 1000) {
       this.queueFPS.pop();
     }
     engineState.fps = this.queueFPS.size();

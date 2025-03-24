@@ -16,17 +16,17 @@ export function getRandomString(length = RANDOM_STRING_LENGTH): string {
 }
 
 export function argmax(arr: Float32Array): [number, number] {
-  let max_value = arr[0];
+  let maxValue = arr[0];
   let max_index = 0;
 
   for (let i = 1; i < arr.length; i++) {
-    if (arr[i] > max_value) {
-      max_value = arr[i];
+    if (arr[i] > maxValue) {
+      maxValue = arr[i];
       max_index = i;
     }
   }
 
-  return [max_index, max_value];
+  return [max_index, maxValue];
 }
 
 export function calculateDistance(point1: number[], point2: number[]) {

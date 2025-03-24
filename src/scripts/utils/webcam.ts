@@ -1,4 +1,4 @@
-export async function get_webcam_capabilities() {
+export async function getWebcamCapabilities() {
   try {
     const devices = await navigator.mediaDevices.enumerateDevices();
     const videoDevices = devices.filter((device) => device.kind === "videoinput");
