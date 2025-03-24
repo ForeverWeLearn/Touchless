@@ -3,7 +3,7 @@ import { getDefaultBaseNodeData, NodeType, type BaseNodeData } from "./node";
 
 export type ConditionsNodeData = BaseNodeData & ConditionAttributes;
 
-export function get_default_conditions_node_data(id: string): ConditionsNodeData {
+export function getDefaultConditionNodeData(id: string): ConditionsNodeData {
   return {
     ...getDefaultBaseNodeData(id),
     ...getDefaultConditionAttributes(),

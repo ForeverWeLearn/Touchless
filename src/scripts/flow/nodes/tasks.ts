@@ -5,7 +5,7 @@ export type TasksNodeData = BaseNodeData & {
   tasks: TaskAttribute[];
 };
 
-export function get_default_tasks_node_data(id: string): TasksNodeData {
+export function getDefaultTasksNodeData(id: string): TasksNodeData {
   return {
     ...getDefaultBaseNodeData(id),
     type: NodeType.TASKS,

@@ -9,7 +9,7 @@ export type PowerNodeData = BaseNodeData &
     at_deactive_tasks?: TaskAttribute;
   };
 
-export function get_default_power_node_data(id: string): PowerNodeData {
+export function getDefaultPowerNodeData(id: string): PowerNodeData {
   return {
     ...getDefaultBaseNodeData(id),
     ...getDefaultConditionAttributes(),
