@@ -8,7 +8,7 @@
     --bg-color-dim: #141414;
     --bg-color-secondary: #282828;
     --window-border-color: var(--bg-color-dim);
-    --marker-bg-color: var(--bg-color);
+    --marker-bg-color: blue;
     --btn-text-color: #fff;
 }
 
