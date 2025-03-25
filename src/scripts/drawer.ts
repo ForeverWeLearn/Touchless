@@ -2,8 +2,8 @@ import type { Engine } from "./engine.svelte";
 import { HandLandmarker } from "@mediapipe/tasks-vision";
 
 export class Drawer {
-  public point_color = "#ff0022";
-  public point_radius = 5;
+  public pointColor = "#ff0022";
+  public pointRadius = 5;
   public line_color = "#ffffff";
   public line_width = 3;
 
@@ -27,9 +27,9 @@ export class Drawer {
 
   public landmarks(keypoints: number[][]) {
     for (const keypoint of keypoints) {
-      this.engine.context.fillStyle = this.point_color;
+      this.engine.context.fillStyle = this.pointColor;
       this.engine.context.beginPath();
-      this.engine.context.arc(keypoint[0], keypoint[1], this.point_radius, 0, 2 * Math.PI);
+      this.engine.context.arc(keypoint[0], keypoint[1], this.pointRadius, 0, 2 * Math.PI);
       this.engine.context.fill();
     }
   }
@@ -55,10 +55,10 @@ export class Drawer {
     this.engine.context.lineTo(point2[0], point2[1]);
     this.engine.context.stroke();
 
-    this.engine.context.fillStyle = this.point_color;
+    this.engine.context.fillStyle = this.pointColor;
     this.engine.context.beginPath();
-    this.engine.context.arc(point1[0], point1[1], this.point_radius, 0, 2 * Math.PI);
-    this.engine.context.arc(point2[0], point2[1], this.point_radius, 0, 2 * Math.PI);
+    this.engine.context.arc(point1[0], point1[1], this.pointRadius, 0, 2 * Math.PI);
+    this.engine.context.arc(point2[0], point2[1], this.pointRadius, 0, 2 * Math.PI);
     this.engine.context.fill();
 
     if (text) {

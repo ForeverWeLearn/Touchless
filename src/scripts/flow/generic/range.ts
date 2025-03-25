@@ -10,7 +10,7 @@ export type AngleRange = {
   spread: number;
 };
 
-export function get_default_standard_range(): StandardRange {
+export function getDefaultStandardRange(): StandardRange {
   return {
     min: 0,
     max: 100,

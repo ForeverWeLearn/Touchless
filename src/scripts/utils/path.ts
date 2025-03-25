@@ -33,7 +33,7 @@ export function join(destination: string, file_name: string): string {
   return destination ? `${destination}/${file_name}` : file_name;
 }
 
-export async function check_file_exist(destination: string, file_name: string): Promise<boolean> {
+export async function checkFileExist(destination: string, file_name: string): Promise<boolean> {
   const path = join(destination, file_name);
 
   const exist = await exists(path, { baseDir: BASE_DIRECTORY });
@@ -41,7 +41,7 @@ export async function check_file_exist(destination: string, file_name: string): 
   return exist;
 }
 
-export async function ensure_directory(directory: string) {
+export async function ensureDirectory(directory: string) {
   const exist = await exists(directory, { baseDir: BASE_DIRECTORY });
 
   if (!exist) {

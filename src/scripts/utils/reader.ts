@@ -3,7 +3,7 @@ import type { CustomNode, NodeType } from "../flow/nodes/node";
 import type { Command, KeySequence } from "./const";
 import {
   BASE_DIRECTORY,
-  check_file_exist,
+  checkFileExist,
   EDGES_DATA_FILE,
   join,
   NODES_DATA_FILE,
@@ -15,7 +15,7 @@ import { readTextFile } from "@tauri-apps/plugin-fs";
 
 export class AppFileReader {
   static async text(destination: string, file_name: string): Promise<string | undefined> {
-    const exist = await check_file_exist(destination, file_name);
+    const exist = await checkFileExist(destination, file_name);
 
     if (!exist) {
       return undefined;

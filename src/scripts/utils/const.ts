@@ -1,9 +1,18 @@
-import { LocalFileReader } from "./reader";
-
 export type HandednessID = 0 | 1;
 export type HandednessName = "Left" | "Right";
 
-export type GestureName = "FIST" | "FIST_BACK" | "ONE" | "PALM" | "PALM_BACK" | "THREE" | "TWO";
+export type GestureName =
+  | "FIST"
+  | "HEART"
+  | "HI"
+  | "INDEX"
+  | "LIKE"
+  | "OK"
+  | "PALM"
+  | "SPIDER"
+  | "STOP"
+  | "THREE"
+  | "V";
 
 export type LandmarkID = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20;
 export enum LandmarkName {
@@ -47,69 +56,23 @@ export type KeySequence = {
 export type Command = {
   name: string;
   comamnd: string;
-}
+};
 
 export const HANDEDNESS_NAMES: HandednessName[] = ["Left", "Right"];
-export const GESTURE_NAMES: GestureName[] = ["FIST", "FIST_BACK", "ONE", "PALM", "PALM_BACK", "THREE", "TWO"];
+export const GESTURE_NAMES: GestureName[] = [
+  "FIST",
+  "HEART",
+  "HI",
+  "INDEX",
+  "LIKE",
+  "OK",
+  "PALM",
+  "SPIDER",
+  "STOP",
+  "THREE",
+  "V",
+];
 
 export const LANDMARK_NAMES: LandmarkName[] = Object.values(LandmarkName);
 
 export const KEY_DIRECTION_NAMES: KeyDirection[] = ["Click", "Press", "Release"];
-export const KEY_NAMES = [
-  "Control",
-  "Alt",
-  "Shift",
-  "Meta",
-  "Tab",
-  "Home",
-  "End",
-  "Insert",
-  "Delete",
-  "Space",
-  "Scroll",
-  "Up",
-  "Down",
-  "Left",
-  "Right",
-  "Zoom",
-  "F1",
-  "F2",
-  "F3",
-  "F4",
-  "F5",
-  "F6",
-  "F7",
-  "F8",
-  "F9",
-  "F10",
-  "F11",
-  "F12",
-  "Escape",
-  "Enter",
-  "Unicode(a)",
-  "Unicode(b)",
-  "Unicode(c)",
-  "Unicode(d)",
-  "Unicode(e)",
-  "Unicode(f)",
-  "Unicode(g)",
-  "Unicode(h)",
-  "Unicode(i)",
-  "Unicode(j)",
-  "Unicode(k)",
-  "Unicode(l)",
-  "Unicode(m)",
-  "Unicode(n)",
-  "Unicode(o)",
-  "Unicode(p)",
-  "Unicode(q)",
-  "Unicode(r)",
-  "Unicode(s)",
-  "Unicode(t)",
-  "Unicode(u)",
-  "Unicode(v)",
-  "Unicode(w)",
-  "Unicode(x)",
-  "Unicode(y)",
-  "Unicode(z)",
-];

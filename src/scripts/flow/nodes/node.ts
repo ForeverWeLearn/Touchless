@@ -1,7 +1,7 @@
-import { get_default_conditions_node_data, type ConditionsNodeData } from "./conditions";
-import { get_default_tasks_node_data, type TasksNodeData } from "./tasks";
-import { get_default_entry_node_data, type EntryNodeData } from "./entry";
-import { get_default_power_node_data, type PowerNodeData } from "./power";
+import { getDefaultConditionNodeData, type ConditionsNodeData } from "./conditions";
+import { getDefaultTasksNodeData, type TasksNodeData } from "./tasks";
+import { getDefaultEntryNodeData, type EntryNodeData } from "./entry";
+import { getDefaultPowerNodeData, type PowerNodeData } from "./power";
 
 export enum NodeType {
   ENTRY = "ENTRY",
@@ -76,16 +76,16 @@ export function getDefaultNodeData(
 ): EntryNodeData | ConditionsNodeData | TasksNodeData | PowerNodeData {
   switch (type) {
     case NodeType.ENTRY: {
-      return get_default_entry_node_data(id);
+      return getDefaultEntryNodeData(id);
     }
     case NodeType.CONDITIONS: {
-      return get_default_conditions_node_data(id);
+      return getDefaultConditionNodeData(id);
     }
     case NodeType.TASKS: {
-      return get_default_tasks_node_data(id);
+      return getDefaultTasksNodeData(id);
     }
     case NodeType.POWER: {
-      return get_default_power_node_data(id);
+      return getDefaultPowerNodeData(id);
     }
   }
 }

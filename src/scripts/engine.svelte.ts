@@ -45,9 +45,8 @@ async function inference(engine: Engine) {
   }
 
   // Hands detected
-  let i = 0;
   let checked = [false, false];
-  for (const landmark of engine.results.landmarks) {
+  for (let i = 0; i < engine.results.landmarks.length; i++) {
     const handedness: HandednessID = engine.results.handedness[i][0].displayName == "Left" ? 0 : 1;
     if (checked[handedness]) {
       continue;
@@ -55,20 +54,27 @@ async function inference(engine: Engine) {
     checked[handedness] = true;
 
     // Calculate keypoints and bounding box
-    [engine.keypoints[handedness], engine.bbox[handedness]] = calculateKeypoints(landmark, engine.canvas);
+    [engine.keypoints[handedness], engine.bbox[handedness]] = calculateKeypoints(
+      engine.results.landmarks[i],
+      engine.canvas
+    );
+
     engine.drawer.landmarks(engine.keypoints[handedness]);
     engine.drawer.connections(engine.keypoints[handedness]);
     engine.drawer.bounding_box(engine.bbox[handedness]);
 
     // Gesture classification
-    engine.gesture_classifier.input(engine.keypoints[handedness], engine.bbox[handedness], handedness);
-    const [label_id, confidence] = engine.gesture_classifier.inference();
+    engine.gesture_classifier.input(engine.results.worldLandmarks[i], handedness);
+    const prediction = engine.gesture_classifier.inference();
+    if (!prediction) {
+      continue;
+    }
+    const [label_id, confidence] = prediction;
 
     handResults[handedness].confidence = confidence;
 
     // Gesture parsing
     engine.gesture_parsers[handedness].parse(label_id, engine.keypoints[handedness], engine.bbox[handedness]);
-    i += 1;
   }
 
   handResults[0].has = checked[0];
@@ -102,13 +108,13 @@ export class Engine {
   private inference_handler!: () => void;
 
   constructor() {
-    $effect(() => {
-      this.set_state(engineState.running);
-    });
     this.load_model();
   }
 
   public async set_state(running: boolean) {
+    if (!engineState.ready) {
+      return;
+    }
     engineState.running = running;
     if (running) {
       this.connect_camera();
@@ -168,7 +174,7 @@ export class Engine {
       numHands: 4,
     });
 
-    this.gesture_classifier = new GestureClassifier("models/gesture_classifier_right.tflite");
+    this.gesture_classifier = new GestureClassifier("models/gesture_classifier/world/nano.tflite");
 
     this.gesture_parsers[0] = new GestureParser(handResults[0]);
     this.gesture_parsers[1] = new GestureParser(handResults[1]);
@@ -178,12 +184,14 @@ export class Engine {
     this.executor = new Executor(this);
 
     this.drawer = new Drawer(this);
+
+    engineState.ready = true;
   }
 
   public calculateFPS(t: number) {
     this.queueFPS.push(t);
     // @ts-ignore
-    while (t - this.queueFPS.peek_back() > 1000) {
+    while (t - this.queueFPS.peepBack() > 1000) {
       this.queueFPS.pop();
     }
     engineState.fps = this.queueFPS.size();

@@ -4,7 +4,7 @@ import type { Edge, Viewport } from "@xyflow/svelte";
 import {
   BASE_DIRECTORY,
   EDGES_DATA_FILE,
-  ensure_directory,
+  ensureDirectory,
   join,
   NODES_DATA_FILE,
   KEY_SEQUENCE_DATA_FILE,
@@ -20,7 +20,7 @@ function toJson(obj: any): string {
 
 export class AppFileWriter {
   static async removeFile(destination: string, file_name: string) {
-    await ensure_directory(destination);
+    await ensureDirectory(destination);
 
     const path = join(destination, file_name);
 
@@ -30,7 +30,7 @@ export class AppFileWriter {
   }
 
   static async writeJson(obj: any, destination: string, file_name: string) {
-    await ensure_directory(destination);
+    await ensureDirectory(destination);
 
     console.log(`Writing "${file_name}" to "${destination}"`);
 
