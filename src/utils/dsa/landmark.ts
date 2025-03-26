@@ -1,60 +1,7 @@
 import type { Landmark, NormalizedLandmark } from "@mediapipe/tasks-vision";
 
-<<<<<<< HEAD:src/utils/dsa/landmark.ts
 import type { HandednessID } from "../../types/core";
 import { calculateAngle } from "./math";
-=======
-export const RANDOM_STRING_LENGTH = 6;
-
-export function getRandomString(length = RANDOM_STRING_LENGTH): string {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  let result = "";
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * chars.length);
-    result += chars[randomIndex];
-  }
-
-  return result;
-}
-
-export function argmax(arr: Float32Array): [number, number] {
-  let maxValue = arr[0];
-  let max_index = 0;
-
-  for (let i = 1; i < arr.length; i++) {
-    if (arr[i] > maxValue) {
-      maxValue = arr[i];
-      max_index = i;
-    }
-  }
-
-  return [max_index, maxValue];
-}
-
-export function calculateDistance(point1: number[], point2: number[]) {
-  return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2) ** 0.5;
-}
-
-export function calculateAngle(initial: number[], terminal: number[]): number {
-  const vector = [terminal[0] - initial[0], terminal[1] - initial[1]];
-
-  const angleRad = Math.atan2(vector[1], vector[0]);
-
-  let angleDeg = (angleRad * 180) / Math.PI;
-
-  if (angleDeg < 0) {
-    angleDeg += 360;
-  }
-
-  return angleDeg;
-}
-
-export function calculateKeypoints(landmarks: NormalizedLandmark[], canvas: HTMLCanvasElement): [number[][], number[]] {
-  let imgw = canvas.width;
-  let imgh = canvas.height;
-  let box = [9999, 9999, 0, 0];
->>>>>>> 07011e4ae6974e031b4ac040dd3515816012aa10:src/scripts/utils/algo.ts
 
 export function calculateKeypoints(landmarks: NormalizedLandmark[], width: number, height: number): number[][] {
   let keypoints: number[][] = [];
