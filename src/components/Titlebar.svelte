@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getCurrentWindow } from "@tauri-apps/api/window";
+  
   import { titlebarBtnGroup } from "../stores/appearance.svelte";
 
   const appWindow = getCurrentWindow();

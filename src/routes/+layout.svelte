@@ -4,7 +4,7 @@
 
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import { layout, theme } from "../stores/appearance.svelte";
-  import { handleKeyDown } from "../stores/user_key.svelte";
+  import { handleKeyDown } from "../stores/user-key.svelte";
   import { engineState } from "../stores/engine.svelte";
   import { Engine } from "../scripts/engine.svelte";
   import Titlebar from "../components/Titlebar.svelte";
@@ -21,11 +21,16 @@
   let main: HTMLElement;
 
   $effect(() => {
-    engine.set_state(engineState.running);
+    engine.setState(engineState.running);
   });
 
   appWindow.onResized(async ({ payload: size }) => {
     console.log("Window resized", size);
+
+    if (!main) {
+      return;
+    }
+
     if (await appWindow.isMaximized()) {
       main.classList.remove("window-decoration");
     } else {
@@ -39,7 +44,7 @@
     } else {
       main.classList.add("window-decoration");
     }
-  })
+  });
 
   document.addEventListener("contextmenu", (event) => event.preventDefault());
 

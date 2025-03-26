@@ -1,5 +1,6 @@
-import type { TaskType } from "../scripts/flow/attributes/task";
 import { invoke } from "@tauri-apps/api/core";
+
+import type { TaskType } from "../types/nodes";
 
 export async function refresh() {
   await invoke("execute_key_sequence", { sequence: [{ direction: "Click", key: "F5" }] });

@@ -1,17 +1,19 @@
-import type { GesturesConditionAttribute } from "./flow/attributes/condition/gestures";
-import type { DistanceConditionAttribute } from "./flow/attributes/condition/distance";
-import type { RotationConditionAttribute } from "./flow/attributes/condition/rotation";
-import type { ConditionsNodeData } from "./flow/nodes/conditions";
-import type { GestureParser } from "./gesture_parser.svelte";
-import type { TasksNodeData } from "./flow/nodes/tasks";
-import type { Runtime } from "./flow/attributes/condition";
+import type { GestureParser } from "./gesture-parser.svelte";
 import type { Engine } from "./engine.svelte";
-import { GESTURE_NAMES, type HandednessID } from "./utils/const";
-import { calculateDistance, calculateAngle } from "./utils/algo";
+import {
+  ConditionType,
+  getDefaultTaskNodeData,
+  NodeType,
+  type Condition,
+  type DistanceCondition,
+  type GesturesCondition,
+  type RotationCondition,
+} from "../types/nodes";
+import { calculateAngle, calculateDistance } from "../utils/dsa/math";
+import { GESTURE_NAMES, type HandednessID } from "../types/core";
 import { handResults } from "../stores/engine.svelte";
-import { nodeStore } from "../stores/flow.svelte";
-import { NodeType } from "./flow/nodes/node";
 import { settings } from "../stores/settings.svelte";
+import { nodeStore } from "../stores/flow/node.svelte";
 
 export class Analyzer {
   private engine!: Engine;
@@ -20,8 +22,9 @@ export class Analyzer {
   private now = 0;
 
   constructor(engine: Engine) {
+    getDefaultTaskNodeData;
     this.engine = engine;
-    this.parsers = engine.gesture_parsers;
+    this.parsers = engine.gestureParsers;
   }
 
   public async analyze() {
@@ -33,147 +36,140 @@ export class Analyzer {
           break;
         }
 
-        case NodeType.CONDITIONS: {
-          const data = node.data as ConditionsNodeData;
-
-          if (!nodeStore.isParentActivated(data.id)) {
+        case NodeType.CONDITION: {
+          if (!nodeStore.isParentActivated(node.data.id)) {
             break;
           }
 
-          if (this.parseConditions(data)) {
-            data.runtime.activated = true;
-            data.runtime.lastSatisfy = this.now;
-          } else if (this.now - data.runtime.lastSatisfy > data.duration) {
-            data.runtime.activated = false;
+          if (this.checkConditions(node.data.conditions)) {
+            node.data.runtime.activated = true;
+            node.data.runtime.lastSatisfied = this.now;
+          } else if (this.now - node.data.runtime.lastSatisfied > node.data.duration) {
+            node.data.runtime.activated = false;
           }
 
           break;
         }
 
-        case NodeType.TASKS: {
-          const data = node.data as TasksNodeData;
-          const parentActivated = nodeStore.isParentActivated(data.id);
+        case NodeType.TASK: {
+          const parentActivated = nodeStore.isParentActivated(node.data.id);
 
-          if (data.enable && parentActivated) {
+          if (node.data.enable && parentActivated) {
             await this.resetAll();
-            await this.engine.executor.parse(data.tasks);
+            await this.engine.executor.parse(node.data);
           }
+
           break;
         }
       }
     }
   }
 
-  /**
-   * Whether or not a ConditionsNode's conditions seem to be satisfied.
-   * Return true in cases:
-   * - logic = "AND" and all conditions activated.
-   * - logic = "OR" and one of conditons activated.
-   *
-   * Otherwise, return false.
-   *  */
-  private parseConditions(data: ConditionsNodeData): boolean {
-    const parseActive = (stf: boolean, runtime: Runtime, time2active: number) => {
-      const step = this.now - runtime.lastSatisfy;
+  private checkConditions(conditions: Condition[]): boolean {
+    const parse = (condition: GesturesCondition | DistanceCondition | RotationCondition, satisfied: boolean) => {
+      const runtime = condition.runtime;
+      const time2active = condition.time2active;
+
+      const step = this.now - runtime.lastSatisfied;
 
       // If not satisfy...
-      if (!stf) {
+      if (!satisfied) {
         // ...for longer than max active step...
         if (step > settings.maxActiveStep) {
-          // ...then set deactivated and reset first satisfy.
+          // ...then set deactivated.
           runtime.activated = false;
-          runtime.firstSatisfy = 0;
+          runtime.firstSatisfied = 0;
+          runtime.lastSatisfied = 0;
         }
       }
 
       // If satisfy...
-      if (stf) {
+      if (satisfied) {
         // ...and step too far...
         if (step > settings.maxActiveStep) {
           // ...then it seem to be first satisfy, set first satisfy to now.
-          runtime.firstSatisfy = this.now;
+          runtime.firstSatisfied = this.now;
         }
 
         // ...then set last satisfy to now.
-        runtime.lastSatisfy = this.now;
+        runtime.lastSatisfied = this.now;
 
         // ...for longer than time to active...
-        if (runtime.lastSatisfy - runtime.firstSatisfy > time2active) {
+        if (runtime.lastSatisfied - runtime.firstSatisfied > time2active) {
           // ...then active.
           runtime.activated = true;
         }
       }
     };
 
-    if (data.gestures.enable) {
-      parseActive(this.satisfyGestures(data.gestures), data.gestures.runtime, data.gestures.time2active);
-    }
+    for (const condition of conditions) {
+      switch (condition.type) {
+        case ConditionType.GESTURES: {
+          parse(condition, this.checkGesturesCondition(condition));
+          break;
+        }
 
-    if (data.distance.enable) {
-      parseActive(this.satisfyDistance(data.distance), data.distance.runtime, data.distance.time2active);
-    }
+        case ConditionType.DISTANCE: {
+          parse(condition, this.checkDistanceCondition(condition));
+          break;
+        }
 
-    if (data.rotation.enable) {
-      parseActive(this.satisfyRotation(data.rotation), data.rotation.runtime, data.rotation.time2active);
-    }
-
-    if (data.logic == "AND") {
-      return (
-        data.gestures.runtime.activated == data.gestures.enable &&
-        data.distance.runtime.activated == data.distance.enable &&
-        data.rotation.runtime.activated == data.rotation.enable
-      );
-    }
-
-    console.log(data.rotation.runtime.activated, data.rotation.enable);
-
-    return (
-      (data.gestures.runtime.activated && data.gestures.enable) ||
-      (data.distance.runtime.activated && data.distance.enable) ||
-      (data.rotation.runtime.activated && data.rotation.enable)
-    );
-  }
-
-  private satisfyGestures(gestures: GesturesConditionAttribute): boolean {
-    function gestureMatching(handedness: HandednessID) {
-      if (handResults[handedness].has) {
-        return GESTURE_NAMES[handResults[handedness].gesture_id] == gestures.gestures[handedness].name;
+        case ConditionType.ROTATION: {
+          parse(condition, this.checkRotationCondition(condition));
+          break;
+        }
       }
     }
 
-    if (gestures.gestures[0].enable) {
+    for (const condition of conditions) {
+      if (!condition.runtime.activated) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private checkGesturesCondition(condition: GesturesCondition): boolean {
+    function gestureMatching(handedness: HandednessID) {
+      if (handResults[handedness].has) {
+        return GESTURE_NAMES[handResults[handedness].gesture_id] == condition.gestures[handedness].name;
+      }
+    }
+
+    if (condition.gestures[0].enable) {
       if (!gestureMatching(0)) {
         return false;
       }
     }
 
-    if (gestures.gestures[1].enable) {
+    if (condition.gestures[1].enable) {
       if (!gestureMatching(1)) {
         return false;
       }
     }
 
-    return gestures.gestures[0].enable || gestures.gestures[1].enable;
+    return condition.gestures[0].enable || condition.gestures[1].enable;
   }
 
-  private satisfyDistance(distance: DistanceConditionAttribute): boolean {
-    if (!handResults[distance.initial.handedness].has || !handResults[distance.terminal.handedness].has) {
+  private checkDistanceCondition(condition: DistanceCondition): boolean {
+    if (!handResults[condition.initial.handedness].has || !handResults[condition.terminal.handedness].has) {
       return false;
     }
 
-    const initial = this.engine.keypoints[distance.initial.handedness][distance.initial.landmark];
-    const terminal = this.engine.keypoints[distance.terminal.handedness][distance.terminal.landmark];
+    const initial = this.engine.keypoints[condition.initial.handedness][condition.initial.landmark];
+    const terminal = this.engine.keypoints[condition.terminal.handedness][condition.terminal.landmark];
 
-    distance.unit = (this.parsers[0].unit + this.parsers[1].unit) / 2;
+    const unit = (this.parsers[0].unit + this.parsers[1].unit) / 2;
 
-    const d = calculateDistance(initial, terminal) / distance.unit;
+    const d = calculateDistance(initial, terminal) / unit;
 
-    this.engine.drawer.line(initial, terminal, d.toFixed(1) + " hu", 3);
+    this.engine.drawer.line(initial, terminal, d.toFixed(1), 3);
 
-    return distance.range.min < d && d < distance.range.max;
+    return condition.range.min < d && d < condition.range.max;
   }
 
-  private satisfyRotation(rotation: RotationConditionAttribute): boolean {
+  private checkRotationCondition(condition: RotationCondition): boolean {
     const angleInRange = (angle: number, min: number, max: number) => {
       if (min < 0) {
         min += 360;
@@ -187,12 +183,12 @@ export class Analyzer {
       return min <= angle || angle <= max;
     };
 
-    if (!handResults[rotation.initial.handedness].has || !handResults[rotation.terminal.handedness].has) {
+    if (!handResults[condition.initial.handedness].has || !handResults[condition.terminal.handedness].has) {
       return false;
     }
 
-    const initial = this.engine.keypoints[rotation.initial.handedness][rotation.initial.landmark];
-    const terminal = this.engine.keypoints[rotation.terminal.handedness][rotation.terminal.landmark];
+    const initial = this.engine.keypoints[condition.initial.handedness][condition.initial.landmark];
+    const terminal = this.engine.keypoints[condition.terminal.handedness][condition.terminal.landmark];
 
     const angle = 360 - calculateAngle(initial, terminal);
 
@@ -200,8 +196,8 @@ export class Analyzer {
 
     const inRange = angleInRange(
       angle,
-      rotation.range.angle - rotation.range.spread,
-      rotation.range.angle + rotation.range.spread
+      condition.range.angle - condition.range.spread,
+      condition.range.angle + condition.range.spread
     );
 
     return inRange;

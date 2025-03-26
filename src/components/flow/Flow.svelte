@@ -1,24 +1,37 @@
 <script lang="ts">
   import "@xyflow/svelte/dist/style.css";
 
-  import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, Controls } from "@xyflow/svelte";
-  import { nodesWritable, nodeTypes, viewStore, edgesWritable } from "../../stores/flow.svelte";
-  import { connectEndMenu, nodeContextMenu, paneContextMenu } from "../../stores/menu.svelte";
+  import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, useSvelteFlow } from "@xyflow/svelte";
+  import { connectEndMenu, nodeContextMenu, paneContextMenu } from "../../stores/flow/menu.svelte";
+  import { initialViewport, viewportStore } from "../../stores/flow/viewport.svelte";
+  import { nodesWritable } from "../../stores/flow/node.svelte";
+  import { edgesWritable } from "../../stores/flow/edge.svelte";
   import { clientSize } from "../../stores/geometry.svelte";
-  import { settings } from "../../stores/settings.svelte";
+  import { NodeType } from "../../types/nodes";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
   import PaneContextMenu from "./menus/PaneContextMenu.svelte";
+  import ConditionsNode from "./nodes/condition/ConditionNode.svelte";
   import ConnectEndMenu from "./menus/ConnectEndMenu.svelte";
   import StatusBar from "./float/StatusBar.svelte";
+  import EntryNode from "./nodes/entry/EntryNode.svelte";
+  import TaskNode from "./nodes/tasks/TaskNode.svelte";
+  import TopBar from "./float/TopBar.svelte";
+  import { onMount } from "svelte";
 
-  // When edges changed, pending save
-  edgesWritable.subscribe((v) => {
-    settings.pendingSave = true;
+  const { viewport, setViewport } = useSvelteFlow();
+
+  const nodeTypes = {
+    [NodeType.ENTRY]: EntryNode,
+    [NodeType.CONDITION]: ConditionsNode,
+    [NodeType.TASK]: TaskNode,
+  };
+
+  viewport.subscribe((v) => {
+    viewportStore.viewport = v;
   });
 
-  // When nodes changed, pending save
-  nodesWritable.subscribe((v) => {
-    settings.pendingSave = true;
+  onMount(() => {
+    setViewport(initialViewport);
   });
 
   const handleConnectEnd: OnConnectEnd = (event, connectionState) => {
@@ -79,10 +92,10 @@
 
 <main bind:clientWidth={clientSize.width} bind:clientHeight={clientSize.height}>
   <SvelteFlow
+    {nodeTypes}
+    {initialViewport}
     nodes={nodesWritable}
     edges={edgesWritable}
-    {nodeTypes}
-    initialViewport={viewStore.initialViewport}
     minZoom={0.2}
     maxZoom={10}
     snapGrid={[50, 50]}
@@ -91,7 +104,6 @@
     on:panecontextmenu={handlePaneContextMenu}
     on:nodecontextmenu={handleNodeContextMenu}
   >
-    <Controls showLock={false} showZoom={false} showFitView={false} />
     <Background variant={BackgroundVariant.Dots} gap={50} />
 
     {#if connectEndMenu.show}
@@ -107,14 +119,15 @@
     {/if}
   </SvelteFlow>
 
+  <TopBar />
   <StatusBar />
 </main>
 
 <style>
   main {
-    width: 102%;
-    height: 103%;
+    width: calc(100% + 3px);
+    height: calc(100% + 20px);
     margin-top: -1px;
-    margin-left: -1%;
+    margin-left: -1px;
   }
 </style>

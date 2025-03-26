@@ -1,14 +1,16 @@
-import type { HandednessID } from "./utils/const";
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
+
+import type { HandednessID } from "../types/core";
 import { engineState, handResults } from "../stores/engine.svelte";
-import { calculateKeypoints } from "./utils/algo";
-import { GestureClassifier } from "./gesture_classifier";
-import { GestureParser } from "./gesture_parser.svelte";
+import { calculateBoundingBox } from "../utils/dsa/algorithm";
+import { calculateKeypoints } from "../utils/dsa/landmark";
+import { GestureClassifier } from "./gesture-classifier";
+import { GestureParser } from "./gesture-parser.svelte";
 import { settings } from "../stores/settings.svelte";
 import { Analyzer } from "./analyzer.svelte";
 import { Executor } from "./executor";
 import { Drawer } from "./drawer";
-import { Queue } from "./utils/queue";
+import { Queue } from "../utils/dsa/queue";
 
 async function inference(engine: Engine) {
   if (!engineState.running) {
@@ -17,7 +19,7 @@ async function inference(engine: Engine) {
 
   const current_time = performance.now();
 
-  engine.calculateFPS(current_time);
+  engine.updateFPS(current_time);
 
   // Do nothing until next trigger time
   if (current_time < engine.next_trigger_time) {
@@ -54,18 +56,22 @@ async function inference(engine: Engine) {
     checked[handedness] = true;
 
     // Calculate keypoints and bounding box
-    [engine.keypoints[handedness], engine.bbox[handedness]] = calculateKeypoints(
+    engine.keypoints[handedness] = calculateKeypoints(
       engine.results.landmarks[i],
-      engine.canvas
+      engine.canvas.width,
+      engine.canvas.height
     );
+    engine.bbox[handedness] = calculateBoundingBox(engine.keypoints[handedness]);
+
+    // Draw keypoints and connections
 
     engine.drawer.landmarks(engine.keypoints[handedness]);
     engine.drawer.connections(engine.keypoints[handedness]);
     engine.drawer.bounding_box(engine.bbox[handedness]);
 
     // Gesture classification
-    engine.gesture_classifier.input(engine.results.worldLandmarks[i], handedness);
-    const prediction = engine.gesture_classifier.inference();
+    engine.gestureClassifier.input(engine.results.worldLandmarks[i], handedness);
+    const prediction = engine.gestureClassifier.inference();
     if (!prediction) {
       continue;
     }
@@ -74,7 +80,7 @@ async function inference(engine: Engine) {
     handResults[handedness].confidence = confidence;
 
     // Gesture parsing
-    engine.gesture_parsers[handedness].parse(label_id, engine.keypoints[handedness], engine.bbox[handedness]);
+    engine.gestureParsers[handedness].parse(label_id, engine.keypoints[handedness], engine.bbox[handedness]);
   }
 
   handResults[0].has = checked[0];
@@ -89,8 +95,8 @@ export class Engine {
   public next_trigger_time = 0;
 
   public landmarker!: HandLandmarker;
-  public gesture_classifier!: GestureClassifier;
-  public gesture_parsers: GestureParser[] = [];
+  public gestureClassifier!: GestureClassifier;
+  public gestureParsers: GestureParser[] = [];
   public analyzer!: Analyzer;
   public executor!: Executor;
   public drawer!: Drawer;
@@ -105,13 +111,13 @@ export class Engine {
 
   private queueFPS: Queue<number> = new Queue();
   private stream!: MediaStream;
-  private inference_handler!: () => void;
+  private inferenceHandler!: () => void;
 
   constructor() {
-    this.load_model();
+    this.loadModel();
   }
 
-  public async set_state(running: boolean) {
+  public async setState(running: boolean) {
     if (!engineState.ready) {
       return;
     }
@@ -140,8 +146,8 @@ export class Engine {
     navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
       this.video.srcObject = stream;
       this.stream = stream;
-      this.inference_handler = () => inference(this);
-      this.video.addEventListener("loadeddata", this.inference_handler);
+      this.inferenceHandler = () => inference(this);
+      this.video.addEventListener("loadeddata", this.inferenceHandler);
     });
   }
 
@@ -149,7 +155,7 @@ export class Engine {
     if (this.video == undefined) {
       return;
     }
-    this.video.removeEventListener("loadeddata", this.inference_handler);
+    this.video.removeEventListener("loadeddata", this.inferenceHandler);
     if (this.video.srcObject) {
       this.video.pause();
       this.video.srcObject = null;
@@ -163,7 +169,7 @@ export class Engine {
     this.drawer.clear();
   }
 
-  private async load_model() {
+  private async loadModel() {
     const fileset_resolver = await FilesetResolver.forVisionTasks("libs/mediapipe");
     this.landmarker = await HandLandmarker.createFromOptions(fileset_resolver, {
       baseOptions: {
@@ -174,10 +180,10 @@ export class Engine {
       numHands: 4,
     });
 
-    this.gesture_classifier = new GestureClassifier("models/gesture_classifier/world/nano.tflite");
+    this.gestureClassifier = new GestureClassifier("models/gesture_classifier/world/nano.tflite");
 
-    this.gesture_parsers[0] = new GestureParser(handResults[0]);
-    this.gesture_parsers[1] = new GestureParser(handResults[1]);
+    this.gestureParsers[0] = new GestureParser(handResults[0]);
+    this.gestureParsers[1] = new GestureParser(handResults[1]);
 
     this.analyzer = new Analyzer(this);
 
@@ -188,12 +194,17 @@ export class Engine {
     engineState.ready = true;
   }
 
-  public calculateFPS(t: number) {
+  public updateFPS(t: number) {
     this.queueFPS.push(t);
-    // @ts-ignore
-    while (t - this.queueFPS.peek_back() > 1000) {
+
+    while (true) {
+      const back = this.queueFPS.peekBack();
+      if (!back || t - back <= 1000) {
+        break;
+      }
       this.queueFPS.pop();
     }
+
     engineState.fps = this.queueFPS.size();
   }
 }

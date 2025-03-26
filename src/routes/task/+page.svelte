@@ -1,27 +1,45 @@
 <script lang="ts">
-  import { commandStore, keySequenceStore } from "../../stores/task.svelte";
-  import { AppFileWriter } from "../../scripts/utils/writer";
-  import KeySequenceGroup from "../../components/task/KeySequenceGroup.svelte";
-  import TaskGroupTitle from "../../components/task/TaskGroupTitle.svelte";
-  import CommandGroup from "../../components/task/CommandGroup.svelte";
+  import { AppFileWriter } from "../../utils/fs/writer";
+  import { DataFileType } from "../../types/fs";
+  import { keySequenceStore } from "../../stores/task/key-sequence.svelte";
+  import { commandStore } from "../../stores/task/command.svelte";
+  import KeySequenceGroup from "../../components/task/key-sequence/KeySequenceGroup.svelte";
+  import TaskGroupTitle from "../../components/task/components/TaskGroupTitle.svelte";
+  import CommandGroup from "../../components/task/command/CommandGroup.svelte";
 
   $effect(() => {
-    console.log($state.snapshot(keySequenceStore.key_sequences));
-    AppFileWriter.writeKeySequenceData(keySequenceStore.key_sequences);
+    $state.snapshot(keySequenceStore.keySequences);
+    AppFileWriter.writeDataFile(DataFileType.KEY_SEQUENCE, keySequenceStore.keySequences);
+  });
 
-    console.log($state.snapshot(commandStore.commands));
-    AppFileWriter.writeCommandData(commandStore.commands);
+  $effect(() => {
+    $state.snapshot(commandStore.commands);
+    AppFileWriter.writeDataFile(DataFileType.COMMAND, commandStore.commands);
   });
 </script>
 
-<div class="d-flex flex-column gap-4 m-3 mx-4" style="overflow: scroll;">
+<div class="d-flex flex-column gap-4 p-5" style="overflow: scroll;">
   <div class="d-flex flex-column">
-    <TaskGroupTitle title="Key Sequences" icon_src="imgs/svg/keyboard_alt.svg"></TaskGroupTitle>
+    <div class="d-flex">
+      <TaskGroupTitle title="Key Sequences" icon_src="imgs/svg/keyboard_alt.svg"></TaskGroupTitle>
+
+      <button class="btn btn-nbd" onclick={() => keySequenceStore.pushFront()}>
+        <img src="imgs/svg/add.svg" alt="" />
+      </button>
+    </div>
+
     <KeySequenceGroup></KeySequenceGroup>
   </div>
 
   <div class="d-flex flex-column mt-4">
-    <TaskGroupTitle title="Commands" icon_src="imgs/svg/terminal.svg"></TaskGroupTitle>
+    <div class="d-flex">
+      <TaskGroupTitle title="Commands" icon_src="imgs/svg/terminal.svg"></TaskGroupTitle>
+    
+      <button class="btn btn-nbd" onclick={() => commandStore.pushFront()}>
+        <img src="imgs/svg/add.svg" alt="" />
+      </button>
+    </div>
+
     <CommandGroup></CommandGroup>
   </div>
 </div>

@@ -1,28 +1,7 @@
 <script lang="ts">
-  import { edgesWritable, nodeStore } from "../../../stores/flow.svelte";
-  import { appStore, refresh } from "../../../stores/app.svelte";
-  import { AppFileWriter } from "../../../scripts/utils/writer";
-  import { useSvelteFlow } from "@xyflow/svelte";
+  import { appStore } from "../../../stores/app.svelte";
   import { settings } from "../../../stores/settings.svelte";
-  import { TaskType } from "../../../scripts/flow/attributes/task";
-
-  const { fitView, getViewport } = useSvelteFlow();
-
-  async function save() {
-    await nodeStore.resetRuntimeState();
-    await AppFileWriter.writeNodeData(nodeStore.nodes);
-    await AppFileWriter.writeEdgeData($edgesWritable);
-    await AppFileWriter.writeViewData(getViewport());
-    await refresh();
-  }
-
-  async function resetDefault() {
-    await nodeStore.resetRuntimeState();
-    await AppFileWriter.removeNodeFile();
-    await AppFileWriter.removeEdgeFile();
-    await AppFileWriter.removeViewFile();
-    await refresh();
-  }
+  import { TaskType } from "../../../types/nodes";
 </script>
 
 <aside>
@@ -38,14 +17,6 @@
         </div>
       {/each}
     </div>
-
-    <div class="d-flex mt-auto gap-2 mx-5">
-      <button class="btn btn-nbd " onclick={() => fitView({ duration: 1000 })}>Fit View</button>
-      <button class="btn btn-nbd " onclick={() => resetDefault()}>Default</button>
-      <button class="btn btn-nbd {settings.pendingSave ? 'btn-success' : 'btn-success'}" onclick={() => save()}>
-        {settings.pendingSave ? "Save and Reload" : "Saved"}
-      </button>
-    </div>
   </div>
 </aside>
 
@@ -55,7 +26,6 @@
     left: 0;
     right: 0;
     bottom: 2rem;
-    background: transparent;
     z-index: 997;
   }
 </style>

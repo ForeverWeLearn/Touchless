@@ -1,22 +1,22 @@
 <script lang="ts">
   import { boardState } from "../../stores/board.svelte";
   import { engineState } from "../../stores/engine.svelte";
+  import { ICON_PATHS } from "../../types/core";
   import HandStatistic from "./HandStatistic.svelte";
 </script>
 
 <div class="d-flex justify-content-center board {boardState.show ? 'show' : 'hide'}">
   <div class="d-flex board-content">
-    <div class="d-flex board-visualize">
+    <div class="d-flex board-visualize px-3">
       <div class="info">
         {engineState.running ? `FPS: ${engineState.fps}` : ""}
       </div>
 
       <HandStatistic handedness={0}></HandStatistic>
 
-      <div class="video-container">
-        <div class="d-flex flex-column align-items-center justify-content-center placehold">
-          <div class="h5 fw-light mb-3">There is nothing here...</div>
-          <div>o(*￣▽￣*)ブ</div>
+      <div class="video-container mx-5">
+        <div class="d-flex align-items-center justify-content-center placehold" style="opacity: 0.1;">
+          <img src={ICON_PATHS.PLAY_ARROW} alt="" style="height: 80%;" />
         </div>
 
         <!-- svelte-ignore a11y_media_has_caption -->
@@ -61,7 +61,7 @@
 
   .board-content {
     position: relative;
-    max-height: 20rem;
+    max-height: 16rem;
     aspect-ratio: 1.6;
     padding: 0.4rem;
     background-color: var(--bg-color-dim);
@@ -81,7 +81,6 @@
   }
 
   .placehold {
-    font-size: 3rem;
     position: absolute;
     top: 0;
     left: 0;

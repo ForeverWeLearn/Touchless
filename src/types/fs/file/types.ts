@@ -1,0 +1,12 @@
+export enum DataFileType {
+  FLOW_LIST = "FLOW_LIST",
+
+  NODE = "NODE",
+  EDGE = "EDGE",
+  VIEWPORT = "VIEWPORT",
+
+  KEY_SEQUENCE = "KEY_SEQUENCE",
+  COMMAND = "COMMAND",
+
+  SETTING = "SETTING",
+}

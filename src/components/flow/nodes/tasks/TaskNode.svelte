@@ -1,11 +1,12 @@
 <script lang="ts">
-  import type { TasksNodeData } from "../../../../scripts/flow/nodes/tasks";
   import { Handle, Position, type NodeProps, type Node } from "@xyflow/svelte";
-  import TaskLayout from "./TaskLayout.svelte";
 
-  type $$Props = NodeProps<Node<TasksNodeData>>;
+  import type { TaskNodeData } from "../../../../types/nodes";
+  import TaskLayout from "./TaskNodeLayout.svelte";
 
-  export let data: TasksNodeData;
+  type $$Props = NodeProps<Node<TaskNodeData>>;
+
+  export let data: TaskNodeData;
 </script>
 
 <div>

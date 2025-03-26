@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { nodeContextMenu } from "../../../stores/menu.svelte";
+  import { nodeContextMenu } from "../../../stores/flow/menu.svelte";
   import { sizebarSize } from "../../../stores/geometry.svelte";
-  import { nodeStore } from "../../../stores/flow.svelte";
+  import { nodeStore } from "../../../stores/flow/node.svelte";
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->

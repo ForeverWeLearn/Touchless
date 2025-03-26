@@ -1,9 +1,9 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
-  import { connectEndMenu } from "../../../stores/menu.svelte";
+  import { connectEndMenu } from "../../../stores/flow/menu.svelte";
   import { sizebarSize } from "../../../stores/geometry.svelte";
-  import { nodeStore } from "../../../stores/flow.svelte";
-  import { NodeType } from "../../../scripts/flow/nodes/node";
+  import { NodeType } from "../../../types/nodes";
+  import { nodeStore } from "../../../stores/flow/node.svelte";
 
   const { screenToFlowPosition } = useSvelteFlow();
 
@@ -25,25 +25,17 @@
 >
   <button
     class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.CONDITIONS, getFlowPosition(), connectEndMenu.source)}
+    onclick={() => nodeStore.add(NodeType.CONDITION, getFlowPosition(), connectEndMenu.source)}
   >
     <img src="imgs/svg/flowchart.svg" alt="" />
-    <span>{NodeType.CONDITIONS}</span>
+    <span>{NodeType.CONDITION}</span>
   </button>
 
   <button
     class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.TASKS, getFlowPosition(), connectEndMenu.source)}
+    onclick={() => nodeStore.add(NodeType.TASK, getFlowPosition(), connectEndMenu.source)}
   >
     <img src="imgs/svg/bolt.svg" alt="" />
-    <span>{NodeType.TASKS}</span>
-  </button>
-
-  <button
-    class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.POWER, getFlowPosition(), connectEndMenu.source)}
-  >
-    <img src="imgs/svg/token.svg" alt="" />
-    <span>{NodeType.POWER}</span>
+    <span>{NodeType.TASK}</span>
   </button>
 </div>

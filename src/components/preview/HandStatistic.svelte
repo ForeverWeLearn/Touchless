@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GESTURE_NAMES, type HandednessID } from "../../scripts/utils/const";
+  import { GESTURE_NAMES, type HandednessID } from "../../types/core";
   import { handResults } from "../../stores/engine.svelte";
 
   let { handedness }: { handedness: HandednessID } = $props();

@@ -1,15 +1,22 @@
 <script lang="ts">
   import { page } from "$app/state";
+
   import { boardState } from "../stores/board.svelte";
   import { engineState } from "../stores/engine.svelte";
   import { sizebarSize } from "../stores/geometry.svelte";
+  import { ICON_PATHS } from "../types/core";
 
   function isActive(path: string) {
-    return page.url.pathname === path ? "active" : "";
+    return page.url.pathname === path ? "btn-sidebar-active" : "";
+  }
+
+  function runButtonClick() {
+    
+    engineState.running = !engineState.running;
   }
 </script>
 
-<div class="d-flex flex-column gap-4 sidebar" bind:clientWidth={sizebarSize.width} data-tauri-drag-region>
+<div class="d-flex flex-column gap-4 sidebar" bind:clientWidth={sizebarSize.width}>
   <div class="d-flex justify-content-left align-items-end gap-2 m-3">
     <img class="app-icon" src="imgs/svg/token.svg" alt="Home" />
 
@@ -24,12 +31,12 @@
     </div>
   </div>
 
-  <div class="d-flex justify-content-center align-items-center gap-3 px-4">
+  <div class="d-flex justify-content-center align-items-center gap-1 ps-4 pe-3">
     <button
-      class="btn d-flex flex-fill justify-content-center align-items-center btn-launch"
-      onclick={() => (engineState.running = !engineState.running)}
+      class="btn d-flex flex-fill justify-content-center align-items-center gap-2"
+      onclick={() => runButtonClick()}
     >
-      <img src="imgs/svg/{engineState.running ? 'stop' : 'play_arrow'}.svg" alt="" />
+      <img src={engineState.running ? ICON_PATHS.STOP : ICON_PATHS.PLAY_ARROW} alt="" />
       <div>
         {engineState.running ? "Stop" : "Run"}
       </div>
@@ -40,7 +47,7 @@
     </button>
   </div>
 
-  <div class="d-flex flex-column p-2 h-100">
+  <div class="d-flex flex-column h-100 navigation-pane">
     <div class="d-flex flex-column mb-auto gap-2">
       <a href="/" class="link-sidebar" onclick={() => (boardState.show = false)}>
         <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/')}">
@@ -65,8 +72,8 @@
     </div>
 
     <div class="d-flex flex-column mt-auto">
-      <a href="/settings" class="link-sidebar" onclick={() => (boardState.show = false)}>
-        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/settings')}">
+      <a href="/setting" class="link-sidebar" onclick={() => (boardState.show = false)}>
+        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/setting')}">
           <img src="imgs/svg/settings.svg" alt="Settings" />
           <div class="my-0 text-sidebar">Settings</div>
         </div>
@@ -74,10 +81,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .active {
-    background-color: #ffffff17;
-    opacity: 1;
-  }
-</style>

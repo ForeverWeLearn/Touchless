@@ -1,10 +1,10 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
-  import { paneContextMenu } from "../../../stores/menu.svelte";
+  import { paneContextMenu } from "../../../stores/flow/menu.svelte";
   import { sizebarSize } from "../../../stores/geometry.svelte";
-  import { nodeStore } from "../../../stores/flow.svelte";
-  import { NodeType } from "../../../scripts/flow/nodes/node";
   import { settings } from "../../../stores/settings.svelte";
+  import { NodeType } from "../../../types/nodes";
+  import { nodeStore } from "../../../stores/flow/node.svelte";
 
   const { screenToFlowPosition } = useSvelteFlow();
 
@@ -34,25 +34,17 @@
 
   <button
     class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.CONDITIONS, getFlowPosition())}
+    onclick={() => nodeStore.add(NodeType.CONDITION, getFlowPosition())}
   >
-    <img src={settings.icons.nodes.CONDITIONS} alt="" />
-    <span>{NodeType.CONDITIONS}</span>
+    <img src={settings.icons.nodes.CONDITION} alt="" />
+    <span>{NodeType.CONDITION}</span>
   </button>
 
   <button
     class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.TASKS, getFlowPosition())}
+    onclick={() => nodeStore.add(NodeType.TASK, getFlowPosition())}
   >
-    <img src={settings.icons.nodes.TASKS} alt="" />
-    <span>{NodeType.TASKS}</span>
-  </button>
-
-  <button
-    class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.POWER, getFlowPosition())}
-  >
-    <img src={settings.icons.nodes.POWER} alt="" />
-    <span>{NodeType.POWER}</span>
+    <img src={settings.icons.nodes.TASK} alt="" />
+    <span>{NodeType.TASK}</span>
   </button>
 </div>
