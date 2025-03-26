@@ -19,6 +19,10 @@ function createAppStore() {
   const appendTaskHistory = (task: TaskInspect) => {
     taskHistory.push(task);
 
+    setTimeout(() => {
+      taskHistory.splice(0, 1);
+    }, 5000);
+
     if (taskHistory.length > taskHistorySize) {
       taskHistory.splice(0, 1);
     }
