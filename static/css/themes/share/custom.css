@@ -1,5 +1,6 @@
 .context-menu {
     background-color: var(--bg-color);
+    --marker-bg-color: blue;
 }
 
 .disabled {
