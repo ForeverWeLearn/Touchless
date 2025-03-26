@@ -12,8 +12,4 @@
   <div class="d-flex flex-column mt-3">
     <NodeLabel {data} />
   </div>
-
-  <div class="d-flex flex-column mx-1 mb-4 nodrag">
-    <cite contenteditable="true" spellcheck="false" bind:textContent={data.message} style="padding: 0.5rem;"></cite>
-  </div>
 </div>
