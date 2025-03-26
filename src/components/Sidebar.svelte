@@ -11,14 +11,13 @@
   }
 
   function runButtonClick() {
-    
     engineState.running = !engineState.running;
   }
 </script>
 
 <div class="d-flex flex-column gap-4 sidebar" bind:clientWidth={sizebarSize.width}>
   <div class="d-flex justify-content-left align-items-end gap-2 m-3">
-    <img class="app-icon" src="imgs/svg/token.svg" alt="Home" />
+    <img class="img-filter app-icon" src={ICON_PATHS.TOKEN} alt="Home" />
 
     <div class="d-flex flex-column justify-content-end align-items-start h-100 me-4">
       <div class="d-flex flex-fill align-items-end">
@@ -36,14 +35,14 @@
       class="btn d-flex flex-fill justify-content-center align-items-center gap-2"
       onclick={() => runButtonClick()}
     >
-      <img src={engineState.running ? ICON_PATHS.STOP : ICON_PATHS.PLAY_ARROW} alt="" />
+      <img class="img-filter" src={engineState.running ? ICON_PATHS.STOP : ICON_PATHS.PLAY_ARROW} alt="" />
       <div>
         {engineState.running ? "Stop" : "Run"}
       </div>
     </button>
 
     <button class="btn btn-nbd" onclick={() => (boardState.show = !boardState.show)}>
-      <img src="imgs/svg/{boardState.show ? 'preview_off' : 'preview'}.svg" alt="" />
+      <img class="img-filter" src={boardState.show ? ICON_PATHS.PREVIEW_OFF : ICON_PATHS.PREVIEW} alt="" />
     </button>
   </div>
 
@@ -51,21 +50,21 @@
     <div class="d-flex flex-column mb-auto gap-2">
       <a href="/" class="link-sidebar" onclick={() => (boardState.show = false)}>
         <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/')}">
-          <img src="imgs/svg/home.svg" alt="Home" />
+          <img class="img-filter" src={ICON_PATHS.HOME} alt="Home" />
           <div class="my-0 text-sidebar">Home</div>
         </div>
       </a>
 
       <a href="/flow" class="link-sidebar" onclick={() => (boardState.show = false)}>
         <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/flow')}">
-          <img src="imgs/svg/automation.svg" alt="Flow" />
+          <img class="img-filter" src={ICON_PATHS.AUTOMATION} alt="Flow" />
           <div class="my-0 text-sidebar">Flow</div>
         </div>
       </a>
 
       <a href="/task" class="link-sidebar" onclick={() => (boardState.show = false)}>
         <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/task')}">
-          <img src="imgs/svg/bolt.svg" alt="Task" />
+          <img class="img-filter" src={ICON_PATHS.BOLT} alt="Task" />
           <div class="my-0 text-sidebar">Task</div>
         </div>
       </a>
@@ -74,7 +73,7 @@
     <div class="d-flex flex-column mt-auto">
       <a href="/setting" class="link-sidebar" onclick={() => (boardState.show = false)}>
         <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/setting')}">
-          <img src="imgs/svg/settings.svg" alt="Settings" />
+          <img class="img-filter" src={ICON_PATHS.SETTINGS} alt="Settings" />
           <div class="my-0 text-sidebar">Settings</div>
         </div>
       </a>

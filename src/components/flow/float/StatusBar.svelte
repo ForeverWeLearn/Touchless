@@ -10,6 +10,7 @@
       {#each appStore.taskHistory as task (task)}
         <div class="d-flex gap-3 appear-then-disappear">
           <img
+            class="img-filter"
             src={task.type == TaskType.COMMAND ? settings.icons.tasks.COMMAND : settings.icons.tasks.KEY_SEQUENCE}
             alt=""
           />

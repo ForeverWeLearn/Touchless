@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { KeySequence } from "../../../types/core";
+  import { ICON_PATHS, type KeySequence } from "../../../types/core";
   import { keySequenceStore } from "../../../stores/task/key-sequence.svelte";
   import KeyForm from "./KeyForm.svelte";
 
@@ -11,7 +11,7 @@
     <input class="form-control input-name" type="text" spellcheck="false" bind:value={keySequence.name} />
 
     <button class="btn btn-nbd" onclick={() => remove()}>
-      <img src="imgs/svg/delete.svg" alt="Delete Sequence" />
+      <img class="img-filter" src={ICON_PATHS.DELETE} alt="Delete Sequence" />
     </button>
   </div>
 

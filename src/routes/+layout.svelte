@@ -3,7 +3,7 @@
   import "bootstrap/dist/js/bootstrap.min.js";
 
   import { getCurrentWindow } from "@tauri-apps/api/window";
-  import { layout, theme } from "../stores/appearance.svelte";
+  import { layoutStore, themeStore } from "../stores/appearance.svelte";
   import { handleKeyDown } from "../stores/user-key.svelte";
   import { engineState } from "../stores/engine.svelte";
   import { Engine } from "../scripts/engine.svelte";
@@ -53,8 +53,8 @@
 
 <svelte:head>
   <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/layouts/{layout.current}/layout.css" />
-  <link rel="stylesheet" href="css/themes/{theme.current}/theme.css" />
+  <link rel="stylesheet" href="css/layouts/{layoutStore.current}/layout.css" />
+  <link rel="stylesheet" href="css/themes/{themeStore.current}/theme.css" />
 </svelte:head>
 
 <Titlebar></Titlebar>

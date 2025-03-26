@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { HANDEDNESS_NAMES, LANDMARK_NAMES } from "../../../../types/core";
+  import { HANDEDNESS_NAMES, ICON_PATHS, LANDMARK_NAMES } from "../../../../types/core";
   import type { Point } from "../../../../types/forms";
   import PointSelector from "./PointSelector.svelte";
 
   let { data, name }: { data: Point; name: string } = $props();
 
-  let selecting = $state(false);
+  let state = $state({ selecting: false });
 
   const POSITIONS = [
     { top: 84.8, left: 50 },
@@ -30,26 +30,21 @@
     { top: 38.6, left: 80.8 },
     { top: 30, left: 86 },
   ];
-
-  $effect(() => {
-    $state.snapshot(data.landmark);
-    selecting = false;
-  });
 </script>
 
 <div class="d-flex flex-column select-box point-select-box nodrag" style="position: relative;">
-  {#if selecting}
-    <PointSelector {data} />
+  {#if state.selecting}
+    <PointSelector {data} {state} />
   {/if}
 
   <button
     class="btn btn-nbd d-flex flex-column align-items-center"
     style="padding: 0rem !important;"
-    onclick={() => (selecting = !selecting)}
+    onclick={() => (state.selecting = !state.selecting)}
   >
     <div class="hand-landmark" class:flip-h={data.handedness == 0} style="position: relative;">
       <div class="marker" style="left: {POSITIONS[data.landmark].left}%; top: {POSITIONS[data.landmark].top}%"></div>
-      <img src="imgs/svg/hand_landmarks.svg" alt="Landmarks" />
+      <img class="img-filter" src={ICON_PATHS.HAND_LANDMARKS} alt="Landmarks" />
     </div>
 
     <div class="landmark-name">
@@ -66,7 +61,6 @@
 </div>
 
 <style>
-
   .point-select-box > button {
     padding: 0;
   }

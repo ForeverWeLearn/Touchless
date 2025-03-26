@@ -102,7 +102,6 @@
     onconnectend={handleConnectEnd}
     on:paneclick={handlePaneClick}
     on:panecontextmenu={handlePaneContextMenu}
-    on:nodecontextmenu={handleNodeContextMenu}
   >
     <Background variant={BackgroundVariant.Dots} gap={50} />
 

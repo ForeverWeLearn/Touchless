@@ -24,27 +24,43 @@
   style="top: {paneContextMenu.top}px; left: {paneContextMenu.left - sizebarSize.width}px;"
   onclick={() => (paneContextMenu.show = false)}
 >
-  <button
-    class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.ENTRY, getFlowPosition())}
-  >
-    <img src={settings.icons.nodes.ENTRY} alt="" />
-    <span>{NodeType.ENTRY}</span>
-  </button>
+  <div class="background"></div>
 
-  <button
-    class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.CONDITION, getFlowPosition())}
-  >
-    <img src={settings.icons.nodes.CONDITION} alt="" />
-    <span>{NodeType.CONDITION}</span>
-  </button>
+  <div class="context-menu-content">
+    <button
+      class="btn d-flex align-items-center btn-context-menu"
+      onclick={() => nodeStore.add(NodeType.ENTRY, getFlowPosition())}
+    >
+      <img class="img-filter" src={settings.icons.nodes.ENTRY} alt="" />
+      <span>{NodeType.ENTRY}</span>
+    </button>
 
-  <button
-    class="btn d-flex align-items-center btn-context-menu"
-    onclick={() => nodeStore.add(NodeType.TASK, getFlowPosition())}
-  >
-    <img src={settings.icons.nodes.TASK} alt="" />
-    <span>{NodeType.TASK}</span>
-  </button>
+    <button
+      class="btn d-flex align-items-center btn-context-menu"
+      onclick={() => nodeStore.add(NodeType.CONDITION, getFlowPosition())}
+    >
+      <img class="img-filter" src={settings.icons.nodes.CONDITION} alt="" />
+      <span>{NodeType.CONDITION}</span>
+    </button>
+
+    <button
+      class="btn d-flex align-items-center btn-context-menu"
+      onclick={() => nodeStore.add(NodeType.TASK, getFlowPosition())}
+    >
+      <img class="img-filter" src={settings.icons.nodes.TASK} alt="" />
+      <span>{NodeType.TASK}</span>
+    </button>
+  </div>
 </div>
+
+<style>
+  .background {
+    background-color: rgba(0, 0, 0, 0.394);
+    position: absolute;
+    top: -5000px;
+    left: -5000px;
+    width: 10000px;
+    height: 10000px;
+    z-index: -1;
+  }
+</style>

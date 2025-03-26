@@ -29,9 +29,9 @@
     left: calc(100% + 0.2rem);
     width: 20rem;
     padding: 1rem;
-    border: solid 1px var(--color);
+    border: solid 1px var(--fg-color-2);
     border-radius: 0.5rem;
-    background-color: rgb(26, 26, 26);
+    background-color: var(--bg-color-2);
     backdrop-filter: blur(5px);
     z-index: 999;
   }

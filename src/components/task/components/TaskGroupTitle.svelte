@@ -2,7 +2,7 @@
   let { title, icon_src }: { title: string; icon_src: string } = $props();
 </script>
 
-<div class="d-flex align-items-center">
-  <img class="task-group-title-icon" src={icon_src} alt="" />
-  <div class="task-group-title">{title}</div>
+<div class="title-with-icon py-3" style="font-size: 2rem;">
+  <img class="img-filter" src={icon_src} alt="" />
+  <div class="fw-bold">{title}</div>
 </div>

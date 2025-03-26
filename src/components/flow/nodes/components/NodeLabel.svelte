@@ -25,7 +25,12 @@
     for="node-label-{data.id}"
     style="cursor: pointer; text-transform: uppercase"
   >
-    <img style="height: 2rem; aspect-ratio: 1; margin-left: -1rem; margin-right: 1rem" {src} alt="" />
+    <img
+      class="img-filter"
+      style="height: 2rem; aspect-ratio: 1; margin-left: -1rem; margin-right: 1rem"
+      {src}
+      alt=""
+    />
     <div>{data.type}</div>
   </label>
 </div>

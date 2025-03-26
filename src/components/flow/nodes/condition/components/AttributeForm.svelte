@@ -8,11 +8,7 @@
     $props();
 </script>
 
-<div
-  class="attr d-flex align-items-center gap-4 py-3 appear"
-  class:attr-active={data.runtime.activated}
-  class:faded={!data.enable}
->
+<div class="attr d-flex align-items-center gap-4 py-3 appear" class:attr-active={data.runtime.activated}>
   <div class="d-flex flex-fill p-3">
     <select class="nodrag w-100" onchange={() => change(getDefaultCondition(data.type))} bind:value={data.type}>
       {#each Object.values(ConditionType) as type}

@@ -20,7 +20,7 @@
 <aside>
   <div class="input-group">
     <button type="button" class="btn d-flex gap-2 px-4" onclick={() => save()}>
-      <img src={icon} alt="" />
+      <img class="img-filter" src={icon} alt="" />
       <div>Save</div>
     </button>
 
@@ -37,7 +37,7 @@
       <li>
         <div class="dropdown-item d-flex">
           <button class="btn btn-danger d-flex flex-fill gap-2">
-            <img src={ICON_PATHS.DELETE} alt="" />
+            <img class="img-filter" src={ICON_PATHS.DELETE} alt="" />
             <div>Delete</div>
           </button>
         </div>
@@ -48,7 +48,7 @@
       <li>
         <div class="dropdown-item d-flex">
           <button class="btn btn-primary d-flex flex-fill gap-2" onclick={() => reloadFlow()}>
-            <img src={ICON_PATHS.HISTORY} alt="" />
+            <img class="img-filter" src={ICON_PATHS.HISTORY} alt="" />
             <div>Revert</div>
           </button>
         </div>
@@ -59,8 +59,8 @@
 
 <style>
   button {
-    color: var(--color) !important;
-    background-color: var(--bg-color);
+    color: var(--fg-color-2) !important;
+    background-color: var(--bg-color-2);
   }
 
   aside {

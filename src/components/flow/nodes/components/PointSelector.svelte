@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { LandmarkID } from "../../../../types/core";
+  import { ICON_PATHS, type LandmarkID } from "../../../../types/core";
   import type { Point } from "../../../../types/forms";
 
-  let { data }: { data: Point } = $props();
+  let { data, state }: { data: Point; state: { selecting: boolean } } = $props();
 
   const POSITIONS = [
     { top: 86.8, left: 50 },
@@ -29,13 +29,13 @@
   ];
 </script>
 
-<div class="background nodrag"></div>
+<div class="background" onclick={() => (state.selecting = false)}></div>
 
 <div class="gesture-select-overlay">
   <div class="h5 text-center mb-4">Select Point</div>
 
   <div class="nodrag" class:flip-h={data.handedness == 0} style="position: relative;">
-    <img class="gesture-icon" src="imgs/svg/hand_landmarks.svg" alt="Landmarks" />
+    <img class="gesture-icon" src={ICON_PATHS.HAND_LANDMARKS} alt="Landmarks" />
 
     <div class="landmarks">
       {#each POSITIONS as position, i}
@@ -69,7 +69,7 @@
     left: calc(100% + 0.2rem);
     width: 20rem;
     padding: 1rem;
-    border: solid 1px var(--color);
+    border: solid 1px var(--fg-color-2);
     border-radius: 0.5rem;
     background-color: rgb(26, 26, 26);
     backdrop-filter: blur(5px);

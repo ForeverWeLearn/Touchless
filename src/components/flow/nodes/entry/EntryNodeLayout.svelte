@@ -9,11 +9,7 @@
 </script>
 
 <div class="node d-flex flex-column gap-2" class:node-active={handDetected} style="width: 300px;">
-  <div class="d-flex flex-column mt-3">
+  <div class="d-flex flex-column m-5">
     <NodeLabel {data} />
-  </div>
-
-  <div class="d-flex flex-column mx-1 mb-4 nodrag">
-    <cite contenteditable="true" spellcheck="false" bind:textContent={data.message} style="padding: 0.5rem;"></cite>
   </div>
 </div>

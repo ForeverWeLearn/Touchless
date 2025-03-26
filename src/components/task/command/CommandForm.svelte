@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Command } from "../../../types/core";
+  import { ICON_PATHS, type Command } from "../../../types/core";
 
   let { command, add, deleteCommand }: { command: Command; add: () => void; deleteCommand: () => void } = $props();
 </script>
@@ -19,11 +19,11 @@
     </div>
 
     <button class="btn btn-nbd" onclick={() => add()}>
-      <img src="imgs/svg/add.svg" alt="Add Command" />
+      <img class="img-filter" src={ICON_PATHS.ADD} alt="Add Command" />
     </button>
 
     <button class="btn btn-nbd" onclick={() => deleteCommand()}>
-      <img src="imgs/svg/close.svg" alt="Delete Command" />
+      <img class="img-filter" src={ICON_PATHS.CLOSE} alt="Delete Command" />
     </button>
   </div>
 </div>

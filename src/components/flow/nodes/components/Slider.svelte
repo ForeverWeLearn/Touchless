@@ -7,7 +7,19 @@
     step,
     unit,
     value = $bindable(),
-  }: { name: string; icon: string; min: number; max: number; step: number; unit: string; value: number } = $props();
+    editable = true,
+    showvalue = true,
+  }: {
+    name: string;
+    icon: string;
+    min: number;
+    max: number;
+    step: number;
+    unit: string;
+    value: number;
+    editable: boolean;
+    showvalue: boolean;
+  } = $props();
 
   $effect(() => {
     if (value < min) {
@@ -27,15 +39,22 @@
   <div class="slider">
     <div class="fill" style="width: {percent}%"></div>
     <div class="d-flex align-items-center gap-2 ms-2 content">
-      <img src={icon} alt="" />
-      <div class="name">{name} <small>({unit})</small></div>
+      {#if icon}<img class="img-filter" src={icon} alt="" />{/if}
+      <div class="name">
+        {name}{#if unit}<small>({unit})</small>{/if}
+      </div>
     </div>
   </div>
 
-  <input class="form-range" type="range" {min} {max} {step} bind:value />
-  <div style="position: absolute; top: 0; right: 0; bottom: 0; display:flex; align-items:center">
-    <input class="form-control input-slider" type="number" {min} {max} {step} bind:value />
-  </div>
+  {#if editable}
+    <input class="form-range" type="range" {min} {max} {step} bind:value />
+  {/if}
+
+  {#if showvalue}
+    <div style="position: absolute; top: 0; right: 0; bottom: 0; display:flex; align-items:center">
+      <input class="form-control input-slider" type="number" {min} {max} {step} bind:value />
+    </div>
+  {/if}
 </div>
 
 <style>

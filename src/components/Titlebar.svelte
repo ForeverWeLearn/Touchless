@@ -13,21 +13,21 @@
       class="btn d-flex justify-content-center align-items-center btn-titlebar"
       onclick={() => appWindow.minimize()}
     >
-      <img class="img-origin" src="imgs/titlebar/{titlebarBtnGroup.current}/minimize.svg" alt="Minimize" />
+      <img src="imgs/titlebar/{titlebarBtnGroup.current}/minimize.svg" alt="Minimize" />
     </button>
     <button
       id="titlebar-maximize"
       class="btn d-flex justify-content-center align-items-center btn-titlebar"
       onclick={() => appWindow.toggleMaximize()}
     >
-      <img class="img-origin" src="imgs/titlebar/{titlebarBtnGroup.current}/maximize.svg" alt="Maximize" />
+      <img src="imgs/titlebar/{titlebarBtnGroup.current}/maximize.svg" alt="Maximize" />
     </button>
     <button
       id="titlebar-close"
       class="btn d-flex justify-content-center align-items-center btn-titlebar"
       onclick={() => appWindow.close()}
     >
-      <img class="img-origin" src="imgs/titlebar/{titlebarBtnGroup.current}/close.svg" alt="Close" />
+      <img src="imgs/titlebar/{titlebarBtnGroup.current}/close.svg" alt="Close" />
     </button>
   </div>
 </div>

@@ -7,7 +7,7 @@
   let { data, change, remove }: { data: Task; change: (newTask: Task) => void; remove: () => void } = $props();
 </script>
 
-<div class="attr d-flex align-items-center gap-3 appear" class:faded={!data.enable}>
+<div class="attr d-flex align-items-center gap-3 appear">
   <div class="d-flex flex-fill gap-3 ps-3">
     <select class="nodrag" onchange={() => change(getDefaultTask(data.type))} bind:value={data.type}>
       {#each Object.values(TaskType) as type}

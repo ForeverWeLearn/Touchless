@@ -17,9 +17,9 @@
 
     pieChart.style.rotate = `${angle}deg`;
     pieChart.style.background = `conic-gradient(
-        var(--color) 0% ${spread_percent}%,
-        var(--bg-color) ${spread_percent}% ${100 - spread_percent}%,
-        var(--color) ${100 - spread_percent}% 100%)`;
+        var(--fg-color-2) 0% ${spread_percent}%,
+        var(--bg-color-2) ${spread_percent}% ${100 - spread_percent}%,
+        var(--fg-color-2) ${100 - spread_percent}% 100%)`;
   };
 
   $effect(() => {
@@ -29,8 +29,7 @@
 
 <div class="d-flex gap-4">
   <div class="d-flex flex-column justify-content-center gap-1">
-    <Slider name="Angle" icon={ICON_PATHS.A360} min={0} max={360} step={5} unit="deg" bind:value={data.angle}
-    ></Slider>
+    <Slider name="Angle" icon={ICON_PATHS.A360} min={0} max={360} step={5} unit="deg" bind:value={data.angle}></Slider>
     <Slider name="Spread" icon={ICON_PATHS.ARROW_RANGE} min={0} max={180} step={5} unit="deg" bind:value={data.spread}
     ></Slider>
   </div>
@@ -101,7 +100,7 @@
     aspect-ratio: 1;
     border-radius: 50%;
     background: conic-gradient(#3498db 0% 70%, #2ecc71 70% 100%);
-    box-shadow: 0 0 3px var(--color);
+    box-shadow: 0 0 3px var(--fg-color-2);
     border-width: 2px;
     border-color: #3498db;
   }
@@ -113,7 +112,7 @@
     width: 5%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-2);
     content: "";
   }
 </style>

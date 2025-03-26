@@ -1,6 +1,6 @@
 <script lang="ts">
   import { userKeyStore, type KeyReceiver } from "../../../stores/user-key.svelte";
-  import { KEY_DIRECTION_NAMES, type Key } from "../../../types/core";
+  import { ICON_PATHS, KEY_DIRECTION_NAMES, type Key } from "../../../types/core";
 
   let { key, append, remove }: { key: Key; append: () => void; remove: () => void } = $props();
 
@@ -41,11 +41,11 @@
     </div>
 
     <button class="btn btn-nbd" onclick={() => append()}>
-      <img src="imgs/svg/add.svg" alt="Add Key" />
+      <img class="img-filter" src={ICON_PATHS.ADD} alt="Add Key" />
     </button>
 
     <button class="btn btn-nbd" onclick={() => remove()}>
-      <img src="imgs/svg/close.svg" alt="Delete Key" />
+      <img class="img-filter" src={ICON_PATHS.CLOSE} alt="Delete Key" />
     </button>
   </div>
 </div>
