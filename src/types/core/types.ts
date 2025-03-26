@@ -108,7 +108,7 @@ export enum ICON_PATHS {
   SETTINGS = "imgs/svg/settings.svg",
   STOP = "imgs/svg/stop.svg",
   TERMINAL = "imgs/svg/terminal.svg",
-  FIELDS = "imgs/svg/text_fields.svg",
+  TEXT_FIELDS = "imgs/svg/text_fields.svg",
   TIMELAPSE = "imgs/svg/timelapse.svg",
   TOKEN = "imgs/svg/token.svg",
 }

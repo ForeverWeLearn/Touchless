@@ -1,10 +1,9 @@
 import type { Settings } from "./types";
 import { NodeType, TaskType } from "../nodes";
+import { ICON_PATHS } from "../core";
 
 export function getDefaultSettings(): Settings {
   return {
-    autoSaveInterval: 3000,
-
     maxActiveStep: 100,
     engineIdleStep: 330,
 
@@ -12,14 +11,14 @@ export function getDefaultSettings(): Settings {
 
     icons: {
       nodes: {
-        [NodeType.ENTRY]: "imgs/svg/hub.svg",
-        [NodeType.CONDITION]: "imgs/svg/flowchart.svg",
-        [NodeType.TASK]: "imgs/svg/bolt.svg",
+        [NodeType.ENTRY]: ICON_PATHS.HUB,
+        [NodeType.CONDITION]: ICON_PATHS.FLOWCHART,
+        [NodeType.TASK]: ICON_PATHS.BOLT,
       },
       tasks: {
-        [TaskType.KEY_SEQUENCE]: "imgs/svg/keyboard_alt.svg",
-        [TaskType.TEXT]: "imgs/svg/text_fields.svg",
-        [TaskType.COMMAND]: "imgs/svg/terminal.svg",
+        [TaskType.KEY_SEQUENCE]: ICON_PATHS.KEYBOARD_ALT,
+        [TaskType.TEXT]: ICON_PATHS.TEXT_FIELDS,
+        [TaskType.COMMAND]: ICON_PATHS.TERMINAL,
       },
     },
   };

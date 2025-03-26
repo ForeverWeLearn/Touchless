@@ -1,8 +1,6 @@
 import type { NodeType, TaskType } from "../nodes";
 
 export type Settings = {
-  autoSaveInterval: number;
-
   maxActiveStep: number;
   engineIdleStep: number;
 
