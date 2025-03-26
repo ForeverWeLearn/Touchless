@@ -22,7 +22,7 @@ select option {
     padding: 0.5rem 0.5rem;
 }
 
-input {
+input[type="text"] {
     border-width: var(--btn-border-width);
     border-style: solid;
     border-radius: var(--btn-border-radius);
@@ -30,10 +30,11 @@ input {
 }
 
 input[type="range"] {
+    outline: none;
     border-style: none;
 }
 
-input:focus {
+input[type="text"]:focus {
     outline: none;
     border-width: var(--btn-border-width);
     border-style: solid;

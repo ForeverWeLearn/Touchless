@@ -33,15 +33,6 @@
     opacity: 1;
 }
 
-.btn-launch {
-    border-color: var(--color-secondary);
-    font-weight: 500;
-}
-
-.btn-launch:hover {
-    border-color: var(--color);
-}
-
 .btn-sidebar {
     opacity: 0.65;
     background-color: transparent;
@@ -54,7 +45,13 @@
 
 .btn-sidebar:hover {
     opacity: 1;
+    background-color: var(--bg-color);
+}
+
+.btn-sidebar-active {
+    box-shadow: 0 0 15px #0000007b;
     background-color: var(--bg-color-secondary);
+    opacity: 1;
 }
 
 .btn-titlebar {

@@ -68,8 +68,6 @@
 }
 
 .home-page-container {
-    background-image: url("../../../imgs/image.png");
-    background-size: cover;
 }
 
 .marker {
@@ -79,6 +77,6 @@
     aspect-ratio: 1;
     rotate: 45deg;
     background-color: var(--marker-bg-color);
-    box-shadow: 0 0 2px aliceblue;
+    box-shadow: 0 0 2px var(--color);
   }
 

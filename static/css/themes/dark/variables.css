@@ -1,13 +1,16 @@
 :root {
     --font-family: 'Lexend', sans-serif;
     --font-family-mono: 'MartianMono', monospace;
-    --color: aliceblue;
+    
+    --color: #fff;
     --color-secondary: #b3b3b3;
+    
     --bg-color-bright: #3d3d3d;
     --bg-color: #181818;
     --bg-color-dim: #141414;
     --bg-color-secondary: #282828;
-    --window-border-color: var(--bg-color-dim);
+
+    --window-border-color: var(--color);
     --marker-bg-color: var(--bg-color);
     --btn-text-color: #fff;
 }

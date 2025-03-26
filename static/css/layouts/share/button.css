@@ -22,22 +22,6 @@
     border-width: var(--btn-border-width);
 }
 
-.btn-launch {
-    padding: 1rem;
-    padding-left: 0rem;
-    border-style: solid;
-    border-width: var(--btn-border-width);
-}
-
-.btn-launch>img {
-    padding-right: 1rem;
-}
-
-.btn-launch:hover {
-    border-style: solid;
-    border-width: var(--btn-border-width);
-}
-
 .btn-sidebar {
     border-style: none;
     border-radius: var(--btn-border-radius);

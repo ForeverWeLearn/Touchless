@@ -116,7 +116,7 @@
     transition: opacity 0.5s ease-in-out;
     cursor: move;
     width: 100vw;
-    height: 80px;
+    height: 40px;
 }
 
 .titlebar-btn-group {
@@ -130,4 +130,8 @@
     border-width: var(--window-border-width);
     border-style: solid;
     border-radius: var(--window-border-radius);
+}
+
+.navigation-pane {
+    padding: 1rem;
 }

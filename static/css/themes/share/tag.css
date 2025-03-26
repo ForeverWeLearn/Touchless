@@ -30,18 +30,15 @@ input[type="text"]:focus {
     outline-color: #fff;
 }
 
-textarea:focus,
-input:focus,
-input[type]:focus,
+input[type="text"]:focus,
 .uneditable-input:focus {
     border-color: var(--color);
     box-shadow: 0 1px 1px transparent inset, 0 0 8px var(--color-secondary);
     outline: 0 none;
 }
 
-input::placeholder {
+input[type="text"]::placeholder {
     color: var(--color-secondary) !important;
-    
 }
 
 body {

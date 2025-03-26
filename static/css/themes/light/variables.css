@@ -20,7 +20,7 @@
 }
 
 .btn-dark:hover{
-    background-color: aliceblue;
+    background-color: var(--color);
 }
 
 
