@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getCurrentWindow } from "@tauri-apps/api/window";
-  
+
   import { titlebarBtnGroup } from "../stores/appearance.svelte";
 
   const appWindow = getCurrentWindow();
@@ -13,21 +13,21 @@
       class="btn d-flex justify-content-center align-items-center btn-titlebar"
       onclick={() => appWindow.minimize()}
     >
-      <img src="imgs/titlebar/{titlebarBtnGroup.current}/minimize.svg" alt="Minimize" />
+      <img class="img-origin" src="imgs/titlebar/{titlebarBtnGroup.current}/minimize.svg" alt="Minimize" />
     </button>
     <button
       id="titlebar-maximize"
       class="btn d-flex justify-content-center align-items-center btn-titlebar"
       onclick={() => appWindow.toggleMaximize()}
     >
-      <img src="imgs/titlebar/{titlebarBtnGroup.current}/maximize.svg" alt="Maximize" />
+      <img class="img-origin" src="imgs/titlebar/{titlebarBtnGroup.current}/maximize.svg" alt="Maximize" />
     </button>
     <button
       id="titlebar-close"
       class="btn d-flex justify-content-center align-items-center btn-titlebar"
       onclick={() => appWindow.close()}
     >
-      <img src="imgs/titlebar/{titlebarBtnGroup.current}/close.svg" alt="Close" />
+      <img class="img-origin" src="imgs/titlebar/{titlebarBtnGroup.current}/close.svg" alt="Close" />
     </button>
   </div>
 </div>
