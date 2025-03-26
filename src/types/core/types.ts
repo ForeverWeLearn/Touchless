@@ -85,6 +85,7 @@ export enum ICON_PATHS {
   AUTOMATION = "imgs/svg/automation.svg",
   BOLT = "imgs/svg/bolt.svg",
   CENTER_FOCUS_WEAK = "imgs/svg/center_focus_weak.svg",
+  CONTENT_COPY = "imgs/svg/content_copy.svg",
   CLOSE = "imgs/svg/close.svg",
   DELETE = "imgs/svg/delete.svg",
   DONE_OUTLINE = "imgs/svg/done_outline.svg",

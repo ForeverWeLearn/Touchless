@@ -1,7 +1,3 @@
-img {
+.img-filter {
     filter: invert(1);
-}
-
-.img-origin {
-    filter: none;
 }

@@ -23,6 +23,12 @@
     z-index: 999;
     display: flex;
     flex-direction: column;
+    border: none;
+}
+
+.context-menu-content {
+    display: flex;
+    flex-direction: column;
     padding: 0.5rem;
     border-width: var(--btn-border-width);
     border-style: solid;
@@ -100,13 +106,6 @@
     padding: 0.2rem;
 }
 
-.start-banner {
-    max-width: 32rem;
-    border-width: var(--btn-border-width);
-    border-radius: calc(var(--btn-border-radius) * 2);
-    border-style: solid;
-}
-
 .titlebar {
     position: absolute;
     top: 0;
@@ -134,4 +133,16 @@
 
 .navigation-pane {
     padding: 1rem;
+}
+
+.title-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+}
+
+.title-with-icon>img {
+    height: 1.4em;
+    aspect-ratio: 1;
 }

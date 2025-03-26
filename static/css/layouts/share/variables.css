@@ -4,4 +4,7 @@
 
     --btn-border-width: 1px;
     --btn-border-radius: 0.5rem;
+
+    --gap: 1rem;
+    --rel-gap: 1em;
 }

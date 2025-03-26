@@ -1,15 +1,17 @@
-.context-menu {
-    background-color: var(--bg-color);
-    --marker-bg-color: blue;
+.context-menu-content {
+    background-color: var(--bg-color-2);
+    border-color: var(--fg-color-2);
 }
 
 .disabled {
     opacity: 0.4;
+    filter: brightness(0.4);
     pointer-events: none;
 }
 
 .faded {
     opacity: 0.4;
+    filter: brightness(0.4);
 }
 
 .gesture-checkbox {
@@ -17,11 +19,11 @@
 }
 
 .select-box {
-    border-color: var(--color-secondary);
+    border-color: var(--fg-color-1);
 }
 
 .select-box:hover {
-    border-color: var(--color);
+    border-color: var(--fg-color-2);
 }
 
 .gesture-select-box:hover>input {
@@ -37,7 +39,7 @@
 }
 
 .input-name:focus {
-    border-color: var(--color) !important;
+    border-color: var(--fg-color-2) !important;
 }
 
 .point-container {
@@ -51,13 +53,7 @@
 }
 
 .sidebar-container {
-    background-color: var(--bg-color-dim);
-}
-
-.start-banner {
-    box-shadow: 0px 3px 15px var(--bg-color);
-    border-color: var(--color);
-    background-color: rgba(18, 18, 18, 0.5);
+    background-color: var(--bg-color-1);
 }
 
 .titlebar:active {
@@ -68,9 +64,6 @@
     opacity: 1;
 }
 
-.home-page-container {
-}
-
 .marker {
     border-radius: 50px;
     position: absolute;
@@ -78,6 +71,5 @@
     aspect-ratio: 1;
     rotate: 45deg;
     background-color: var(--marker-bg-color);
-    box-shadow: 0 0 2px var(--color);
-  }
-
+    box-shadow: 0 0 2px var(--fg-color-2);
+}

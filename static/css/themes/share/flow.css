@@ -1,29 +1,33 @@
 .node {
-    border-color: var(--color-secondary);
-    background-color: var(--bg-color);
+    border-color: var(--fg-color-4);
+    background-color: var(--bg-color-1);
 }
 
 .node-active {
-    border-color: var(--color);
+    border-color: var(--fg-color-2);
+}
+
+.node-disabled {
+    border-color: calc(var(--bg-color-4));
 }
 
 .node-inactive {
-    border-color: var(--bg-color-bright);
+    border-color: var(--bg-color-3);
 }
 
 .attr-active {
-    background-color: var(--bg-color-bright);
+    background-color: var(--bg-color-3);
 }
 
 .svelte-flow .svelte-flow__handle {
-    background-color: var(--color);
+    background-color: var(--fg-color-2);
 }
 
 .svelte-flow__background {
-    stroke: var(--color-secondary);
-    background-color: var(--bg-color);
+    stroke: var(--fg-color-2);
+    background-color: var(--bg-color-1);
 }
 
 .svelte-flow__connectionline path {
-    stroke: var(--color);
+    stroke: var(--fg-color-3);
 }

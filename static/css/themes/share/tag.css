@@ -1,28 +1,28 @@
 ::selection {
-    color: var(--bg-color);
-    background: var(--color);
+    color: var(--bg-color-2);
+    background: var(--fg-color-2);
 }
 
 select {
-    background: var(--bg-color) !important;
-    color: var(--color) !important;
+    background: var(--bg-color-1) !important;
+    color: var(--fg-color-2) !important;
 }
 
 select option {
-    background: var(--bg-color) !important;
-    color: var(--color) !important;
+    background: var(--bg-color-1) !important;
+    color: var(--fg-color-2) !important;
 }
 
 input[type="text"] {
-    color: var(--color) !important;
-    background-color: var(--bg-color-dim) !important;
-    border-color: var(--color-secondary);
+    color: var(--fg-color-2) !important;
+    background-color: var(--bg-color-1) !important;
+    border-color: var(--fg-color-1);
 }
 
 input[type="number"] {
-    color: var(--color) !important;
-    background-color: var(--bg-color) !important;
-    border-color: var(--color-secondary);
+    color: var(--fg-color-2) !important;
+    background-color: var(--bg-color-2) !important;
+    border-color: var(--fg-color-1);
 }
 
 input[type="text"]:focus {
@@ -32,40 +32,33 @@ input[type="text"]:focus {
 
 input[type="text"]:focus,
 .uneditable-input:focus {
-    border-color: var(--color);
-    box-shadow: 0 1px 1px transparent inset, 0 0 8px var(--color-secondary);
+    border-color: var(--fg-color-2);
+    box-shadow: 0 1px 1px transparent inset, 0 0 8px var(--fg-color-1);
     outline: 0 none;
 }
 
 input[type="text"]::placeholder {
-    color: var(--color-secondary) !important;
+    color: var(--fg-color-1) !important;
 }
 
 body {
     font-family: var(--font-family);
-    color: var(--color);
+    color: var(--fg-color-2);
     background-color: transparent;
 }
 
 button {
     color: var(--btn-text-color) !important;
-    border-color: var(--color-secondary) !important;
+    border-color: var(--fg-color-1) !important;
 }
 
 button:hover {
-    color: var(--color);
-    border-color: var(--color) !important;
+    color: var(--fg-color-2);
+    border-color: var(--fg-color-2) !important;
 }
 
 main {
-    background-color: var(--bg-color-dim);
+    background-color: var(--bg-color-1);
     border-color: var(--window-border-color);
-    box-shadow: 0 6px 10px #00000068;
-}
-
-textarea {
-    max-height: 50rem;
-    height: 4rem;
-    color: var(--color) !important;
-    background-color: var(--bg-color) !important;
+    box-shadow: 0 5px 9px var(--bg-color-1);
 }

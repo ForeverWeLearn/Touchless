@@ -1,16 +1,7 @@
-.btn-add-attribute {
-    padding: 0.6rem 1rem !important;
-    border-style: solid;
-    border-radius: calc(var(--btn-border-radius) * 0.8) !important;
-}
-
 .btn-context-menu {
     border: none;
     padding: 1rem;
-}
-
-.btn-context-menu>img {
-    margin-right: 1rem;
+    gap: 0.5rem;
 }
 
 .btn-gesture-selection {

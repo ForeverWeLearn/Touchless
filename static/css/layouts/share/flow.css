@@ -10,8 +10,8 @@
     border-width: calc(var(--btn-border-width) * 6);
 }
 
-.node-selected {
-    border-width: calc(var(--btn-border-width) * 2);
+.node-disabled {
+    border-width: calc(var(--btn-border-width));
 }
 
 .attr {

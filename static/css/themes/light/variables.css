@@ -1,29 +1,13 @@
 :root {
-    --font-family: 'Lexend', sans-serif;
-    --font-family-mono: 'MartianMono', monospace;
-    --color: #000;
-    --color-secondary: #00000080;
-    --bg-color: #fff;
-    --bg-color-dim: #fdfdfd  ;
-    --bg-color-secondary: #0000004c;
-    --marker-bg-color: blue;
-    --btn-text-color: #000;
-}
+    --fg-color-4: #3c3c3c;
+    --fg-color-3: #2f2f2f;
+    --fg-color-2: #252525;
+    --fg-color-1: #181818;
+    --fg-color-0: #101010;
 
-.btn .btn-nbd{
-    border: #000 solid 1px;
-    color: #fdfdfd !important;
-}
-
-.btn-dark{
-    background-color: rgba(240, 248, 255, 0.363);
-}
-
-.btn-dark:hover{
-    background-color: var(--color);
-}
-
-
-.gesture-select-overlay{
-    background-color: #ffffff5e !important;
+    --bg-color-4: #afafaf;
+    --bg-color-3: #c6c6c6;
+    --bg-color-2: #dfdfdf;
+    --bg-color-1: #ededed;
+    --bg-color-0: #fff;
 }
