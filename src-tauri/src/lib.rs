@@ -44,7 +44,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             mouse,
             execute_key_sequence,
-            execute_command
+            execute_command,
+            execute_text
         ])
         .setup(|app| {
             //Close but the app will hide in the system tray
@@ -128,7 +129,13 @@ pub fn run() {
 
 #[tauri::command]
 fn execute_command(command: &str) {
-    let _ = Command::new("cmd").args(&["/C", command]).status();
+    let _ = Command::new("cmd").args(&["/C", command]).spawn().ok();
+}
+
+#[tauri::command]
+fn execute_text(state: State<AppState>, text: &str) {
+    let mut enigo = state.enigo.lock().unwrap();
+    enigo.text(text).ok();
 }
 
 #[tauri::command]
