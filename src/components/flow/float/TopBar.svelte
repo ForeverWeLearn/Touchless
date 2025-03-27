@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { reloadFlow, saveFlow } from "../../../stores/flow/flow.svelte";
+  import flowStore from "../../../stores/flow/flow.svelte";
   import { ICON_PATHS } from "../../../types/core";
+  import { DEFAULT_FLOW_NAME } from "../../../types/fs";
+  import { AppFileWriter } from "../../../utils/fs/writer";
 
   let icon = $state(ICON_PATHS.SAVE);
 
@@ -12,8 +14,13 @@
   }
 
   async function save() {
-    await saveFlow();
+    await flowStore.save();
     saveDoneIcon();
+  }
+
+  async function deleteFlow() {
+    await AppFileWriter.removeFlow(DEFAULT_FLOW_NAME);
+    flowStore.reload();
   }
 </script>
 
@@ -36,9 +43,9 @@
     <ul class="dropdown-menu dropdown-menu-end">
       <li>
         <div class="dropdown-item d-flex">
-          <button class="btn btn-danger d-flex flex-fill gap-2">
+          <button class="btn btn-danger d-flex flex-fill gap-2" onclick={async () => await deleteFlow()}>
             <img class="img-filter" src={ICON_PATHS.DELETE} alt="" />
-            <div>Delete</div>
+            <div>Clear</div>
           </button>
         </div>
       </li>
@@ -47,7 +54,7 @@
 
       <li>
         <div class="dropdown-item d-flex">
-          <button class="btn btn-primary d-flex flex-fill gap-2" onclick={() => reloadFlow()}>
+          <button class="btn btn-primary d-flex flex-fill gap-2" onclick={async () => await flowStore.reload()}>
             <img class="img-filter" src={ICON_PATHS.HISTORY} alt="" />
             <div>Revert</div>
           </button>

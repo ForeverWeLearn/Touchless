@@ -50,13 +50,6 @@
     <div class="d-flex flex-column mb-auto gap-2">
       <a href="/" class="link-sidebar" onclick={() => (boardState.show = false)}>
         <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/')}">
-          <img class="img-filter" src={ICON_PATHS.HOME} alt="Home" />
-          <div class="my-0 text-sidebar">Home</div>
-        </div>
-      </a>
-
-      <a href="/flow" class="link-sidebar" onclick={() => (boardState.show = false)}>
-        <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/flow')}">
           <img class="img-filter" src={ICON_PATHS.AUTOMATION} alt="Flow" />
           <div class="my-0 text-sidebar">Flow</div>
         </div>
@@ -71,12 +64,12 @@
     </div>
 
     <div class="d-flex flex-column mt-auto">
-      <a href="/setting" class="link-sidebar" onclick={() => (boardState.show = false)}>
+      <!-- <a href="/setting" class="link-sidebar" onclick={() => (boardState.show = false)}>
         <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/setting')}">
           <img class="img-filter" src={ICON_PATHS.SETTINGS} alt="Settings" />
           <div class="my-0 text-sidebar">Settings</div>
         </div>
-      </a>
+      </a> -->
     </div>
   </div>
 </div>

@@ -19,6 +19,26 @@
 </script>
 
 <div class="d-flex flex-fill flex-column gap-1 nodrag">
-  <Slider name="Min" icon={ICON_PATHS.ALIGN_LEFT} {min} {max} {step} unit="hand" bind:value={value1}></Slider>
-  <Slider name="Max" icon={ICON_PATHS.ALIGN_RIGHT} {min} {max} {step} unit="hand" bind:value={value2}></Slider>
+  <Slider
+    name="Min"
+    icon={ICON_PATHS.ALIGN_LEFT}
+    {min}
+    {max}
+    {step}
+    {unit}
+    bind:value={value1}
+    editable={true}
+    showvalue={true}
+  ></Slider>
+  <Slider
+    name="Max"
+    icon={ICON_PATHS.ALIGN_RIGHT}
+    {min}
+    {max}
+    {step}
+    {unit}
+    bind:value={value2}
+    editable={true}
+    showvalue={true}
+  ></Slider>
 </div>

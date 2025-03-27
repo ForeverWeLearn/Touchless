@@ -3,8 +3,8 @@
   import { connectEndMenu } from "../../../stores/flow/menu.svelte";
   import { sizebarSize } from "../../../stores/geometry.svelte";
   import { NodeType } from "../../../types/nodes";
-  import { nodeStore } from "../../../stores/flow/node.svelte";
   import { ICON_PATHS } from "../../../types/core";
+  import nodeStore from "../../../stores/flow/node.svelte";
 
   const { screenToFlowPosition } = useSvelteFlow();
 

@@ -13,7 +13,7 @@ import { calculateAngle, calculateDistance } from "../utils/dsa/math";
 import { GESTURE_NAMES, type HandednessID } from "../types/core";
 import { handResults } from "../stores/engine.svelte";
 import { settings } from "../stores/settings.svelte";
-import { nodeStore } from "../stores/flow/node.svelte";
+import nodeStore from "../stores/flow/node.svelte";
 
 export class Analyzer {
   private engine!: Engine;

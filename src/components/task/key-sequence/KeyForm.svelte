@@ -1,10 +1,19 @@
 <script lang="ts">
   import { userKeyStore, type KeyReceiver } from "../../../stores/user-key.svelte";
-  import { ICON_PATHS, KEY_DIRECTION_NAMES, type Key } from "../../../types/core";
+  import { ICON_PATHS, KEY_DIRECTION_NAMES, KeyDirection, type Key } from "../../../types/core";
 
   let { key, append, remove }: { key: Key; append: () => void; remove: () => void } = $props();
 
   const receiver: KeyReceiver = $state({ listening: false, keyState: null });
+
+  let keyDisplay = $derived(receiver.listening ? "..." : key.key.length == 0 ? "None" : key.key);
+  let keyDirectionIcon = $derived(
+    key.direction == KeyDirection.CLICK
+      ? ICON_PATHS.CLICK
+      : key.direction == KeyDirection.PRESS
+        ? ICON_PATHS.KEY_DOWN
+        : ICON_PATHS.KEY_UP
+  );
 
   $effect(() => {
     if (receiver.keyState) {
@@ -22,21 +31,29 @@
     userKeyStore.listen();
     receiver.listening = true;
   }
+
+  function changeDirection() {
+    key.direction =
+      key.direction == KeyDirection.CLICK
+        ? KeyDirection.PRESS
+        : key.direction == KeyDirection.PRESS
+          ? KeyDirection.RELEASE
+          : KeyDirection.CLICK;
+  }
 </script>
 
 <div class="d-flex flex-column appear-opacity" style="position: relative;">
   <div class="d-flex gap-1">
     <div class="flex-shrink-1">
-      <select class="form-select form-select-sm" bind:value={key.direction}>
-        {#each KEY_DIRECTION_NAMES as direction}
-          <option value={direction}>{direction}</option>
-        {/each}
-      </select>
+      <button class="btn btn-key-direction d-flex gap-2" onclick={() => changeDirection()}>
+        <img class="img-filter" src={keyDirectionIcon} alt="" />
+        {key.direction}
+      </button>
     </div>
 
     <div class="d-flex flex-fill">
-      <button class="btn btn-key flex-fill" onclick={() => listen_or_stop()}>
-        {receiver.listening ? "..." : key.key}
+      <button class="btn btn-key flex-fill" class:btn-listening={receiver.listening} onclick={() => listen_or_stop()}>
+        {keyDisplay}
       </button>
     </div>
 
@@ -55,7 +72,13 @@
     width: 9rem;
   }
 
-  select {
-    height: 100%;
+  .btn-key-direction {
+    width: 8rem;
+  }
+
+  .btn-listening {
+    font-family: var(--font-family-mono);
+    color: var(--bg-color-2) !important;
+    background-color: var(--fg-color-1) !important;
   }
 </style>

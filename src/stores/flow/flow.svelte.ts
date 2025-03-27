@@ -3,36 +3,55 @@ import { AppFileReader } from "../../utils/fs/reader";
 import { AppFileWriter } from "../../utils/fs/writer";
 import { viewportStore } from "./viewport.svelte";
 import { edgeStore } from "./edge.svelte";
-import { nodeStore } from "./node.svelte";
-import { join } from "../../utils/fs/path";
-import { invalidateAll } from "$app/navigation";
 import { refresh } from "../app.svelte";
+import { join } from "../../utils/fs/path";
+import nodeStore from "./node.svelte";
 
-export const parentMap: Record<string, string> = edgeStore.edges.reduce((accumulator, edge) => {
-  accumulator[edge.target] = edge.source;
-  return accumulator;
-}, {} as Record<string, string>);
+function createFlowStore() {
+  let flowNames: string[] = $state([]);
+  let state = $state({});
 
-export const flowNames = $state(await AppFileReader.listDir(join(VERSION_FOLDER, FLOWS_FOLDER)));
-export const flowStore = $state({
-  current: flowNames[0] ?? DEFAULT_FLOW_NAME,
-  changes: 0,
-});
+  const init = async () => {
+    flowNames = await AppFileReader.listDir(join(VERSION_FOLDER, FLOWS_FOLDER));
 
-export async function reloadFlow() {
-  await nodeStore.reload();
-  await edgeStore.reload();
-  await viewportStore.reload();
+    state = { current: flowNames[0] ?? DEFAULT_FLOW_NAME, changes: 0 };
+  };
 
-  await refresh();
+  const reload = async () => {
+    await nodeStore.reload();
+    await edgeStore.reload();
+    await viewportStore.reload();
+
+    await refresh();
+  };
+
+  const save = async () => {
+    await nodeStore.resetRuntimeState();
+
+    await nodeStore.save();
+    await edgeStore.save();
+    await viewportStore.save();
+
+    console.log("Flow files saved!");
+  };
+
+  return {
+    get flowNames() {
+      return flowNames;
+    },
+
+    get state() {
+      return state;
+    },
+
+    init,
+    reload,
+    save,
+  };
 }
 
-export async function saveFlow() {
-  await nodeStore.resetRuntimeState();
+const flowStore = createFlowStore();
 
-  await AppFileWriter.writeDataFile(DataFileType.NODE, nodeStore.nodes, DEFAULT_FLOW_NAME);
-  await AppFileWriter.writeDataFile(DataFileType.EDGE, edgeStore.edges, DEFAULT_FLOW_NAME);
-  await AppFileWriter.writeDataFile(DataFileType.VIEWPORT, viewportStore.viewport, DEFAULT_FLOW_NAME);
+await flowStore.init();
 
-  console.log("Flow files saved!");
-}
+export default flowStore;

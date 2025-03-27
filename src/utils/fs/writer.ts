@@ -8,22 +8,39 @@ import {
   FLOWS_FOLDER,
   VERSION_FOLDER,
 } from "../../types/fs";
-import { ensureDirectoryExist, join } from "./path";
+import { checkEntryExist, ensureDirectoryExist, join } from "./path";
 import { settings } from "../../stores/settings.svelte";
+import { AppFileReader } from "./reader";
 
 function toJson(obj: any): string {
   return settings.beautyJSON ? JSON.stringify(obj, null, 2) : JSON.stringify(obj);
 }
 
 export class AppFileWriter {
-  static async removeFile(destination: string, file_name: string) {
-    await ensureDirectoryExist(destination);
+  static async removeEntry(filePath: string) {
+    const exist = await checkEntryExist(filePath);
 
-    const path = join(destination, file_name);
+    if (!exist) {
+      return;
+    }
 
-    remove(path, { baseDir: BASE_DIRECTORY });
+    await remove(filePath, { baseDir: BASE_DIRECTORY });
 
-    console.log(`[SUCCESS] "${file_name}" deleted from "${destination}"`);
+    console.log(`[SUCCESS] "${filePath}" deleted`);
+  }
+
+  static async removeFolder(folderPath: string) {
+    const files = await AppFileReader.listFile(folderPath);
+
+    for (const file of files) {
+      await this.removeEntry(join(folderPath, file));
+    }
+
+    // this.removeEntry(folderPath);
+  }
+
+  static async removeFlow(flow: string) {
+    await this.removeFolder(join(VERSION_FOLDER, FLOWS_FOLDER, flow));
   }
 
   static async writeJson(obj: any, filePath: string) {
@@ -35,6 +52,7 @@ export class AppFileWriter {
   }
 
   static async writeDataFile(fileType: DataFileType, data: any, flow?: string): Promise<void> {
+    await ensureDirectoryExist("");
     await ensureDirectoryExist(VERSION_FOLDER);
     await ensureDirectoryExist(join(VERSION_FOLDER, FLOWS_FOLDER));
     if (flow) {

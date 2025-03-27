@@ -29,16 +29,33 @@
 
 <div class="d-flex gap-4">
   <div class="d-flex flex-column justify-content-center gap-1">
-    <Slider name="Angle" icon={ICON_PATHS.A360} min={0} max={360} step={5} unit="deg" bind:value={data.angle}></Slider>
-    <Slider name="Spread" icon={ICON_PATHS.ARROW_RANGE} min={0} max={180} step={5} unit="deg" bind:value={data.spread}
+    <Slider
+      name="Angle"
+      icon={ICON_PATHS.A360}
+      min={0}
+      max={360}
+      step={5}
+      unit="deg"
+      bind:value={data.angle}
+      editable={true}
+      showvalue={true}
+    ></Slider>
+    <Slider
+      name="Spread"
+      icon={ICON_PATHS.ARROW_RANGE}
+      min={0}
+      max={180}
+      step={5}
+      unit="deg"
+      bind:value={data.spread}
+      editable={true}
+      showvalue={true}
     ></Slider>
   </div>
 
   <div class="board">
     <div class="pie-chart" bind:this={pieChart}></div>
 
-    <div class="axis-x"></div>
-    <div class="axis-y"></div>
     <div class="deg deg0">0</div>
     <div class="deg deg90">90</div>
     <div class="deg deg180">180</div>
@@ -72,24 +89,6 @@
     bottom: -0.75rem;
   }
 
-  .axis-x {
-    position: absolute;
-    top: calc(50% - 1px);
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
-  .axis-y {
-    position: absolute;
-    left: calc(50% - 1px);
-    top: 0;
-    bottom: 0px;
-    width: 2px;
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
   .board {
     position: relative;
     height: 10%;
@@ -99,10 +98,8 @@
     width: 4rem;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: conic-gradient(#3498db 0% 70%, #2ecc71 70% 100%);
-    box-shadow: 0 0 3px var(--fg-color-2);
+    box-shadow: 0 0 5px var(--bg-color-0);
     border-width: 2px;
-    border-color: #3498db;
   }
 
   .pie-chart::before {

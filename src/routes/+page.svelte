@@ -1,4 +1,9 @@
 <script lang="ts">
+  import FlowProvider from "../components/flow/FlowProvider.svelte";
 </script>
 
-<div class="h-100" data-tauri-drag-region></div>
+<svelte:head>
+  <link rel="stylesheet" href="css/themes/share/flow.css" />
+</svelte:head>
+
+<FlowProvider></FlowProvider>

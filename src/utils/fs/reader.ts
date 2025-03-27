@@ -34,6 +34,25 @@ export class AppFileReader {
     return dirs;
   }
 
+  static async listFile(path: string): Promise<string[]> {
+    const exist = await checkEntryExist(path);
+
+    if (!exist) {
+      return [];
+    }
+
+    const entries = await readDir(path, { baseDir: BASE_DIRECTORY });
+    const files: string[] = [];
+
+    for (const entry of entries) {
+      if (entry.isFile) {
+        files.push(entry.name);
+      }
+    }
+
+    return files;
+  }
+
   static async readText(filePath: string): Promise<string | undefined> {
     const exist = await checkEntryExist(filePath);
 

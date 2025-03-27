@@ -110,21 +110,22 @@
 
   input[type="number"] {
     position: absolute;
-    right: 0;
+    right: 0.5rem;
     width: 4rem;
     padding: 0;
     margin-right: 0.4rem;
 
     mix-blend-mode: difference;
-    background-color: transparent !important;
+    background-color: var(--bg-color-4) !important;
 
     font-size: 0.8rem;
-    border: none;
+    /* border: none; */
     outline: none;
   }
 
   input[type="number"]:focus {
-    border: none;
+    /* border: none; */
+    border-color: var(--fg-color-0);
     outline: none;
     box-shadow: none;
   }

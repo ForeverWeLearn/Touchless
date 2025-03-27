@@ -15,7 +15,17 @@
   </div>
 
   <div class="d-flex flex-column gap-3">
-    <Range min={0} max={10} step={0.1} unit="hu" bind:value1={data.range.min} bind:value2={data.range.max}></Range>
-    <Slider name="Hold" icon={ICON_PATHS.PAN_TOOL} min={0} max={5000} step={50} unit="ms" bind:value={data.time2active} />
+    <Range min={0} max={10} step={0.1} unit="hand" bind:value1={data.range.min} bind:value2={data.range.max}></Range>
+    <Slider
+      name="Hold"
+      icon={ICON_PATHS.PAN_TOOL}
+      min={0}
+      max={5000}
+      step={50}
+      unit="ms"
+      bind:value={data.time2active}
+      editable={true}
+      showvalue={true}
+    />
   </div>
 </div>

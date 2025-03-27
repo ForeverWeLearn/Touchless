@@ -3,20 +3,20 @@
 
   import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, useSvelteFlow } from "@xyflow/svelte";
   import { connectEndMenu, nodeContextMenu, paneContextMenu } from "../../stores/flow/menu.svelte";
-  import { initialViewport, viewportStore } from "../../stores/flow/viewport.svelte";
-  import { nodesWritable } from "../../stores/flow/node.svelte";
-  import { edgesWritable } from "../../stores/flow/edge.svelte";
+  import { viewportStore } from "../../stores/flow/viewport.svelte";
   import { clientSize } from "../../stores/geometry.svelte";
   import { NodeType } from "../../types/nodes";
+  import { onMount } from "svelte";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
   import PaneContextMenu from "./menus/PaneContextMenu.svelte";
   import ConditionsNode from "./nodes/condition/ConditionNode.svelte";
   import ConnectEndMenu from "./menus/ConnectEndMenu.svelte";
   import StatusBar from "./float/StatusBar.svelte";
   import EntryNode from "./nodes/entry/EntryNode.svelte";
+  import nodeStore from "../../stores/flow/node.svelte";
+  import edgeStore from "../../stores/flow/edge.svelte";
   import TaskNode from "./nodes/tasks/TaskNode.svelte";
   import TopBar from "./float/TopBar.svelte";
-  import { onMount } from "svelte";
 
   const { viewport, setViewport } = useSvelteFlow();
 
@@ -31,7 +31,7 @@
   });
 
   onMount(() => {
-    setViewport(initialViewport);
+    setViewport(viewportStore.initialViewport);
   });
 
   const handleConnectEnd: OnConnectEnd = (event, connectionState) => {
@@ -93,9 +93,9 @@
 <main bind:clientWidth={clientSize.width} bind:clientHeight={clientSize.height}>
   <SvelteFlow
     {nodeTypes}
-    {initialViewport}
-    nodes={nodesWritable}
-    edges={edgesWritable}
+    nodes={nodeStore.nodesWritable}
+    edges={edgeStore.edgesWritable}
+    initialViewport={viewportStore.initialViewport}
     minZoom={0.2}
     maxZoom={10}
     snapGrid={[50, 50]}

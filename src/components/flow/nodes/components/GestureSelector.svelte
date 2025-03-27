@@ -14,7 +14,7 @@
     {#each GESTURE_NAMES as gesture_name}
       <div class="d-flex flex-fill flex-column justify-content-center align-items-center gap-1">
         <button class="btn btn-gesture-selection" onclick={() => (data.name = gesture_name)}>
-          <img class="gesture-icon-sm" class:flip-h={handedness == 0} src="imgs/gestures/{gesture_name}.svg" alt="" />
+          <img class="img-filter gesture-icon-sm" class:flip-h={handedness == 0} src="imgs/gestures/{gesture_name}.svg" alt="" />
         </button>
         <div class="gesture-selection-name">{gesture_name}</div>
       </div>

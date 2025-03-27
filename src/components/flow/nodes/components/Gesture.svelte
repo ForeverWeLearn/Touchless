@@ -17,7 +17,7 @@
   <input class="form-check-input gesture-checkbox" type="checkbox" bind:checked={data.enable} />
 
   <button class="btn btn-nbd" class:faded={!data.enable} onclick={() => (selecting = !selecting)}>
-    <img class="gesture-icon" class:flip-h={handedness == 0} src="imgs/gestures/{data.name}.svg" alt="Gesture" />
+    <img class="img-filter gesture-icon" class:flip-h={handedness == 0} src="imgs/gestures/{data.name}.svg" alt="Gesture" />
   </button>
 
   {#if selecting}

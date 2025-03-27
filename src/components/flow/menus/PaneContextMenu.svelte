@@ -4,7 +4,7 @@
   import { sizebarSize } from "../../../stores/geometry.svelte";
   import { settings } from "../../../stores/settings.svelte";
   import { NodeType } from "../../../types/nodes";
-  import { nodeStore } from "../../../stores/flow/node.svelte";
+  import nodeStore from "../../../stores/flow/node.svelte";
 
   const { screenToFlowPosition } = useSvelteFlow();
 

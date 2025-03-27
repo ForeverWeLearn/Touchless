@@ -1,61 +1,82 @@
-import type { Edge, XYPosition } from "@xyflow/svelte";
+import type { XYPosition } from "@xyflow/svelte";
 
-import { getDefaultNode, NodeType, resetRuntime, type ConditionNodeData, type CustomNode } from "../../types/nodes";
+import { getDefaultNode, NodeType, resetRuntime, type CustomNode } from "../../types/nodes";
 import { DataFileType, DEFAULT_FLOW_NAME } from "../../types/fs";
 import { writable, type Writable } from "svelte/store";
 import { generateRandomString } from "../../utils/dsa/generate";
 import { AppFileReader } from "../../utils/fs/reader";
-import { edgesWritable } from "./edge.svelte";
-import { parentMap } from "./flow.svelte";
-
-let nodes: CustomNode[] = $state(await AppFileReader.readDataFile(DataFileType.NODE, DEFAULT_FLOW_NAME));
-
-const nodeMap: Record<string, CustomNode> = $state(
-  nodes.reduce((accumulator, node) => {
-    accumulator[node.data.id] = node;
-    return accumulator;
-  }, {} as Record<string, CustomNode>)
-);
-
-export const nodesWritable: Writable<CustomNode[]> = writable(nodes);
+import { AppFileWriter } from "../../utils/fs/writer";
+import { edgeStore } from "./edge.svelte";
 
 function createNodeStore() {
+  let nodes: CustomNode[] = $state([]);
+  let nodesWritable: Writable<CustomNode[]> = writable(nodes);
+
+  let nodeMap: Record<string, CustomNode>;
+  let parentMap: Record<string, string>;
+
+  const generateNodeMap = (): Record<string, CustomNode> => {
+    return nodes.reduce((accumulator, node) => {
+      accumulator[node.data.id] = node;
+      return accumulator;
+    }, {} as Record<string, CustomNode>);
+  };
+
+  const init = async () => {
+    await reload();
+  };
+
   const reload = async () => {
     nodes = await AppFileReader.readDataFile(DataFileType.NODE, DEFAULT_FLOW_NAME);
+    nodesWritable.set(nodes);
+    
+    nodeMap = generateNodeMap();
+    parentMap = edgeStore.generateParentMap();
+  };
+
+  const save = async () => {
+    await nodeStore.resetRuntimeState();
+    await AppFileWriter.writeDataFile(DataFileType.NODE, nodeStore.nodes, DEFAULT_FLOW_NAME);
+  };
+
+  const get = (id: string): CustomNode | null => {
+    for (const node of nodes) {
+      if (node.data.id == id) {
+        return node;
+      }
+    }
+
+    return null;
+  };
+
+  const getIndex = (id: string): number | -1 => {
+    return nodes.findIndex((node) => node.id == id);
   };
 
   const add = (type: NodeType, pos: XYPosition, parent: string = "") => {
     const id = generateRandomString();
     const newNode = getDefaultNode(type, id);
+
     newNode.position = pos;
 
     if (parent) {
       parentMap[id] = parent;
-
-      const edgeID = `${parent}-${id}`;
-
-      const newEdge: Edge = {
-        source: parent,
-        target: id,
-        id: edgeID,
-      };
-
-      edgesWritable.update((v) => {
-        v.push(newEdge);
-        return v;
-      });
+      edgeStore.add(parent, id);
     }
 
-    nodes.push(newNode);
-    nodeMap[id] = newNode;
-
-    nodesWritable.set(nodes);
+    push(newNode);
 
     console.log(`Node ${newNode.id} created at ${pos.x} ${pos.y}`);
   };
 
+  const push = (node: CustomNode) => {
+    nodes.push(node);
+    nodeMap[node.id] = node;
+    nodesWritable.set(nodes);
+  };
+
   const remove = (id: string) => {
-    const index = nodes.findIndex((v) => v.id == id);
+    const index = getIndex(id);
 
     if (index == -1) {
       return;
@@ -64,16 +85,31 @@ function createNodeStore() {
     nodes.splice(index, 1);
     delete nodeMap[index];
 
+    edgeStore.remove(id, id);
+
     nodesWritable.set(nodes);
-    edgesWritable.update((v) => {
-      const r = v.filter((e) => e.target != id && e.source != id);
-      return r;
-    });
 
     console.log(`Node ${id} deleted`);
   };
 
   const duplicate = (id: string) => {
+    const node = nodeMap[id];
+
+    if (!node) {
+      return;
+    }
+
+    const newId = generateRandomString();
+    const newNode = { ...node, id: newId };
+
+    newNode.position.x = node.position.x + 20;
+    newNode.position.y = node.position.y + 20;
+
+    nodes.push(newNode);
+    nodesWritable.set(nodes);
+
+    nodeMap[id] = newNode;
+
     console.log(`Node ${id} duplicated`);
   };
 
@@ -96,14 +132,16 @@ function createNodeStore() {
       return true;
     }
 
-    const data = node.data as ConditionNodeData;
-    return data.runtime.activated;
+    return node.data.runtime.activated;
   };
 
   const resetRuntimeState = async () => {
     for (const node of nodes) {
       if (node.type == NodeType.CONDITION) {
         resetRuntime(node.data.runtime);
+        for (const condition of node.data.conditions) {
+          resetRuntime(condition.runtime);
+        }
       }
     }
   };
@@ -112,16 +150,37 @@ function createNodeStore() {
     get nodes() {
       return nodes;
     },
+
+    get nodesWritable() {
+      return nodesWritable;
+    },
+
     get nodeMap() {
       return nodeMap;
     },
+
+    get parentMap() {
+      return parentMap;
+    },
+
+    init,
     reload,
+    save,
+
+    get,
+    getIndex,
+
     add,
-    remove,
     duplicate,
+    remove,
+
     isParentActivated,
     resetRuntimeState,
   };
 }
 
-export const nodeStore = createNodeStore();
+const nodeStore = createNodeStore();
+
+await nodeStore.init();
+
+export default nodeStore;

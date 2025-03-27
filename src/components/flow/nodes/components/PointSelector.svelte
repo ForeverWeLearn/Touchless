@@ -29,13 +29,15 @@
   ];
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="background" onclick={() => (state.selecting = false)}></div>
 
 <div class="gesture-select-overlay">
   <div class="h5 text-center mb-4">Select Point</div>
 
   <div class="nodrag" class:flip-h={data.handedness == 0} style="position: relative;">
-    <img class="gesture-icon" src={ICON_PATHS.HAND_LANDMARKS} alt="Landmarks" />
+    <img class="img-filter gesture-icon" src={ICON_PATHS.HAND_LANDMARKS} alt="Landmarks" />
 
     <div class="landmarks">
       {#each POSITIONS as position, i}
@@ -55,7 +57,12 @@
 </div>
 
 <style>
+  input[type="radio"] {
+    cursor: pointer;
+  }
+  
   .landmarks {
+    cursor: default;
     position: absolute;
     top: 0;
     left: 0;
