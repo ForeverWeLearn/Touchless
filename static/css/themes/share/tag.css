@@ -48,6 +48,7 @@ body {
 }
 
 button {
+    background-color: var(--bg-color-1);
     color: var(--btn-text-color) !important;
     border-color: var(--fg-color-1) !important;
 }
