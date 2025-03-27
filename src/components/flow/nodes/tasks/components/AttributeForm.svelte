@@ -23,7 +23,9 @@
 
       <select class="nodrag" onchange={() => change(getDefaultTask(data.type))} bind:value={data.type}>
         {#each Object.values(TaskType) as type}
-          <option value={type}>{type}</option>
+          {#if type != TaskType.TEXT}
+            <option value={type}>{type}</option>
+          {/if}
         {/each}
       </select>
     </div>
@@ -48,7 +50,7 @@
     padding-right: 2.2rem !important;
     outline: var(--fg-color-2);
   }
- 
+
   .img-icon {
     position: absolute;
     top: 0;

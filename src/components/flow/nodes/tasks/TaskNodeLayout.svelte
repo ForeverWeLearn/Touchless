@@ -24,6 +24,6 @@
       ></AttributeForm>
     {/each}
 
-    <button onclick={() => data.tasks.push(getDefaultTask(TaskType.COMMAND))}>+</button>
+    <button onclick={() => data.tasks.push(getDefaultTask(TaskType.KEY_SEQUENCE))}>+</button>
   </div>
 </div>

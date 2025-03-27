@@ -11,7 +11,11 @@
         <div class="d-flex gap-3 appear-then-disappear">
           <img
             class="img-filter"
-            src={task.type == TaskType.COMMAND ? settings.icons.tasks.COMMAND : settings.icons.tasks.KEY_SEQUENCE}
+            src={task.type == TaskType.COMMAND
+              ? settings.icons.tasks.COMMAND
+              : task.type == TaskType.KEY_SEQUENCE
+                ? settings.icons.tasks.KEY_SEQUENCE
+                : settings.icons.tasks.TEXT}
             alt=""
           />
           <div>{task.name}</div>

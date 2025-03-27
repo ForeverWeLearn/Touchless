@@ -135,7 +135,7 @@ fn execute_command(command: &str) {
 #[tauri::command]
 fn execute_text(state: State<AppState>, text: &str) {
     let mut enigo = state.enigo.lock().unwrap();
-    enigo.text(text).ok();
+    enigo.text(text).unwrap();
 }
 
 #[tauri::command]
