@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
   import { connectEndMenu } from "../../../stores/flow/menu.svelte";
-  import { sizebarSize } from "../../../stores/geometry.svelte";
+  import { clientSize, sidebarSize } from "../../../stores/geometry.svelte";
   import { NodeType } from "../../../types/nodes";
   import { ICON_PATHS } from "../../../types/core";
   import nodeStore from "../../../stores/flow/node.svelte";
@@ -10,8 +10,8 @@
 
   function getFlowPosition(): XYPosition {
     const pos = screenToFlowPosition({
-      x: connectEndMenu.left,
-      y: connectEndMenu.top,
+      x: connectEndMenu.left ?? clientSize.width + sidebarSize.width - connectEndMenu.right,
+      y: connectEndMenu.top ?? clientSize.height - connectEndMenu.bottom,
     });
     return pos;
   }
@@ -21,7 +21,11 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="context-menu"
-  style="top: {connectEndMenu.top}px; left: {connectEndMenu.left - sizebarSize.width}px;"
+  style="
+  top: {connectEndMenu.top}px; 
+  left: {connectEndMenu.left - sidebarSize.width}px; 
+  right: {connectEndMenu.right}px; 
+  bottom: {connectEndMenu.bottom}px"
   onclick={() => (connectEndMenu.show = false)}
 >
   <div class="background"></div>

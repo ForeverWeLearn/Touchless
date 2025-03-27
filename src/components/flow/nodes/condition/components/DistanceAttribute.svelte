@@ -15,7 +15,7 @@
   </div>
 
   <div class="d-flex flex-column gap-3">
-    <Range min={0} max={10} step={0.1} unit="hand" bind:value1={data.range.min} bind:value2={data.range.max}></Range>
+    <Range min={0} max={10} step={0.1} unit="hu" bind:value1={data.range.min} bind:value2={data.range.max}></Range>
     <Slider
       name="Hold"
       icon={ICON_PATHS.PAN_TOOL}

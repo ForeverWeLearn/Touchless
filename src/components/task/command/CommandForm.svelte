@@ -17,7 +17,7 @@
         <input
           class="form-control input-command"
           type="text"
-          placeholder={"cmd | notepad | start https:/google.com ..."}
+          placeholder={"Command that run on cmd"}
           bind:value={command.comamnd}
         />
       </div>

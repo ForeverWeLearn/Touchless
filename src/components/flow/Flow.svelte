@@ -4,7 +4,7 @@
   import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, useSvelteFlow } from "@xyflow/svelte";
   import { connectEndMenu, nodeContextMenu, paneContextMenu } from "../../stores/flow/menu.svelte";
   import { viewportStore } from "../../stores/flow/viewport.svelte";
-  import { clientSize } from "../../stores/geometry.svelte";
+  import { clientSize, sidebarSize } from "../../stores/geometry.svelte";
   import { NodeType } from "../../types/nodes";
   import { onMount } from "svelte";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
@@ -47,8 +47,17 @@
 
     connectEndMenu.show = true;
     connectEndMenu.source = sourceNodeId;
-    connectEndMenu.top = event.clientY;
-    connectEndMenu.left = event.clientX;
+
+    // @ts-ignore
+    connectEndMenu.top = event.clientY < clientSize.height - 200 ? event.clientY : undefined;
+    // @ts-ignore
+    connectEndMenu.left = event.clientX < clientSize.width - 200 ? event.clientX : undefined;
+
+    // @ts-ignore
+    connectEndMenu.right =
+      event.clientX >= clientSize.width - 200 ? clientSize.width + sidebarSize.width - event.clientX : undefined;
+    // @ts-ignore
+    connectEndMenu.bottom = event.clientY >= clientSize.height - 200 ? clientSize.height - event.clientY : undefined;
 
     connectEndMenu.lastOpen = performance.now();
   };
@@ -73,8 +82,15 @@
     hideAllMenu();
 
     paneContextMenu.show = true;
-    paneContextMenu.top = event.clientY;
-    paneContextMenu.left = event.clientX;
+
+    paneContextMenu.top = event.clientY < clientSize.height - 200 ? event.clientY : undefined;
+    paneContextMenu.left = event.clientX < clientSize.width - 200 ? event.clientX : undefined;
+
+    // @ts-ignore
+    paneContextMenu.right =
+      event.clientX >= clientSize.width - 200 ? clientSize.width + sidebarSize.width - event.clientX : undefined;
+    // @ts-ignore
+    paneContextMenu.bottom = event.clientY >= clientSize.height - 200 ? clientSize.height - event.clientY : undefined;
   }
 
   function handlePaneClick() {

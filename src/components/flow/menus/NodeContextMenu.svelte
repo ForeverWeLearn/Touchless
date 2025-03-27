@@ -1,6 +1,6 @@
 <script lang="ts">
   import { nodeContextMenu } from "../../../stores/flow/menu.svelte";
-  import { sizebarSize } from "../../../stores/geometry.svelte";
+  import { sidebarSize } from "../../../stores/geometry.svelte";
   import { ICON_PATHS } from "../../../types/core";
   import nodeStore from "../../../stores/flow/node.svelte";
 </script>
@@ -9,7 +9,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="context-menu"
-  style="top: {nodeContextMenu.top}px; left: {nodeContextMenu.left - sizebarSize.width}px;"
+  style="top: {nodeContextMenu.top}px; left: {nodeContextMenu.left - sidebarSize.width}px;"
   onclick={() => (nodeContextMenu.show = false)}
 >
   <div class="background"></div>

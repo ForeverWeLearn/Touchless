@@ -1,4 +1,7 @@
+import type { Engine } from "../scripts/engine.svelte";
+
 export type EngineState = {
+  webcamAvaiable: boolean;
   ready: boolean;
   running: boolean;
   fps: number;
@@ -12,11 +15,31 @@ export type HandResult = {
   stability: number;
 };
 
-function create_engine_state(): EngineState {
-  return { ready: false, running: false, fps: 0 };
+function createEngineStore() {
+  let engine: Engine;
+  const state: EngineState = $state({ webcamAvaiable: true, ready: false, running: false, fps: 0 });
+
+  const changeRunningState = async () => {
+    await engine.changeState();
+  };
+
+  return {
+    get engine() {
+      return engine;
+    },
+    set engine(value) {
+      engine = value;
+    },
+
+    get state() {
+      return state;
+    },
+
+    changeRunningState,
+  };
 }
 
-function create_hand_result(): HandResult {
+function createHandResult(): HandResult {
   return {
     has: false,
     gesture_id: 0,
@@ -26,6 +49,6 @@ function create_hand_result(): HandResult {
   };
 }
 
-export const engineState = $state(create_engine_state());
+export const engineStore = $state(createEngineStore());
 
-export const handResults = $state([create_hand_result(), create_hand_result()]);
+export const handResults = $state([createHandResult(), createHandResult()]);

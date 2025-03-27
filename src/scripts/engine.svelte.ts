@@ -1,7 +1,7 @@
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
 
 import type { HandednessID } from "../types/core";
-import { engineState, handResults } from "../stores/engine.svelte";
+import { engineStore, handResults } from "../stores/engine.svelte";
 import { calculateBoundingBox } from "../utils/dsa/algorithm";
 import { calculateKeypoints } from "../utils/dsa/landmark";
 import { GestureClassifier } from "./gesture-classifier";
@@ -13,7 +13,7 @@ import { Drawer } from "./drawer";
 import { Queue } from "../utils/dsa/queue";
 
 async function inference(engine: Engine) {
-  if (!engineState.running) {
+  if (!engineStore.state.running) {
     return;
   }
 
@@ -117,45 +117,62 @@ export class Engine {
     this.loadModel();
   }
 
-  public async setState(running: boolean) {
-    if (!engineState.ready) {
+  public async changeState() {
+    if (!engineStore.state.ready) {
       return;
     }
-    engineState.running = running;
-    if (running) {
-      this.connect_camera();
+
+    if (!engineStore.state.running) {
+      if (await this.connectCamera()) {
+        engineStore.state.running = true;
+      }
     } else {
-      this.disconnect_camera();
+      if (await this.disconnectCamera()) {
+        engineStore.state.running = false;
+      }
     }
   }
 
-  private connect_camera() {
+  private async connectCamera(): Promise<boolean> {
     const video = document.getElementById("webcam") as HTMLVideoElement;
     if (video == null) {
-      return;
+      return false;
     }
     this.video = video as HTMLVideoElement;
 
     const canvas = document.getElementById("webcam-overlay") as HTMLCanvasElement;
     if (canvas == null) {
-      return;
+      return false;
     }
     this.canvas = canvas;
     this.context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       this.video.srcObject = stream;
       this.stream = stream;
+
       this.inferenceHandler = () => inference(this);
       this.video.addEventListener("loadeddata", this.inferenceHandler);
-    });
+
+      engineStore.state.webcamAvaiable = true;
+
+      return true;
+    } catch (error) {
+      engineStore.state.webcamAvaiable = false;
+      console.log("Cannot access camera:", error);
+
+      return false;
+    }
   }
 
-  private disconnect_camera() {
+  private async disconnectCamera(): Promise<boolean> {
     if (this.video == undefined) {
-      return;
+      return false;
     }
+
     this.video.removeEventListener("loadeddata", this.inferenceHandler);
+
     if (this.video.srcObject) {
       this.video.pause();
       this.video.srcObject = null;
@@ -163,10 +180,14 @@ export class Engine {
         track.stop();
       });
     }
+
     if (this.context == undefined) {
-      return;
+      return false;
     }
+
     this.drawer.clear();
+
+    return true;
   }
 
   private async loadModel() {
@@ -191,7 +212,7 @@ export class Engine {
 
     this.drawer = new Drawer(this);
 
-    engineState.ready = true;
+    engineStore.state.ready = true;
   }
 
   public updateFPS(t: number) {
@@ -205,6 +226,6 @@ export class Engine {
       this.queueFPS.pop();
     }
 
-    engineState.fps = this.queueFPS.size();
+    engineStore.state.fps = this.queueFPS.size();
   }
 }

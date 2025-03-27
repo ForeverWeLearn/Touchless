@@ -40,10 +40,6 @@ input[type="text"]:focus {
     border-style: solid;
 }
 
-input[type="text"]:focus {
-    box-shadow: 0 0 5px #fff;
-}
-
 body {
     width: 100vw;
     height: 100vh;

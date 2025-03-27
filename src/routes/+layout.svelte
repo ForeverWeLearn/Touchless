@@ -5,24 +5,22 @@
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import { layoutStore, themeStore } from "../stores/appearance.svelte";
   import { handleKeyDown } from "../stores/user-key.svelte";
-  import { engineState } from "../stores/engine.svelte";
+  import { engineStore } from "../stores/engine.svelte";
+  import { onMount } from "svelte";
   import { Engine } from "../scripts/engine.svelte";
   import Titlebar from "../components/Titlebar.svelte";
   import Sidebar from "../components/Sidebar.svelte";
   import Board from "../components/preview/Board.svelte";
-  import { onMount } from "svelte";
 
   const appWindow = getCurrentWindow();
 
   const engine = new Engine();
 
+  engineStore.engine = engine;
+
   let { children } = $props();
 
   let main: HTMLElement;
-
-  $effect(() => {
-    engine.setState(engineState.running);
-  });
 
   appWindow.onResized(async ({ payload: size }) => {
     console.log("Window resized", size);

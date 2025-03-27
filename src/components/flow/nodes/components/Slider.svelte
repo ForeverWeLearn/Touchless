@@ -41,7 +41,7 @@
     <div class="d-flex align-items-center gap-2 ms-2 content">
       {#if icon}<img class="img-filter" src={icon} alt="" />{/if}
       <div class="name">
-        {name}{#if unit}<small>({unit})</small>{/if}
+        {name}
       </div>
     </div>
   </div>
@@ -51,15 +51,18 @@
   {/if}
 
   {#if showvalue}
-    <div style="position: absolute; top: 0; right: 0; bottom: 0; display:flex; align-items:center">
+    <div class="d-flex" style="position: absolute; top: 0; right: 0.15rem; bottom: 0; display:flex; align-items:center">
       <input class="form-control input-slider" type="number" {min} {max} {step} bind:value />
+      {#if unit}<small>{unit}</small>{/if}
     </div>
   {/if}
 </div>
 
 <style>
   small {
-    font-family: MartianMono;
+    position: absolute;
+    mix-blend-mode: difference;
+    right: 0.6rem;
   }
 
   img {
@@ -109,17 +112,21 @@
   }
 
   input[type="number"] {
-    position: absolute;
-    right: 0.5rem;
     width: 4rem;
-    padding: 0;
+    padding: 0.1rem;
     margin-right: 0.4rem;
 
+    text-align: right;
+    padding-right: 1.4rem;
+
     mix-blend-mode: difference;
-    background-color: var(--bg-color-4) !important;
+    /* background-color: var(--bg-color-0) !important; */
+    background-color: transparent !important;
 
     font-size: 0.8rem;
+    color: var(--fg-color-0) !important;
     /* border: none; */
+    border-radius: calc(var(--btn-border-radius) / 2);
     outline: none;
   }
 

@@ -6,7 +6,7 @@ import { AppFileReader } from "../../utils/fs/reader";
 import { AppFileWriter } from "../../utils/fs/writer";
 
 function createEdgeStore() {
-  let edges: Edge[] = [];
+  let edges: Edge[] = $state([]);
   let edgesWritable: Writable<Edge[]> = writable(edges);
 
   const init = async () => {
@@ -20,6 +20,7 @@ function createEdgeStore() {
 
   const reload = async () => {
     edges = await AppFileReader.readDataFile(DataFileType.EDGE, DEFAULT_FLOW_NAME);
+    edgesWritable.set(edges);
   };
 
   const add = (source: string, target: string) => {

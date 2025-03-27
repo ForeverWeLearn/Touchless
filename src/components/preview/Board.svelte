@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { engineStore } from "../../stores/engine.svelte";
   import { boardState } from "../../stores/board.svelte";
-  import { engineState } from "../../stores/engine.svelte";
   import { ICON_PATHS } from "../../types/core";
   import HandStatistic from "./HandStatistic.svelte";
 </script>
 
 <div class="d-flex justify-content-center mt-2 board" class:hide={!boardState.show}>
-  <div class="d-flex gap-3 px-3 content">
+  <div class="d-flex gap-3 px-3 content" style="position: relative;">
     <div class="info">
-      {engineState.running ? `FPS: ${engineState.fps}` : ""}
+      {engineStore.state.running ? `FPS: ${engineStore.state.fps}` : ""}
     </div>
 
     <HandStatistic handedness={0}></HandStatistic>
@@ -38,7 +38,7 @@
 
   .info {
     font-family: var(--font-family-mono);
-    color: var(--fg-color-1);
+    color: var(--fg-color-4);
     position: absolute;
     top: 0.4rem;
     left: 0.6rem;

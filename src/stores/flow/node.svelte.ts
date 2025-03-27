@@ -29,7 +29,7 @@ function createNodeStore() {
   const reload = async () => {
     nodes = await AppFileReader.readDataFile(DataFileType.NODE, DEFAULT_FLOW_NAME);
     nodesWritable.set(nodes);
-    
+
     nodeMap = generateNodeMap();
     parentMap = edgeStore.generateParentMap();
   };
@@ -100,7 +100,10 @@ function createNodeStore() {
     }
 
     const newId = generateRandomString();
-    const newNode = { ...node, id: newId };
+    const newNode = structuredClone(node);
+    
+    newNode.id = newId;
+    newNode.data.id = newId;
 
     newNode.position.x = node.position.x + 20;
     newNode.position.y = node.position.y + 20;

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
   import { paneContextMenu } from "../../../stores/flow/menu.svelte";
-  import { sizebarSize } from "../../../stores/geometry.svelte";
+  import { clientSize, sidebarSize } from "../../../stores/geometry.svelte";
   import { settings } from "../../../stores/settings.svelte";
   import { NodeType } from "../../../types/nodes";
   import nodeStore from "../../../stores/flow/node.svelte";
@@ -10,8 +10,8 @@
 
   function getFlowPosition(): XYPosition {
     const pos = screenToFlowPosition({
-      x: paneContextMenu.left,
-      y: paneContextMenu.top,
+      x: paneContextMenu.left ?? clientSize.width + sidebarSize.width - paneContextMenu.right,
+      y: paneContextMenu.top ?? clientSize.height - paneContextMenu.bottom,
     });
     return pos;
   }
@@ -21,7 +21,11 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="context-menu"
-  style="top: {paneContextMenu.top}px; left: {paneContextMenu.left - sizebarSize.width}px;"
+  style="
+  top: {paneContextMenu.top}px; 
+  left: {paneContextMenu.left - sidebarSize.width}px; 
+  right: {paneContextMenu.right}px; 
+  bottom: {paneContextMenu.bottom}px"
   onclick={() => (paneContextMenu.show = false)}
 >
   <div class="background"></div>
