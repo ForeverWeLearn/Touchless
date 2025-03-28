@@ -4,6 +4,7 @@ import { DataFileType, DEFAULT_FLOW_NAME } from "../../types/fs";
 import { writable, type Writable } from "svelte/store";
 import { AppFileReader } from "../../utils/fs/reader";
 import { AppFileWriter } from "../../utils/fs/writer";
+import type { EdgeType } from "../../types/edges";
 
 function createEdgeStore() {
   let edges: Edge[] = $state([]);
@@ -23,11 +24,12 @@ function createEdgeStore() {
     edgesWritable.set(edges);
   };
 
-  const add = (source: string, target: string) => {
+  const add = (source: string, target: string, type: EdgeType) => {
     const newEdge: Edge = {
       source: source,
       target: target,
       id: `${parent}-${target}`,
+      type: type,
     };
 
     edges.push(newEdge);
@@ -36,6 +38,11 @@ function createEdgeStore() {
 
   const remove = (source: string, target: string) => {
     edges = edges.filter((edge) => edge.source != source && edge.target != target);
+    edgesWritable.set(edges);
+  };
+
+  const removeByID = (id: string) => {
+    edges = edges.filter((edge) => edge.id != id);
     edgesWritable.set(edges);
   };
 
@@ -64,6 +71,7 @@ function createEdgeStore() {
 
     add,
     remove,
+    removeByID,
 
     generateParentMap,
   };
