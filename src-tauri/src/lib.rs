@@ -153,6 +153,7 @@ fn execute_key_sequence(
             "Meta" => Key::Meta,
             "Tab" => Key::Tab,
             "CapsLock" => Key::CapsLock,
+            "Backspace" => Key::Backspace,
             "Home" => Key::Home,
             "End" => Key::End,
             "Insert" => Key::Insert,
