@@ -28,13 +28,16 @@
 }
 
 .btn-titlebar {
+    position: relative;
     border-style: none;
     aspect-ratio: 1;
+    width: 39px;
+    padding: 0 !important;
 }
 
 .btn-titlebar>img {
     aspect-ratio: 1;
-    width: 28px;
+    width: 100%;
 }
 
 .btn-nbd {

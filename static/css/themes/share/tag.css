@@ -54,5 +54,4 @@ button:hover {
 main {
     background-color: var(--bg-color-1);
     border-color: var(--window-border-color);
-    box-shadow: 0 5px 9px var(--bg-color-1);
 }
