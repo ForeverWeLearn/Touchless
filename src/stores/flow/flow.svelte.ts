@@ -1,6 +1,5 @@
-import { DataFileType, DEFAULT_FLOW_NAME, FLOWS_FOLDER, VERSION_FOLDER } from "../../types/fs";
+import { DEFAULT_FLOW_NAME, FLOWS_FOLDER, VERSION_FOLDER } from "../../types/fs";
 import { AppFileReader } from "../../utils/fs/reader";
-import { AppFileWriter } from "../../utils/fs/writer";
 import { viewportStore } from "./viewport.svelte";
 import { edgeStore } from "./edge.svelte";
 import { refresh } from "../app.svelte";
@@ -24,14 +23,15 @@ function createFlowStore() {
 
     await refresh();
   };
-
+  
   const save = async () => {
     await nodeStore.resetRuntimeState();
-
+    
     await nodeStore.save();
     await edgeStore.save();
     await viewportStore.save();
-
+    
+    await refresh();
     console.log("Flow files saved!");
   };
 
