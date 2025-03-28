@@ -13,7 +13,7 @@
 <div class="node d-flex flex-column gap-2 p-4" class:node-active={handDetected} style="width: 450px;">
   <NodeLabel {data} />
 
-  <div class="d-flex mx-4" style="position: relative">
+  <div class="d-flex mx-4 nodrag" style="position: relative">
     <textarea wrap="hard" maxlength="240" spellcheck={false} bind:value={data.message} bind:focused={focus}></textarea>
     {#if focus}<small>{data.message.length}/240</small>{/if}
   </div>
