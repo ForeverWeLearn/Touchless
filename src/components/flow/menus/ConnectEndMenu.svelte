@@ -1,17 +1,17 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
-  import { connectEndMenu } from "../../../stores/flow/menu.svelte";
-  import { clientSize, sidebarSize } from "../../../stores/geometry.svelte";
+  import { windowSize } from "../../../stores/geometry.svelte";
   import { NodeType } from "../../../types/nodes";
   import { ICON_PATHS } from "../../../types/core";
   import nodeStore from "../../../stores/flow/node.svelte";
+  import menuStore from "../../../stores/flow/menu.svelte";
 
   const { screenToFlowPosition } = useSvelteFlow();
 
   function getFlowPosition(): XYPosition {
     const pos = screenToFlowPosition({
-      x: connectEndMenu.left ?? clientSize.width + sidebarSize.width - connectEndMenu.right,
-      y: connectEndMenu.top ?? clientSize.height - connectEndMenu.bottom,
+      x: menuStore.connectEnd.left ?? windowSize.width - menuStore.connectEnd.right,
+      y: menuStore.connectEnd.top ?? windowSize.height - menuStore.connectEnd.bottom,
     });
     return pos;
   }
@@ -22,18 +22,18 @@
 <div
   class="context-menu"
   style="
-  top: {connectEndMenu.top}px; 
-  left: {connectEndMenu.left - sidebarSize.width}px; 
-  right: {connectEndMenu.right}px; 
-  bottom: {connectEndMenu.bottom}px"
-  onclick={() => (connectEndMenu.show = false)}
+  top: {menuStore.connectEnd.top}px; 
+  left: {menuStore.connectEnd.left}px; 
+  right: {menuStore.connectEnd.right}px; 
+  bottom: {menuStore.connectEnd.bottom}px"
+  onclick={() => (menuStore.connectEnd.show = false)}
 >
   <div class="background"></div>
 
   <div class="context-menu-content">
     <button
       class="btn d-flex align-items-center btn-context-menu"
-      onclick={() => nodeStore.add(NodeType.CONDITION, getFlowPosition(), connectEndMenu.source)}
+      onclick={() => nodeStore.add(NodeType.CONDITION, getFlowPosition(), menuStore.connectEnd.source)}
     >
       <img class="img-filter" src={ICON_PATHS.FLOWCHART} alt="" />
       <span>{NodeType.CONDITION}</span>
@@ -41,7 +41,7 @@
 
     <button
       class="btn d-flex align-items-center btn-context-menu"
-      onclick={() => nodeStore.add(NodeType.TASK, getFlowPosition(), connectEndMenu.source)}
+      onclick={() => nodeStore.add(NodeType.TASK, getFlowPosition(), menuStore.connectEnd.source)}
     >
       <img class="img-filter" src={ICON_PATHS.BOLT} alt="" />
       <span>{NodeType.TASK}</span>

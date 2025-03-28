@@ -1,17 +1,17 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
-  import { paneContextMenu } from "../../../stores/flow/menu.svelte";
-  import { clientSize, sidebarSize } from "../../../stores/geometry.svelte";
+  import { windowSize } from "../../../stores/geometry.svelte";
   import { settings } from "../../../stores/settings.svelte";
   import { NodeType } from "../../../types/nodes";
   import nodeStore from "../../../stores/flow/node.svelte";
+  import menuStore from "../../../stores/flow/menu.svelte";
 
   const { screenToFlowPosition } = useSvelteFlow();
 
   function getFlowPosition(): XYPosition {
     const pos = screenToFlowPosition({
-      x: paneContextMenu.left ?? clientSize.width + sidebarSize.width - paneContextMenu.right,
-      y: paneContextMenu.top ?? clientSize.height - paneContextMenu.bottom,
+      x: menuStore.paneContext.left ?? windowSize.width - menuStore.paneContext.right,
+      y: menuStore.paneContext.top ?? windowSize.height - menuStore.paneContext.bottom,
     });
     return pos;
   }
@@ -22,11 +22,11 @@
 <div
   class="context-menu"
   style="
-  top: {paneContextMenu.top}px; 
-  left: {paneContextMenu.left - sidebarSize.width}px; 
-  right: {paneContextMenu.right}px; 
-  bottom: {paneContextMenu.bottom}px"
-  onclick={() => (paneContextMenu.show = false)}
+  top: {menuStore.paneContext.top}px; 
+  left: {menuStore.paneContext.left}px; 
+  right: {menuStore.paneContext.right}px; 
+  bottom: {menuStore.paneContext.bottom}px"
+  onclick={() => (menuStore.paneContext.show = false)}
 >
   <div class="background"></div>
 

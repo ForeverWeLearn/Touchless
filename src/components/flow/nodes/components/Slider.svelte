@@ -51,7 +51,10 @@
   {/if}
 
   {#if showvalue}
-    <div class="d-flex gap-1" style="position: absolute; top: 0; right: 0.65rem; bottom: 0; display:flex; align-items:center">
+    <div
+      class="d-flex gap-1"
+      style="position: absolute; top: 0; right: 0.65rem; bottom: 0; display:flex; align-items:center"
+    >
       <input class="form-control input-slider" type="number" {min} {max} {step} bind:value />
       {#if unit}<span>{unit}</span>{/if}
     </div>
@@ -111,7 +114,6 @@
   }
 
   input[type="number"] {
-    width: 4rem;
     padding: 0.1rem;
 
     text-align: center;
@@ -122,6 +124,10 @@
     font-size: 0.8rem;
     color: var(--fg-color-0) !important;
     border-radius: calc(var(--btn-border-radius) / 2);
+
+    width: max-content;
+    min-width: 50px;
+    max-width: 200px;
   }
 
   input[type="number"]:focus {

@@ -6,6 +6,7 @@
   import { layoutStore, themeStore } from "../stores/appearance.svelte";
   import { handleKeyDown } from "../stores/user-key.svelte";
   import { engineStore } from "../stores/engine.svelte";
+  import { windowSize } from "../stores/geometry.svelte";
   import { onMount } from "svelte";
   import { Engine } from "../scripts/engine.svelte";
   import Titlebar from "../components/Titlebar.svelte";
@@ -55,10 +56,15 @@
   <link rel="stylesheet" href="css/themes/{themeStore.current}/theme.css" />
 </svelte:head>
 
-<Titlebar></Titlebar>
+<main
+  class="window-decoration appear"
+  bind:this={main}
+  bind:clientWidth={windowSize.width}
+  bind:clientHeight={windowSize.height}
+>
+  <div class="d-flex h-100" style="position: relative;">
+    <Titlebar></Titlebar>
 
-<main class="window-decoration appear" bind:this={main}>
-  <div class="d-flex h-100">
     <div class="d-flex sidebar-container" style="z-index: 9999;">
       <Sidebar></Sidebar>
     </div>

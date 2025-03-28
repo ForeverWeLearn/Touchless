@@ -2,21 +2,24 @@
   import "@xyflow/svelte/dist/style.css";
 
   import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, useSvelteFlow } from "@xyflow/svelte";
-  import { connectEndMenu, nodeContextMenu, paneContextMenu } from "../../stores/flow/menu.svelte";
   import { viewportStore } from "../../stores/flow/viewport.svelte";
-  import { clientSize, sidebarSize } from "../../stores/geometry.svelte";
+  import { windowSize, flowSize, sidebarSize } from "../../stores/geometry.svelte";
+  import { EdgeType, edgeTypes } from "../../types/edges";
   import { NodeType } from "../../types/nodes";
   import { onMount } from "svelte";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
   import PaneContextMenu from "./menus/PaneContextMenu.svelte";
   import ConditionsNode from "./nodes/condition/ConditionNode.svelte";
   import ConnectEndMenu from "./menus/ConnectEndMenu.svelte";
+  import menuStore from "../../stores/flow/menu.svelte";
   import StatusBar from "./float/StatusBar.svelte";
   import EntryNode from "./nodes/entry/EntryNode.svelte";
   import nodeStore from "../../stores/flow/node.svelte";
   import edgeStore from "../../stores/flow/edge.svelte";
   import TaskNode from "./nodes/tasks/TaskNode.svelte";
   import TopBar from "./float/TopBar.svelte";
+  import PointSelectMenu from "./menus/PointSelectMenu.svelte";
+  import GestureSelectMenu from "./menus/GestureSelectMenu.svelte";
 
   const { viewport, setViewport } = useSvelteFlow();
 
@@ -38,77 +41,68 @@
     if (connectionState.isValid) return;
     if (connectionState.fromHandle?.type == "target") return;
 
-    hideAllMenu();
+    menuStore.hideAll();
 
     const sourceNodeId = connectionState.fromNode?.id ?? "0";
 
     event.preventDefault();
     event = event as MouseEvent;
 
-    connectEndMenu.show = true;
-    connectEndMenu.source = sourceNodeId;
+    menuStore.connectEnd.show = true;
+    menuStore.connectEnd.source = sourceNodeId;
 
     // @ts-ignore
-    connectEndMenu.top = event.clientY < clientSize.height - 200 ? event.clientY : undefined;
+    menuStore.connectEnd.top = event.offsetY < flowSize.height - 200 ? event.offsetY : undefined;
     // @ts-ignore
-    connectEndMenu.left = event.clientX < clientSize.width - 200 ? event.clientX : undefined;
+    menuStore.connectEnd.left = event.offsetX < flowSize.width - 200 ? event.offsetX : undefined;
 
     // @ts-ignore
-    connectEndMenu.right =
-      event.clientX >= clientSize.width - 200 ? clientSize.width + sidebarSize.width - event.clientX : undefined;
+    menuStore.connectEnd.bottom = event.offsetY >= flowSize.height - 200 ? flowSize.height - event.clientY : undefined;
     // @ts-ignore
-    connectEndMenu.bottom = event.clientY >= clientSize.height - 200 ? clientSize.height - event.clientY : undefined;
+    menuStore.connectEnd.right = event.offsetX >= flowSize.width - 200 ? flowSize.width - event.offsetX : undefined;
 
-    connectEndMenu.lastOpen = performance.now();
+    menuStore.connectEnd.lastOpen = performance.now();
   };
 
   // @ts-ignore
   function handleNodeContextMenu({ detail: { event, node } }) {
     event.preventDefault();
 
-    hideAllMenu();
+    menuStore.hideAll();
 
-    nodeContextMenu.show = true;
-    nodeContextMenu.source = node.id;
-    nodeContextMenu.top = event.clientY;
-    nodeContextMenu.left = event.clientX;
+    menuStore.nodeContext.show = true;
+    menuStore.nodeContext.source = node.id;
+    menuStore.nodeContext.top = event.clientY;
+    menuStore.nodeContext.left = event.clientX;
   }
 
   // @ts-ignore
   function handlePaneContextMenu({ detail: { event } }) {
     event.preventDefault();
-    event = event as MouseEvent;
 
-    hideAllMenu();
+    menuStore.hideAll();
+    console.log(event);
+    menuStore.paneContext.show = true;
 
-    paneContextMenu.show = true;
-
-    paneContextMenu.top = event.clientY < clientSize.height - 200 ? event.clientY : undefined;
-    paneContextMenu.left = event.clientX < clientSize.width - 200 ? event.clientX : undefined;
+    menuStore.paneContext.top = event.offsetY < flowSize.height - 200 ? event.offsetY : undefined;
+    menuStore.paneContext.left = event.offsetX < flowSize.width - 200 ? event.offsetX : undefined;
 
     // @ts-ignore
-    paneContextMenu.right =
-      event.clientX >= clientSize.width - 200 ? clientSize.width + sidebarSize.width - event.clientX : undefined;
+    menuStore.paneContext.bottom = event.offsetY >= flowSize.height - 200 ? flowSize.height - event.clientY : undefined;
     // @ts-ignore
-    paneContextMenu.bottom = event.clientY >= clientSize.height - 200 ? clientSize.height - event.clientY : undefined;
+    menuStore.paneContext.right = event.offsetX >= flowSize.width - 200 ? flowSize.width - event.offsetX : undefined;
   }
 
   function handlePaneClick() {
-    hideAllMenu();
-  }
-
-  function hideAllMenu() {
-    if (performance.now() - connectEndMenu.lastOpen > 250) {
-      connectEndMenu.show = false;
-    }
-    nodeContextMenu.show = false;
-    paneContextMenu.show = false;
+    menuStore.hideAll();
   }
 </script>
 
-<main bind:clientWidth={clientSize.width} bind:clientHeight={clientSize.height}>
+<main bind:offsetWidth={flowSize.width} bind:offsetHeight={flowSize.height}>
   <SvelteFlow
     {nodeTypes}
+    {edgeTypes}
+    defaultEdgeOptions={{ type: EdgeType.BUTTON }}
     nodes={nodeStore.nodesWritable}
     edges={edgeStore.edgesWritable}
     initialViewport={viewportStore.initialViewport}
@@ -121,16 +115,24 @@
   >
     <Background variant={BackgroundVariant.Dots} gap={50} />
 
-    {#if connectEndMenu.show}
+    {#if menuStore.connectEnd.show}
       <ConnectEndMenu />
     {/if}
 
-    {#if paneContextMenu.show}
+    {#if menuStore.paneContext.show}
       <PaneContextMenu />
     {/if}
 
-    {#if nodeContextMenu.show}
+    {#if menuStore.nodeContext.show}
       <NodeContextMenu />
+    {/if}
+
+    {#if menuStore.gestureSelect.show}
+      <GestureSelectMenu />
+    {/if}
+
+    {#if menuStore.pointSelect.show}
+      <PointSelectMenu />
     {/if}
   </SvelteFlow>
 

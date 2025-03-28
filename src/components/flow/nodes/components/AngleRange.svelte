@@ -17,9 +17,9 @@
 
     pieChart.style.rotate = `${angle}deg`;
     pieChart.style.background = `conic-gradient(
-        var(--fg-color-2) 0% ${spread_percent}%,
-        var(--bg-color-2) ${spread_percent}% ${100 - spread_percent}%,
-        var(--fg-color-2) ${100 - spread_percent}% 100%)`;
+        var(--fg-color-1) 0% ${spread_percent}%,
+        var(--bg-color-1) ${spread_percent}% ${100 - spread_percent}%,
+        var(--fg-color-1) ${100 - spread_percent}% 100%)`;
   };
 
   $effect(() => {
@@ -27,7 +27,7 @@
   });
 </script>
 
-<div class="d-flex gap-4">
+<div class="d-flex gap-4 nodrag">
   <div class="d-flex flex-column justify-content-center gap-1">
     <Slider
       name="Angle"
@@ -99,7 +99,7 @@
     aspect-ratio: 1;
     border-radius: 50%;
     box-shadow: 0 0 5px var(--bg-color-0);
-    border-width: 2px;
+    border: 1px solid var(--fg-color-1);
   }
 
   .pie-chart::before {
@@ -109,7 +109,7 @@
     width: 5%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background-color: var(--bg-color-2);
+    background-color: var(--bg-color-1);
     content: "";
   }
 </style>

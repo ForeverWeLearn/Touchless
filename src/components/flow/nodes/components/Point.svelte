@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { HANDEDNESS_NAMES, ICON_PATHS, LANDMARK_NAMES } from "../../../../types/core";
   import type { Point } from "../../../../types/forms";
-  import PointSelector from "./PointSelector.svelte";
+  import { sidebarSize, windowSize } from "../../../../stores/geometry.svelte";
+  import { HANDEDNESS_NAMES, ICON_PATHS, LANDMARK_NAMES } from "../../../../types/core";
+  import menuStore from "../../../../stores/flow/menu.svelte";
 
   let { data, name }: { data: Point; name: string } = $props();
-
-  let state = $state({ selecting: false });
 
   const POSITIONS = [
     { top: 84.8, left: 50 },
@@ -30,18 +29,35 @@
     { top: 40.6, left: 77.8 },
     { top: 33, left: 83 },
   ];
+
+  function onclick(event: MouseEvent) {
+    event.preventDefault();
+
+    menuStore.pointSelect.show = true;
+    menuStore.pointSelect.data = data;
+
+    console.log(event);
+    // @ts-ignore
+    menuStore.pointSelect.top = event.y < windowSize.height - 400 ? event.y - Math.min(200, event.y - 7) : undefined;
+    // @ts-ignore
+    menuStore.pointSelect.left =
+      event.x < windowSize.width - 400 ? event.x - sidebarSize.width - Math.min(200, event.x - sidebarSize.width - 7) : undefined;
+
+    // @ts-ignore
+    menuStore.pointSelect.bottom =
+      event.y >= windowSize.height - 400
+        ? windowSize.height - event.y - Math.min(200, windowSize.height - event.y - 24)
+        : undefined;
+    // @ts-ignore
+    menuStore.pointSelect.right =
+      event.x >= windowSize.width - 400
+        ? windowSize.width - event.x - Math.min(200, windowSize.width - event.x - 7)
+        : undefined;
+  }
 </script>
 
 <div class="d-flex flex-column select-box point-select-box nodrag" style="position: relative;">
-  {#if state.selecting}
-    <PointSelector {data} {state} />
-  {/if}
-
-  <button
-    class="btn btn-nbd d-flex flex-column align-items-center"
-    style="padding: 0rem !important;"
-    onclick={() => (state.selecting = !state.selecting)}
-  >
+  <button class="btn btn-nbd d-flex flex-column align-items-center" style="padding: 0rem !important;" {onclick}>
     <div class="hand-landmark" class:flip-h={data.handedness == 0} style="position: relative;">
       <div class="marker" style="left: {POSITIONS[data.landmark].left}%; top: {POSITIONS[data.landmark].top}%"></div>
       <img class="img-filter" src={ICON_PATHS.HAND_LANDMARKS} alt="Landmarks" />
@@ -61,6 +77,11 @@
 </div>
 
 <style>
+  .point-select-box {
+    background-color: var(--bg-color-1);
+    transition: transform 0.5s;
+  }
+
   .point-select-box > button {
     padding: 0;
   }

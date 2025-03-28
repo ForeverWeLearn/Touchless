@@ -1,42 +1,63 @@
-type ConnextEndMenu = {
-  show: boolean;
-  source: string;
-  top: number;
-  left: number;
-  bottom: number;
-  right: number;
-  lastOpen: number;
-};
+import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
+import {
+  createConnectEndMenu,
+  createGestureSelectMenu,
+  createNodeContextMenu,
+  createPaneContextMenu,
+  createPointSelectMenu,
+  type ConnectEndMenu,
+  type GestureSelectMenu,
+  type NodeContextMenu,
+  type PaneContextMenu,
+  type PointSelectMenu,
+} from "../../types/menus";
+import { get } from "svelte/store";
 
-type PaneContextMenu = {
-  show: boolean;
-  top: number;
-  left: number;
-  bottom: number;
-  right: number;
-};
+function createMenuStore() {
+  const connectEnd: ConnectEndMenu = $state(createConnectEndMenu());
 
-export const connectEndMenu: ConnextEndMenu = $state({
-  show: false,
-  source: "",
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-  lastOpen: 0,
-});
+  const paneContext: PaneContextMenu = $state(createPaneContextMenu());
 
-export const paneContextMenu: PaneContextMenu = $state({
-  show: false,
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-});
+  const nodeContext: NodeContextMenu = $state(createNodeContextMenu());
 
-export const nodeContextMenu = $state({
-  show: false,
-  source: "",
-  top: 0,
-  left: 0,
-});
+  const gestureSelect: GestureSelectMenu = $state(createGestureSelectMenu());
+
+  const pointSelect: PointSelectMenu = $state(createPointSelectMenu());
+
+  function hideAll() {
+    if (performance.now() - connectEnd.lastOpen > 250) {
+      connectEnd.show = false;
+    }
+    nodeContext.show = false;
+    paneContext.show = false;
+    pointSelect.show = false;
+  }
+
+  return {
+    get connectEnd() {
+      return connectEnd;
+    },
+
+    get paneContext() {
+      return paneContext;
+    },
+
+    get nodeContext() {
+      return nodeContext;
+    },
+
+    get gestureSelect() {
+      return gestureSelect;
+    },
+    
+    get pointSelect() {
+      return pointSelect;
+    },
+
+    hideAll,
+  };
+}
+
+export const menuStore = createMenuStore();
+
+export default menuStore;
