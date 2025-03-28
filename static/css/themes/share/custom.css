@@ -65,11 +65,11 @@
 }
 
 .marker {
-    border-radius: 50px;
+    /* border-radius: 50px; */
     position: absolute;
     width: 4px;
     aspect-ratio: 1;
     rotate: 45deg;
-    background-color: var(--marker-bg-color);
+    background-color: var(--fg-color-0);
     box-shadow: 0 0 2px var(--fg-color-2);
 }
