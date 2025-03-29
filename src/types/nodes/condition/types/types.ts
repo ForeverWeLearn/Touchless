@@ -15,6 +15,7 @@ export type ConditionNode = BaseNode & {
 export type ConditionNodeData = BaseNodeData & {
   type: NodeType.CONDITION;
   conditions: (GesturesCondition | DistanceCondition | RotationCondition)[];
+  hold: number;
   duration: number;
   runtime: Runtime;
 };

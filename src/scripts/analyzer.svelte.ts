@@ -5,6 +5,7 @@ import {
   getDefaultTaskNodeData,
   NodeType,
   type Condition,
+  type ConditionNodeData,
   type DistanceCondition,
   type GesturesCondition,
   type RotationCondition,
@@ -41,12 +42,9 @@ export class Analyzer {
             break;
           }
 
-          if (this.checkConditions(node.data.conditions)) {
-            node.data.runtime.activated = true;
-            node.data.runtime.lastSatisfied = this.now;
-          } else if (this.now - node.data.runtime.lastSatisfied > node.data.duration) {
-            node.data.runtime.activated = false;
-          }
+          const satisfied = this.checkConditions(node.data.conditions);
+
+          this.parseConditionActive(node.data, satisfied);
 
           break;
         }
@@ -65,57 +63,63 @@ export class Analyzer {
     }
   }
 
+  private parseConditionActive(data: ConditionNodeData, satisfied: boolean) {
+    const runtime = data.runtime;
+    const hold = data.hold;
+
+    const step = this.now - runtime.lastSatisfied;
+
+    // If not satisfy...
+    if (!satisfied) {
+      // ...for longer than max active step...
+      if (step > settings.maxActiveStep) {
+        // ...then set deactivated.
+        runtime.activated = false;
+        runtime.firstSatisfied = 0;
+        runtime.lastSatisfied = 0;
+      }
+    }
+
+    // If satisfy...
+    if (satisfied) {
+      // ...and step too far...
+      if (step > settings.maxActiveStep) {
+        // ...then it seem to be first satisfy, set first satisfy to now.
+        runtime.firstSatisfied = this.now;
+      }
+
+      // ...then set last satisfy to now.
+      runtime.lastSatisfied = this.now;
+
+      // ...for longer than time to active...
+      if (runtime.lastSatisfied - runtime.firstSatisfied > hold) {
+        // ...then active.
+        runtime.activated = true;
+      }
+    }
+  }
+
   private checkConditions(conditions: Condition[]): boolean {
-    const parse = (condition: GesturesCondition | DistanceCondition | RotationCondition, satisfied: boolean) => {
-      const runtime = condition.runtime;
-      const time2active = condition.time2active;
-
-      const step = this.now - runtime.lastSatisfied;
-
-      // If not satisfy...
-      if (!satisfied) {
-        // ...for longer than max active step...
-        if (step > settings.maxActiveStep) {
-          // ...then set deactivated.
-          runtime.activated = false;
-          runtime.firstSatisfied = 0;
-          runtime.lastSatisfied = 0;
-        }
-      }
-
-      // If satisfy...
-      if (satisfied) {
-        // ...and step too far...
-        if (step > settings.maxActiveStep) {
-          // ...then it seem to be first satisfy, set first satisfy to now.
-          runtime.firstSatisfied = this.now;
-        }
-
-        // ...then set last satisfy to now.
-        runtime.lastSatisfied = this.now;
-
-        // ...for longer than time to active...
-        if (runtime.lastSatisfied - runtime.firstSatisfied > time2active) {
-          // ...then active.
-          runtime.activated = true;
-        }
-      }
-    };
-
     for (const condition of conditions) {
       switch (condition.type) {
         case ConditionType.GESTURES: {
-          parse(condition, this.checkGesturesCondition(condition));
+          if (this.checkGesturesCondition(condition)) {
+            condition.runtime.activated = true;
+          }
           break;
         }
 
         case ConditionType.DISTANCE: {
-          parse(condition, this.checkDistanceCondition(condition));
+          if (this.checkDistanceCondition(condition)) {
+            condition.runtime.activated = true;
+          }
           break;
         }
 
         case ConditionType.ROTATION: {
-          parse(condition, this.checkRotationCondition(condition));
+          if (this.checkRotationCondition(condition)) {
+            condition.runtime.activated = true;
+          }
           break;
         }
       }

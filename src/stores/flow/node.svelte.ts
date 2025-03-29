@@ -57,6 +57,8 @@ function createNodeStore() {
     const id = generateRandomString();
     const newNode = getDefaultNode(type, id);
 
+    // newNode.origin = [0, 0.5];
+
     newNode.position = pos;
 
     if (parent) {

@@ -4,7 +4,7 @@ import { DataFileType, DEFAULT_FLOW_NAME } from "../../types/fs";
 import { writable, type Writable } from "svelte/store";
 import { AppFileReader } from "../../utils/fs/reader";
 import { AppFileWriter } from "../../utils/fs/writer";
-import type { EdgeType } from "../../types/edges";
+import { EdgeType } from "../../types/edges";
 
 function createEdgeStore() {
   let edges: Edge[] = $state([]);
@@ -24,7 +24,7 @@ function createEdgeStore() {
     edgesWritable.set(edges);
   };
 
-  const add = (source: string, target: string, type: EdgeType) => {
+  const add = (source: string, target: string, type = EdgeType.BUTTON) => {
     const newEdge: Edge = {
       source: source,
       target: target,

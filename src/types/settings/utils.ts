@@ -1,5 +1,5 @@
 import type { Settings } from "./types";
-import { NodeType, TaskType } from "../nodes";
+import { ConditionType, NodeType, TaskType } from "../nodes";
 import { ICON_PATHS } from "../core";
 
 export function getDefaultSettings(): Settings {
@@ -19,6 +19,11 @@ export function getDefaultSettings(): Settings {
         [TaskType.KEY_SEQUENCE]: ICON_PATHS.KEYBOARD_ALT,
         [TaskType.TEXT]: ICON_PATHS.TEXT_FIELDS,
         [TaskType.COMMAND]: ICON_PATHS.TERMINAL,
+      },
+      conditions: {
+        [ConditionType.GESTURES]: ICON_PATHS.HAND_GESTURE,
+        [ConditionType.DISTANCE]: ICON_PATHS.ARROW_RANGE,
+        [ConditionType.ROTATION]: ICON_PATHS.CLOCK_LOADER,
       },
     },
   };

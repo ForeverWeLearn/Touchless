@@ -29,7 +29,6 @@ export function resetRuntime(runtime: Runtime) {
 export function getDefaultBaseCondition(): BaseCondition {
   return {
     enable: true,
-    time2active: 1500,
     runtime: getDefaultRuntime(),
   };
 }
@@ -60,6 +59,7 @@ export function getDefaultConditionNodeData(id: string): ConditionNodeData {
     ...getDefaultBaseNodeData(id),
     type: NodeType.CONDITION,
     conditions: [],
+    hold: 1000,
     duration: 5000,
     runtime: getDefaultRuntime(),
   };

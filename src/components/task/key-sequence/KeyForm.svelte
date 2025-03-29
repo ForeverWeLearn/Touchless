@@ -1,6 +1,6 @@
 <script lang="ts">
   import { userKeyStore, type KeyReceiver } from "../../../stores/user-key.svelte";
-  import { ICON_PATHS, KEY_DIRECTION_NAMES, KeyDirection, type Key } from "../../../types/core";
+  import { ICON_PATHS, KeyDirection, type Key } from "../../../types/core";
 
   let { key, append, remove }: { key: Key; append: () => void; remove: () => void } = $props();
 

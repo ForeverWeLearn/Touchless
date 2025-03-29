@@ -1,19 +1,21 @@
-import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
 import {
+  createConditionTypeSelectMenu,
   createConnectEndMenu,
   createGestureSelectMenu,
   createNodeContextMenu,
   createPaneContextMenu,
   createPointSelectMenu,
+  type ConditionTypeSelectMenu,
   type ConnectEndMenu,
   type GestureSelectMenu,
   type NodeContextMenu,
   type PaneContextMenu,
   type PointSelectMenu,
 } from "../../types/menus";
-import { get } from "svelte/store";
 
 function createMenuStore() {
+  const conditionTypeSelect: ConditionTypeSelectMenu = $state(createConditionTypeSelectMenu());
+
   const connectEnd: ConnectEndMenu = $state(createConnectEndMenu());
 
   const paneContext: PaneContextMenu = $state(createPaneContextMenu());
@@ -34,6 +36,10 @@ function createMenuStore() {
   }
 
   return {
+    get conditionTypeSelect() {
+      return conditionTypeSelect;
+    },
+    
     get connectEnd() {
       return connectEnd;
     },
@@ -49,7 +55,7 @@ function createMenuStore() {
     get gestureSelect() {
       return gestureSelect;
     },
-    
+
     get pointSelect() {
       return pointSelect;
     },

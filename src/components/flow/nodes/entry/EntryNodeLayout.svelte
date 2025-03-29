@@ -10,7 +10,7 @@
   let focus = $state(false);
 </script>
 
-<div class="node d-flex flex-column gap-2 p-4" class:node-active={handDetected} style="width: 450px;">
+<div class="node d-flex flex-column gap-2 p-4" class:node-active={data.enable && handDetected} style="width: 450px;">
   <NodeLabel {data} />
 
   <div class="d-flex mx-4 nodrag" style="position: relative">
