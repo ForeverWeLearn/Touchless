@@ -18,7 +18,7 @@
     <div class="d-flex flex-column justify-content-end align-items-start h-100 me-4">
       <div class="d-flex flex-fill align-items-end">
         <div class="h5 fw-bold mb-1">Touchless</div>
-        <small class="ms-2 mb-1">0.1.0</small>
+        <small class="ms-2 mb-1">0.1.1</small>
       </div>
       <div class="d-flex flex-fill align-items-end">
         <div class="h6">AI Hand Control</div>

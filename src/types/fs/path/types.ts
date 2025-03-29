@@ -3,7 +3,7 @@ import { DataFileType } from "../file";
 
 export const BASE_DIRECTORY = BaseDirectory.AppData;
 
-export const VERSION_FOLDER = "v0.1.0";
+export const VERSION_FOLDER = "v0.1.1";
 export const LOCAL_FOLDER = "defaults";
 
 export const FLOWS_FOLDER = "flows";
