@@ -41,7 +41,7 @@
   <div class="background"></div>
 
   <div class="context-menu-content p-4">
-    <div class="h5 text-center mb-4">Select Hand Gesture</div>
+    <div class="h6 text-center mb-4">Select Keypoint</div>
 
     <div class:flip-h={menuStore.pointSelect.data.handedness == 0} style="position: relative;">
       <img class="img-filter gesture-icon" src={ICON_PATHS.HAND_LANDMARKS} alt="Landmarks" />

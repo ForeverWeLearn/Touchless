@@ -18,7 +18,7 @@
 
   <div class="context-menu-content p-4">
     <div class="gesture-select-overlay">
-      <div class="h5 text-center mb-4">Select Hand Gesture</div>
+      <div class="h6 text-center mb-4">Select Hand Gesture</div>
 
       <div class="d-flex flex-wrap justify-content-between gap-3">
         {#each GESTURE_NAMES as gesture_name}

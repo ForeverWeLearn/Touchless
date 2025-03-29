@@ -1,59 +1,62 @@
 <script lang="ts">
-  import { ICON_PATHS } from "../../../../../types/core";
-  import { ConditionType, getDefaultCondition, type Condition } from "../../../../../types/nodes";
+  import { ConditionType, type Condition } from "../../../../../types/nodes";
+  import { sidebarSize, windowSize } from "../../../../../stores/geometry.svelte";
   import DistanceAttribute from "./DistanceAttribute.svelte";
   import GesturesAttribute from "./GesturesAttribute.svelte";
   import RotationAttribute from "./RotationAttribute.svelte";
+  import menuStore from "../../../../../stores/flow/menu.svelte";
+  import { settings } from "../../../../../stores/settings.svelte";
 
-  let { data, change, remove }: { data: Condition; change: (newCondition: Condition) => void; remove: () => void } =
+  let { data, change, remove }: { data: Condition; change: (type: ConditionType) => void; remove: () => void } =
     $props();
 
-  let icon = $derived(
-    data.type == ConditionType.GESTURES
-      ? ICON_PATHS.HAND_GESTURE
-      : data.type == ConditionType.DISTANCE
-        ? ICON_PATHS.ARROW_RANGE
-        : ICON_PATHS.CLOCK_LOADER
-  );
+  function onclick(event: MouseEvent) {
+    event.preventDefault();
+
+    menuStore.conditionTypeSelect.show = true;
+
+    menuStore.conditionTypeSelect.condition = data;
+    menuStore.conditionTypeSelect.callback = change;
+
+    // @ts-ignore
+    menuStore.conditionTypeSelect.top =
+      event.y < windowSize.height - 400 ? event.y - Math.min(100, event.y - 7) : undefined;
+    // @ts-ignore
+    menuStore.conditionTypeSelect.left =
+      event.x < windowSize.width - 400
+        ? event.x - sidebarSize.width - Math.min(200, event.x - sidebarSize.width - 7)
+        : undefined;
+
+    // @ts-ignore
+    menuStore.conditionTypeSelect.bottom =
+      event.y >= windowSize.height - 400
+        ? windowSize.height - event.y - Math.min(100, windowSize.height - event.y - 24)
+        : undefined;
+    // @ts-ignore
+    menuStore.conditionTypeSelect.right =
+      event.x >= windowSize.width - 400
+        ? windowSize.width - event.x - Math.min(200, windowSize.width - event.x - 7)
+        : undefined;
+  }
 </script>
 
 <div class="attr d-flex align-items-center gap-4 py-3 appear" class:attr-active={data.runtime.activated}>
-  <div class="d-flex flex-fill m-3" style="position: relative;">
-    <img class="img-filter img-icon" src={icon} alt="" />
-
-    <select class="nodrag w-100" onchange={() => change(getDefaultCondition(data.type))} bind:value={data.type}>
-      {#each Object.values(ConditionType) as type}
-        <option value={type}>{type}</option>
-      {/each}
-    </select>
+  <div class="d-flex flex-fill gap-2 m-3">
+    <button class="d-flex align-items-center gap-3" {onclick}>
+      <img class="img-filter" src={settings.icons.conditions[data.type]} alt="" style="width: 75%;" />
+      <div>{data.type}</div>
+    </button>
   </div>
 
   <div class="d-flex align-items-center gap-3">
     {#if data.type == ConditionType.GESTURES}
       <GesturesAttribute {data}></GesturesAttribute>
-    {/if}
-    {#if data.type == ConditionType.DISTANCE}
+    {:else if data.type == ConditionType.DISTANCE}
       <DistanceAttribute {data}></DistanceAttribute>
-    {/if}
-    {#if data.type == ConditionType.ROTATION}
+    {:else}
       <RotationAttribute {data}></RotationAttribute>
     {/if}
   </div>
 
-  <button class="btn btn-nbd" onclick={() => remove()}> ✕ </button>
+  <button class="btn btn-nbd faded" onclick={() => remove()}> ✕ </button>
 </div>
-
-<style>
-  select {
-    padding-left: 2.2rem;
-    outline: var(--fg-color-2);
-  }
-
-  .img-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    padding: 0.5rem;
-  }
-</style>

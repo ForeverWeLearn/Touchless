@@ -38,7 +38,7 @@
 }
 
 .btn-sidebar-active {
-    box-shadow: 0 0 15px var(--bg-color-0);
+    /* box-shadow: 0 0 15px var(--bg-color-0); */
     background-color: var(--bg-color-3);
     opacity: 1;
 }

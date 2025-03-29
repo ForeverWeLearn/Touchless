@@ -17,8 +17,7 @@
       <AttributeForm
         data={task}
         change={(newTask: Task) => {
-          data.tasks.splice(i, 1);
-          data.tasks.splice(i, 0, newTask);
+          data.tasks.splice(i, 1, newTask);
         }}
         remove={() => data.tasks.splice(i, 1)}
       ></AttributeForm>

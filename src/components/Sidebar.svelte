@@ -60,7 +60,7 @@
   </div>
 
   <div class="d-flex flex-column h-100 navigation-pane">
-    <div class="d-flex flex-column mb-auto gap-2">
+    <div class="d-flex flex-column mb-auto gap-3">
       <a href="/" class="link-sidebar" onclick={() => (boardState.show = false)}>
         <div class="btn d-flex justify-content-left align-items-center btn-sidebar {isActive('/')}">
           <img class="img-filter" src={ICON_PATHS.AUTOMATION} alt="Flow" />

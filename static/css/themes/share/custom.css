@@ -12,6 +12,12 @@
 .faded {
     opacity: 0.4;
     filter: brightness(0.4);
+    transition: opacity 0.5s;
+}
+
+.faded:hover {
+    opacity: 1;
+    filter: brightness(1);
 }
 
 .gesture-checkbox {
@@ -72,4 +78,15 @@
     rotate: 45deg;
     background-color: var(--fg-color-0);
     box-shadow: 0 0 2px var(--fg-color-2);
+}
+
+.background-cover {
+    background-color: var(--bg-color-0);
+    opacity: 0.4;
+    position: absolute;
+    top: -5000px;
+    left: -5000px;
+    width: 10000px;
+    height: 10000px;
+    z-index: -1;
 }

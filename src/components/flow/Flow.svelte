@@ -2,11 +2,14 @@
   import "@xyflow/svelte/dist/style.css";
 
   import { type OnConnectEnd, BackgroundVariant, SvelteFlow, Background, useSvelteFlow } from "@xyflow/svelte";
+
   import { viewportStore } from "../../stores/flow/viewport.svelte";
-  import { windowSize, flowSize, sidebarSize } from "../../stores/geometry.svelte";
   import { EdgeType, edgeTypes } from "../../types/edges";
   import { NodeType } from "../../types/nodes";
+  import { flowSize } from "../../stores/geometry.svelte";
   import { onMount } from "svelte";
+  import GestureSelectMenu from "./menus/GestureSelectMenu.svelte";
+  import PointSelectMenu from "./menus/PointSelectMenu.svelte";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
   import PaneContextMenu from "./menus/PaneContextMenu.svelte";
   import ConditionsNode from "./nodes/condition/ConditionNode.svelte";
@@ -18,8 +21,7 @@
   import edgeStore from "../../stores/flow/edge.svelte";
   import TaskNode from "./nodes/tasks/TaskNode.svelte";
   import TopBar from "./float/TopBar.svelte";
-  import PointSelectMenu from "./menus/PointSelectMenu.svelte";
-  import GestureSelectMenu from "./menus/GestureSelectMenu.svelte";
+  import ConditionTypeSelectMenu from "./menus/ConditionTypeSelectMenu.svelte";
 
   const { viewport, setViewport } = useSvelteFlow();
 
@@ -81,7 +83,7 @@
     event.preventDefault();
 
     menuStore.hideAll();
-    console.log(event);
+
     menuStore.paneContext.show = true;
 
     menuStore.paneContext.top = event.offsetY < flowSize.height - 200 ? event.offsetY : undefined;
@@ -133,6 +135,10 @@
 
     {#if menuStore.pointSelect.show}
       <PointSelectMenu />
+    {/if}
+
+    {#if menuStore.conditionTypeSelect.show}
+      <ConditionTypeSelectMenu />
     {/if}
   </SvelteFlow>
 

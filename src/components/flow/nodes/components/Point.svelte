@@ -36,7 +36,6 @@
     menuStore.pointSelect.show = true;
     menuStore.pointSelect.data = data;
 
-    console.log(event);
     // @ts-ignore
     menuStore.pointSelect.top = event.y < windowSize.height - 400 ? event.y - Math.min(200, event.y - 7) : undefined;
     // @ts-ignore

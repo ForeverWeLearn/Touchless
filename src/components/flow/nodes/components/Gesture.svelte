@@ -14,7 +14,6 @@
     menuStore.gestureSelect.gesture = data;
     menuStore.gestureSelect.handedness = handedness;
 
-    console.log(event);
     // @ts-ignore
     menuStore.gestureSelect.top = event.y < windowSize.height - 400 ? event.y - Math.min(200, event.y - 7) : undefined;
     // @ts-ignore
@@ -48,3 +47,9 @@
     />
   </button>
 </div>
+
+<style>
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+</style>

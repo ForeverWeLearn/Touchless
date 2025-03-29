@@ -1,6 +1,6 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
-  import { windowSize } from "../../../stores/geometry.svelte";
+  import { sidebarSize, windowSize } from "../../../stores/geometry.svelte";
   import { settings } from "../../../stores/settings.svelte";
   import { NodeType } from "../../../types/nodes";
   import nodeStore from "../../../stores/flow/node.svelte";
@@ -10,7 +10,9 @@
 
   function getFlowPosition(): XYPosition {
     const pos = screenToFlowPosition({
-      x: menuStore.paneContext.left ?? windowSize.width - menuStore.paneContext.right,
+      x: menuStore.paneContext.left
+        ? menuStore.paneContext.left + sidebarSize.width
+        : windowSize.width - menuStore.paneContext.right,
       y: menuStore.paneContext.top ?? windowSize.height - menuStore.paneContext.bottom,
     });
     return pos;

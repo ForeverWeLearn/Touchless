@@ -9,15 +9,7 @@
     <div class="d-flex flex-column gap-3 ms-5" style="position: absolute; left: 0; bottom: 0">
       {#each appStore.taskHistory as task (task)}
         <div class="d-flex gap-3 appear-then-disappear">
-          <img
-            class="img-filter"
-            src={task.type == TaskType.COMMAND
-              ? settings.icons.tasks.COMMAND
-              : task.type == TaskType.KEY_SEQUENCE
-                ? settings.icons.tasks.KEY_SEQUENCE
-                : settings.icons.tasks.TEXT}
-            alt=""
-          />
+          <img class="img-filter" src={settings.icons.tasks[task.type]} alt="" />
           <div>{task.name}</div>
         </div>
       {/each}

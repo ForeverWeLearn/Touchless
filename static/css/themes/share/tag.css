@@ -43,12 +43,12 @@ body {
 button {
     background-color: var(--bg-color-1);
     color: var(--btn-text-color) !important;
-    border-color: var(--fg-color-1) !important;
+    border-color: var(--fg-color-2) !important;
 }
 
 button:hover {
     color: var(--fg-color-2);
-    border-color: var(--fg-color-2) !important;
+    border-color: var(--fg-color-0) !important;
 }
 
 main {
