@@ -133,11 +133,16 @@ function createNodeStore() {
       return false;
     }
 
-    if (node.type != NodeType.CONDITION) {
-      return true;
-    }
+    switch (node.type) {
+      case NodeType.ENTRY:
+        return node.data.enable;
 
-    return node.data.runtime.activated;
+      case NodeType.CONDITION:
+        return node.data.runtime.activated;
+
+      case NodeType.TASK:
+        return false;
+    }
   };
 
   const resetRuntimeState = async () => {
