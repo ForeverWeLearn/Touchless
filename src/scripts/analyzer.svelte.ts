@@ -65,14 +65,13 @@ export class Analyzer {
 
   private parseConditionActive(data: ConditionNodeData, satisfied: boolean) {
     const runtime = data.runtime;
-    const hold = data.hold;
 
     const step = this.now - runtime.lastSatisfied;
 
     // If not satisfy...
     if (!satisfied) {
-      // ...for longer than max active step...
-      if (step > settings.maxActiveStep) {
+      // ...for longer than active duration...
+      if (step > data.duration) {
         // ...then set deactivated.
         runtime.activated = false;
         runtime.firstSatisfied = 0;
@@ -86,13 +85,14 @@ export class Analyzer {
       if (step > settings.maxActiveStep) {
         // ...then it seem to be first satisfy, set first satisfy to now.
         runtime.firstSatisfied = this.now;
+        runtime.activated = false;
       }
 
       // ...then set last satisfy to now.
       runtime.lastSatisfied = this.now;
 
       // ...for longer than time to active...
-      if (runtime.lastSatisfied - runtime.firstSatisfied > hold) {
+      if (runtime.lastSatisfied - runtime.firstSatisfied > data.hold) {
         // ...then active.
         runtime.activated = true;
       }
@@ -105,6 +105,8 @@ export class Analyzer {
         case ConditionType.GESTURES: {
           if (this.checkGesturesCondition(condition)) {
             condition.runtime.activated = true;
+          } else {
+            condition.runtime.activated = false;
           }
           break;
         }
@@ -112,6 +114,8 @@ export class Analyzer {
         case ConditionType.DISTANCE: {
           if (this.checkDistanceCondition(condition)) {
             condition.runtime.activated = true;
+          } else {
+            condition.runtime.activated = false;
           }
           break;
         }
@@ -119,6 +123,8 @@ export class Analyzer {
         case ConditionType.ROTATION: {
           if (this.checkRotationCondition(condition)) {
             condition.runtime.activated = true;
+          } else {
+            condition.runtime.activated = false;
           }
           break;
         }
