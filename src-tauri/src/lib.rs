@@ -51,7 +51,6 @@ pub fn run() {
             //Close but the app will hide in the system tray
             let window = app.get_webview_window("main").unwrap();
             let window_clone = window.clone();
-            let _overlay = app.get_webview_window("overlay").unwrap();
             window.on_window_event(move |event| match event {
                 WindowEvent::CloseRequested { api, .. } => {
                     api.prevent_close();
@@ -62,15 +61,15 @@ pub fn run() {
             });
 
             //Hide overlay
-            let overlay = app.get_webview_window("overlay").unwrap();
-            let overlay_clone = overlay.clone();
-            overlay.on_window_event(move |event| match event {
-                WindowEvent::CloseRequested { api, .. } => {
-                    api.prevent_close();
-                    let _ = overlay_clone.hide();
-                }
-                _ => {}
-            });
+            // let overlay = app.get_webview_window("overlay").unwrap();
+            // let overlay_clone = overlay.clone();
+            // overlay.on_window_event(move |event| match event {
+            //     WindowEvent::CloseRequested { api, .. } => {
+            //         api.prevent_close();
+            //         let _ = overlay_clone.hide();
+            //     }
+            //     _ => {}
+            // });
 
             //Create "Open", "Quit" options when you right-click the icon in the system tray
             let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
@@ -105,16 +104,16 @@ pub fn run() {
                         if let Some(window) = app.get_webview_window("main") {
                             if window.is_visible().unwrap() {
                                 window.hide().unwrap();
-                                if let Some(overlay) = app.get_webview_window("overlay") {
-                                    overlay.show().unwrap();
-                                }
+                                // if let Some(overlay) = app.get_webview_window("overlay") {
+                                //     overlay.show().unwrap();
+                                // }
                             } else {
                                 let _ = window.unminimize();
                                 window.show().unwrap();
                                 window.set_focus().unwrap();
-                                if let Some(overlay) = app.get_webview_window("overlay") {
-                                    overlay.hide().unwrap();
-                                }
+                                // if let Some(overlay) = app.get_webview_window("overlay") {
+                                //     overlay.hide().unwrap();
+                                // }
                             }
                         }
                     }
