@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ConditionType, getDefaultCondition, type Condition, type ConditionNodeData } from "../../../../types/nodes";
+  import { ConditionType, getDefaultCondition, type ConditionNodeData } from "../../../../types/nodes";
   import ConditionAttribute from "./components/ConditionAttribute.svelte";
   import AttributeForm from "./components/AttributeForm.svelte";
   import NodeLabel from "../components/NodeLabel.svelte";

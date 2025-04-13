@@ -8,6 +8,7 @@
   import { NodeType } from "../../types/nodes";
   import { flowSize } from "../../stores/geometry.svelte";
   import { onMount } from "svelte";
+  import ConditionTypeSelectMenu from "./menus/ConditionTypeSelectMenu.svelte";
   import GestureSelectMenu from "./menus/GestureSelectMenu.svelte";
   import PointSelectMenu from "./menus/PointSelectMenu.svelte";
   import NodeContextMenu from "./menus/NodeContextMenu.svelte";
@@ -19,9 +20,8 @@
   import EntryNode from "./nodes/entry/EntryNode.svelte";
   import nodeStore from "../../stores/flow/node.svelte";
   import edgeStore from "../../stores/flow/edge.svelte";
-  import TaskNode from "./nodes/tasks/TaskNode.svelte";
+  import TaskNode from "./nodes/task/TaskNode.svelte";
   import TopBar from "./float/TopBar.svelte";
-  import ConditionTypeSelectMenu from "./menus/ConditionTypeSelectMenu.svelte";
 
   const { viewport, setViewport } = useSvelteFlow();
 

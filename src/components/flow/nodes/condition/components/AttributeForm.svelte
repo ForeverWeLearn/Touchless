@@ -1,11 +1,11 @@
 <script lang="ts">
   import { ConditionType, type Condition } from "../../../../../types/nodes";
   import { sidebarSize, windowSize } from "../../../../../stores/geometry.svelte";
+  import { settings } from "../../../../../stores/settings.svelte";
   import DistanceAttribute from "./DistanceAttribute.svelte";
   import GesturesAttribute from "./GesturesAttribute.svelte";
   import RotationAttribute from "./RotationAttribute.svelte";
   import menuStore from "../../../../../stores/flow/menu.svelte";
-  import { settings } from "../../../../../stores/settings.svelte";
 
   let { data, change, remove }: { data: Condition; change: (type: ConditionType) => void; remove: () => void } =
     $props();

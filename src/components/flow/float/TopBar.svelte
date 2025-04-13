@@ -1,8 +1,8 @@
 <script lang="ts">
-  import flowStore from "../../../stores/flow/flow.svelte";
-  import { ICON_PATHS } from "../../../types/core";
   import { DEFAULT_FLOW_NAME } from "../../../types/fs";
   import { AppFileWriter } from "../../../utils/fs/writer";
+  import { ICON_PATHS } from "../../../types/core";
+  import flowStore from "../../../stores/flow/flow.svelte";
 
   let icon = $state(ICON_PATHS.SAVE);
 

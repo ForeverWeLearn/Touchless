@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { ICON_PATHS } from "../../../../types/core";
   import type { AngleRange } from "../../../../types/forms";
+  import { ICON_PATHS } from "../../../../types/core";
   import Slider from "./Slider.svelte";
 
   let { data }: { data: AngleRange } = $props();

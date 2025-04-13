@@ -1,7 +1,7 @@
 <script lang="ts">
   import { type NodeData } from "../../../../types/nodes";
-  import { settings } from "../../../../stores/settings.svelte";
   import { ICON_PATHS } from "../../../../types/core";
+  import { settings } from "../../../../stores/settings.svelte";
   import nodeStore from "../../../../stores/flow/node.svelte";
 
   let { data }: { data: NodeData } = $props();

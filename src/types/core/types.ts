@@ -87,6 +87,7 @@ export enum ICON_PATHS {
   CENTER_FOCUS_WEAK = "imgs/svg/center_focus_weak.svg",
   CLICK = "imgs/svg/click.svg",
   CLOCK_LOADER = "imgs/svg/clock_loader.svg",
+  CONTENT_CUT = "imgs/svg/content_cut.svg",
   CONTENT_COPY = "imgs/svg/content_copy.svg",
   CLOSE = "imgs/svg/close.svg",
   DELETE = "imgs/svg/delete.svg",

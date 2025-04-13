@@ -1,7 +1,7 @@
 <script lang="ts">
-  import menuStore from "../../../stores/flow/menu.svelte";
-  import { settings } from "../../../stores/settings.svelte";
   import { ConditionType } from "../../../types/nodes";
+  import { settings } from "../../../stores/settings.svelte";
+  import menuStore from "../../../stores/flow/menu.svelte";
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->

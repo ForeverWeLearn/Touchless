@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { ICON_PATHS } from "../../../../../types/core";
   import type { ConditionNodeData } from "../../../../../types/nodes";
+  import { ICON_PATHS } from "../../../../../types/core";
   import Slider from "../../components/Slider.svelte";
 
   let { data }: { data: ConditionNodeData } = $props();

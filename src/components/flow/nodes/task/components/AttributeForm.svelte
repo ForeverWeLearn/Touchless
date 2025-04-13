@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { ICON_PATHS } from "../../../../../types/core";
   import { getDefaultTask, TaskType, type Task } from "../../../../../types/nodes";
-  import CommandAttribute from "./CommandAttribute.svelte";
+  import { ICON_PATHS } from "../../../../../types/core";
   import KeySequenceAttribute from "./KeySequenceAttribute.svelte";
+  import CommandAttribute from "./CommandAttribute.svelte";
   import TextAttribute from "./TextAttribute.svelte";
 
   let { data, change, remove }: { data: Task; change: (newTask: Task) => void; remove: () => void } = $props();

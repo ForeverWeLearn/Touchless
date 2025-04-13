@@ -1,8 +1,8 @@
 <script lang="ts">
   import { useSvelteFlow, type XYPosition } from "@xyflow/svelte";
   import { sidebarSize, windowSize } from "../../../stores/geometry.svelte";
-  import { NodeType } from "../../../types/nodes";
   import { ICON_PATHS } from "../../../types/core";
+  import { NodeType } from "../../../types/nodes";
   import nodeStore from "../../../stores/flow/node.svelte";
   import menuStore from "../../../stores/flow/menu.svelte";
 

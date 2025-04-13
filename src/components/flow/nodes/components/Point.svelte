@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Point } from "../../../../types/forms";
-  import { sidebarSize, windowSize } from "../../../../stores/geometry.svelte";
   import { HANDEDNESS_NAMES, ICON_PATHS, LANDMARK_NAMES } from "../../../../types/core";
+  import { sidebarSize, windowSize } from "../../../../stores/geometry.svelte";
   import menuStore from "../../../../stores/flow/menu.svelte";
 
   let { data, name }: { data: Point; name: string } = $props();

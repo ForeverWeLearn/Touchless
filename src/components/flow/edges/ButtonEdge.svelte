@@ -32,7 +32,7 @@
     style:transform="translate(-50%, -50%) translate({labelX}px,{labelY}px)"
   >
     <button class="btn edgeButton" onclick={() => edgeStore.removeByID(id)}>
-      <img class="img-filter" src={ICON_PATHS.CLOSE} alt="" />
+      <img class="img-filter" src={ICON_PATHS.CONTENT_CUT} alt="" />
     </button>
   </div>
 </EdgeLabelRenderer>
@@ -43,6 +43,7 @@
     position: absolute;
     pointer-events: all;
     opacity: 0;
+    transition: opacity 0.3s;
   }
 
   .edgeButtonContainer:hover {
@@ -51,11 +52,12 @@
 
   .edgeButton {
     background: var(--bg-color-1);
+    aspect-ratio: 1;
     border: solid 1px var(--fg-color-2);
     cursor: pointer;
   }
 
   .edgeButton:hover {
-    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
+    background: var(--bg-color-1);
   }
 </style>

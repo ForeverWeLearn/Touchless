@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { appStore } from "../../../stores/app.svelte";
   import { settings } from "../../../stores/settings.svelte";
-  import { TaskType } from "../../../types/nodes";
+  import { appStore } from "../../../stores/app.svelte";
 </script>
 
 <aside>
