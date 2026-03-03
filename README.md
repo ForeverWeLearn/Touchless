@@ -14,7 +14,7 @@ This project was developed as part of a three-month challenge organized by the [
 
 ## 🗺️ **Overview**
 
-The primary goal of Touchless is to provide an alternative way to interact with computer.
+The goal of Touchless is to provide an alternative way to interact with computer.
 
 By using hand tracking, gesture recognition and a node-based logic editor, the app allows for customizable actions such as switching slides during presentations or controlling simple games.
 
