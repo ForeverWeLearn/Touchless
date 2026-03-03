@@ -1,6 +1,15 @@
-<h1 align="center"><img src="./assets/imgs/touchless.svg" width="240"/></h1>
+<h1 align="center"><img src="./assets/imgs/touchless.svg" alt="Touchless" width="240"/></h1>
 
 <p align="center"><i>Control computer with hand gestures</i></p>
+
+&nbsp;
+
+<p align="center">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Svelte-%23f1413d.svg?style=for-the-badge&logo=svelte&logoColor=white" alt="Svelte" />
+  <img src="https://img.shields.io/badge/Rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white" alt="Rust" />
+  <img src="https://img.shields.io/badge/Tauri-FEC132?style=for-the-badge&logo=tauri&logoColor=black" alt="Tauri" />
+</p>
 
 <p align="center"><img src="./assets/imgs/shot1-v0.0.3.png" width="85%" /></p>
 
@@ -34,7 +43,7 @@ By using hand tracking, gesture recognition and a node-based logic editor, the a
 
 ## 🌨️ **Project Status**
 
-**Public Archive**
+![Public Archive](https://img.shields.io/badge/Public_Archive-grey?style=for-the-badge)
 
 This project has been discontinued and is now a public archive.
 
