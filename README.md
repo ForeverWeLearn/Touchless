@@ -1,4 +1,4 @@
-<h1 align="center"><strong>Touchless</strong></h1>
+<h1 align="center"><img src="./assets/imgs/touchless.svg" width="240"/></h1>
 
 <p align="center"><i>Control computer with hand gestures</i></p>
 
@@ -85,16 +85,16 @@ The project was a collaboration by first and second-year students, supported by 
 
 ## 🔗 **Related Links**
 
-* **Landing Page:** [Live Demo](https://landing-page-touchless.vercel.app/)
+* Landing Page (unmaintained): [Live Demo](https://landing-page-touchless.vercel.app/)
 
-* **Landing Page Repository:** [GitHub](https://github.com/Natlife/landing-page-touchless)
+* Landing Page Repository: [GitHub](https://github.com/Natlife/landing-page-touchless)
 
-* **Gesture Classifier Model:** [GitHub](https://github.com/ForeverWeLearn/gesture-classifier/)
+* Gesture Classifier Model: [GitHub](https://github.com/ForeverWeLearn/gesture-classifier/)
 
-* **Original PoC (PyQt Version):** [Touchless-PyQt](https://github.com/ForeverWeLearn/Touchless-PyQt/)
-
-&nbsp;
+* Original PoC (PyQt Version): [Touchless-PyQt](https://github.com/ForeverWeLearn/Touchless-PyQt/)
 
 &nbsp;
 
-<p align="center"><i>Developed with passion by Team 3 Gen 12 - JS Club</i></p>
+&nbsp;
+
+<p align="center"><i>Developed with passion by <strong>Team 3 Gen 12 - JS Club</strong></i></p>
